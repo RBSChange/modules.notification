@@ -1,0 +1,6 @@
+treechildren::-moz-tree-image(modules_notification_notification){
+	list-style-image: url(/icons/small/notification.png) ;
+}
+treechildren::-moz-tree-image(modules_notification_sitenotification){
+	list-style-image: url(/icons/small/notification.png) ;
+}

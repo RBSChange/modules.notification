@@ -1,0 +1,4 @@
+#edt_notification_notification csitenotifpanel
+{
+	-moz-binding: url(binding:modules.notification.cEditor#cSiteNotifPanel);
+}

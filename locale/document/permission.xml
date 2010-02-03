@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<localization>
+  <entity id="edition-form-title">
+    <locale lang="fr">gestion des droits</locale>
+    <locale lang="en">right management</locale>
+    <locale lang="de">Verwaltung der Rechte</locale>
+  </entity>
+  <entity id="permission-panel-1">
+    <locale lang="fr">Partie 1</locale>
+    <locale lang="en">Part 1</locale>
+    <locale lang="de">Teil 1</locale>
+  </entity>
+  <entity id="permission-panel-2">
+    <locale lang="fr">Partie 2</locale>
+    <locale lang="en">Part 2</locale>
+    <locale lang="de">Teil 2</locale>
+  </entity>
+  <entity id="Admin">
+    <locale lang="fr">Administrateur</locale>
+    <locale lang="en">Administrator</locale>
+    <locale lang="de">Administrator</locale>
+  </entity>
+  <entity id="Admin-help">
+    <locale lang="fr">Administrateur</locale>
+    <locale lang="en">Administrator</locale>
+    <locale lang="de">Administrator</locale>
+  </entity>
+</localization>

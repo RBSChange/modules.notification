@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<actions extends="generic">
+	<action name="createNotification">
+		<parameter name="listWidget" />
+		<body><![CDATA[
+			this.createDocumentEditor('modules_notification_notification', listWidget.getSelectedItems()[0].id);
+		]]></body>
+	</action>
+	<action name="deleteIsActive">
+		<parameter name="itemData"/>
+		<body><![CDATA[
+			return itemData.canBeDeleted !== 'false';
+		]]></body>
+	</action>
+	<action name="createSitenotification">
+		<parameter name="listWidget" />
+		<body><![CDATA[
+	    	var id = listWidget.getSelectedIds()[0];
+			var uri = ['notification', 'openDocument', 'modules_notification_notification', id, 'sitenotif'].join(',');
+			openActionUri(uri);
+		]]></body>
+	</action>
+</actions>

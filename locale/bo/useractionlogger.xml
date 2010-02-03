@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<localization>
+	<entity id="deactivated-notification">
+		<locale lang="fr">deactivated.notification {lang} {documentlabel}</locale>
+	</entity>
+	<entity id="log-deactivated-notification">
+		<locale lang="fr">log-deactivated-notification</locale>
+	</entity>
+	<entity id="reactivate-notification">
+		<locale lang="fr">reactivate.notification {lang} {documentlabel}</locale>
+	</entity>
+	<entity id="log-reactivate-notification">
+		<locale lang="fr">log-reactivate-notification</locale>
+	</entity>
+	<entity id="update-notification">
+		<locale lang="fr">update.notification {lang} {documentlabel}</locale>
+	</entity>
+	<entity id="log-update-notification">
+		<locale lang="fr">log-update-notification</locale>
+	</entity>
+	<entity id="updatetranslation-notification">
+		<locale lang="fr">updatetranslation.notification {lang} {documentlabel}</locale>
+	</entity>
+	<entity id="log-updatetranslation-notification">
+		<locale lang="fr">log-updatetranslation-notification</locale>
+	</entity>
+	<entity id="deletelocalization-notification">
+		<locale lang="fr">deletelocalization.notification {documentlabel} {lang}</locale>
+	</entity>
+	<entity id="log-deletelocalization-notification">
+		<locale lang="fr">log-deletelocalization-notification</locale>
+	</entity>
+	<entity id="delete-notification">
+		<locale lang="fr">delete.notification {documentlabel} {lang}</locale>
+	</entity>
+	<entity id="log-delete-notification">
+		<locale lang="fr">log-delete-notification</locale>
+	</entity>
+	<entity id="insert-notification">
+		<locale lang="fr">insert.notification {lang} {documentlabel}</locale>
+	</entity>
+	<entity id="log-insert-notification">
+		<locale lang="fr">log-insert-notification</locale>
+	</entity>
+	<entity id="insert-sitenotification">
+		<locale lang="fr">insert.sitenotification {lang} {documentlabel}</locale>
+	</entity>
+	<entity id="log-insert-sitenotification">
+		<locale lang="fr">log-insert-sitenotification</locale>
+	</entity>
+	<entity id="delete-sitenotification">
+		<locale lang="fr">delete.sitenotification {documentlabel} {lang}</locale>
+	</entity>
+	<entity id="log-delete-sitenotification">
+		<locale lang="fr">log-delete-sitenotification</locale>
+	</entity>
+	<entity id="update-sitenotification">
+		<locale lang="fr">update.sitenotification {lang} {documentlabel}</locale>
+	</entity>
+	<entity id="log-update-sitenotification">
+		<locale lang="fr">log-update-sitenotification</locale>
+	</entity>
+	<entity id="deactivated-sitenotification">
+		<locale lang="fr">deactivated.sitenotification {lang} {documentlabel}</locale>
+	</entity>
+	<entity id="log-deactivated-sitenotification">
+		<locale lang="fr">log-deactivated-sitenotification</locale>
+	</entity>
+	<entity id="reactivate-sitenotification">
+		<locale lang="fr">reactivate.sitenotification {lang} {documentlabel}</locale>
+	</entity>
+	<entity id="log-reactivate-sitenotification">
+		<locale lang="fr">log-reactivate-sitenotification</locale>
+	</entity>
+	<entity id="updatetranslation-sitenotification">
+		<locale lang="fr">updatetranslation.sitenotification {lang} {documentlabel}</locale>
+	</entity>
+	<entity id="log-updatetranslation-sitenotification">
+		<locale lang="fr">log-updatetranslation-sitenotification</locale>
+	</entity>
+	<entity id="deletelocalization-sitenotification">
+		<locale lang="fr">deletelocalization.sitenotification {documentlabel} {lang}</locale>
+	</entity>
+	<entity id="log-deletelocalization-sitenotification">
+		<locale lang="fr">log-deletelocalization-sitenotification</locale>
+	</entity>
+</localization>

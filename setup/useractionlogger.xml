@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<script>
+	<binding fileName="modules/useractionlogger/persistentdocument/import/useractionlogger_binding.xml" />
+	<actiondef modulename="notification" actionname="deactivated.notification" label="modules.notification.bo.useractionlogger.deactivated-notification" />
+	<actiondef modulename="notification" actionname="reactivate.notification" label="modules.notification.bo.useractionlogger.reactivate-notification" />
+	<actiondef modulename="notification" actionname="update.notification" label="modules.notification.bo.useractionlogger.update-notification" />
+	<actiondef modulename="notification" actionname="updatetranslation.notification" label="modules.notification.bo.useractionlogger.updatetranslation-notification" />
+	<actiondef modulename="notification" actionname="deletelocalization.notification" label="modules.notification.bo.useractionlogger.deletelocalization-notification" />
+	<actiondef modulename="notification" actionname="delete.notification" label="modules.notification.bo.useractionlogger.delete-notification" />
+	<actiondef modulename="notification" actionname="insert.notification" label="modules.notification.bo.useractionlogger.insert-notification" />
+	<actiondef modulename="notification" actionname="insert.sitenotification" label="modules.notification.bo.useractionlogger.insert-sitenotification" />
+	<actiondef modulename="notification" actionname="delete.sitenotification" label="modules.notification.bo.useractionlogger.delete-sitenotification" />
+	<actiondef modulename="notification" actionname="update.sitenotification" label="modules.notification.bo.useractionlogger.update-sitenotification" />
+	<actiondef modulename="notification" actionname="deactivated.sitenotification" label="modules.notification.bo.useractionlogger.deactivated-sitenotification" />
+	<actiondef modulename="notification" actionname="reactivate.sitenotification" label="modules.notification.bo.useractionlogger.reactivate-sitenotification" />
+	<actiondef modulename="notification" actionname="updatetranslation.sitenotification" label="modules.notification.bo.useractionlogger.updatetranslation-sitenotification" />
+	<actiondef modulename="notification" actionname="deletelocalization.sitenotification" label="modules.notification.bo.useractionlogger.deletelocalization-sitenotification" />
+</script>

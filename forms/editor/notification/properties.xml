@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<panel>
+	<section labeli18n="modules.notification.bo.general.General">
+		<field name="label" />
+		<field name="codename" />
+		
+		<field name="subject" />
+		<field name="body" />
+		<field name="template" />
+	</section>
+
+	<section labeli18n="modules.notification.bo.general.Advanced">
+		<field name="header" />
+		<field name="footer" />
+		<field name="senderEmail" />
+	</section>
+	
+	<fieldinput name="availableparameters" type="hidden"/>
+	
+	<xul>
+		<javascript>
+			<constructor><![CDATA[
+				this.extendMethod("fireInitializeComplete", this.initializeCompleteMetaInfo);
+			]]></constructor>	
+			
+			<method name="initializeCompleteMetaInfo">
+				<parameter name="result" />
+				<body><![CDATA[
+				var fields = this.fields;
+				this.setTextTemplate(fields.body, result.contents.availableparameters);
+				this.setTextTemplate(fields.header, result.contents.availableparameters);
+				this.setTextTemplate(fields.footer, result.contents.availableparameters);			
+				]]></body>
+			</method>
+			
+			<method name="setTextTemplate">
+				<parameter name="field" />
+				<parameter name="availableparameters" />
+				<body><![CDATA[
+				var toolbar = field.toolBar;				
+				toolbar.clearTextTemplate();
+				if (availableparameters)
+				{
+					var parameters = availableparameters.split(/\s|,/);
+					for (var i = 0; i < parameters.length; i++)
+					{
+						var param = parameters[i];
+						if (param.length > 0)
+						{
+							if (param[0] != '{') {param = '{' + param + '}';}
+							toolbar.addTextTemplate(param, param);
+						}
+					}
+				}				
+				]]></body>
+			</method>					
+		</javascript>
+	</xul>
+</panel>

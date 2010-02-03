@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<listeners>
+	<listener listenerClass="notification_SiteNotificationListener"/>
+</listeners>

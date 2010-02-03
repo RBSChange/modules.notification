@@ -1,0 +1,3 @@
+<em tal:condition="notification/header" tal:replace="notification/header"/>
+<p tal:replace="notification/body" />
+<em tal:condition="notification/footer" tal:replace="notification/footer"/>

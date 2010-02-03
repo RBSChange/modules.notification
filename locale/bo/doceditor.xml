@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<localization>
+	<entity id="sitenotif-panel.tab-title">
+		<locale lang="fr">notifications par site</locale>
+		<locale lang="en">website notifications</locale>
+	</entity>
+	
+	<entity id="confirm-delete">
+		<locale lang="fr">Etes vous sur de vouloir supprimer cette notification ?</locale>
+	</entity>
+	
+	<entity id="warning-no-website">
+		<locale lang="fr">Veuillez selectionner un site web.</locale>
+	</entity>
+	
+	<entity id="button-add-notif">
+		<locale lang="fr">Ajouter une notification</locale>
+	</entity>
+	
+	<entity id="column-actions">
+		<locale lang="fr">Actions</locale>
+	</entity>
+	<entity id="column-website">
+		<locale lang="fr">Site Web de la notification</locale>
+	</entity>
+	<entity id="column-status">
+		<locale lang="fr">Etat</locale>
+	</entity>
+</localization>

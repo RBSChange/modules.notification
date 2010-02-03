@@ -1,0 +1,13 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 TRANSITIONAL//EN">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<title tal:content="notification/subject"/>
+	<link rel="stylesheet" tal:replace="notification/stylesheetUrl" />
+</head>
+<body>
+	<em tal:condition="notification/header" tal:content="notification/header"/>
+	<p tal:content="notification/body" />
+	<em tal:condition="notification/footer" tal:content="notification/footer"/>
+</body>
+</html>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document xmlns="http://www.rbs.fr/schema/change-document/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.rbs.fr/schema/change-document/1.0 http://www.rbschange.fr/static/schema/change-document/1.0.xsd"
+	model-version="1.0" icon="notification" has-url="false" indexable="false" publish-on-day-change="false" table-name-oci="m_notif_doc_notif">
+	<properties>
+		<add name="codename" type="String" min-occurs="1">
+			<constraints>unique:true</constraints>
+		</add>
+		<add name="availableparameters" type="LongString" />
+		<add name="subject" type="String" min-occurs="1" localized="true" />
+		<add name="body" type="XHTMLFragment" min-occurs="1" localized="true" />
+		<add name="header" type="XHTMLFragment" localized="true" />
+		<add name="footer" type="XHTMLFragment" localized="true" />
+		<add name="template" type="String" min-occurs="1" localized="true" from-list="modules_notification/templates" default-value="default" />
+		<add name="senderEmail" type="String" localized="true">
+			<constraints>email:true</constraints>
+		</add>
+	</properties>
+	<statuses default="ACTIVE" />
+</document>

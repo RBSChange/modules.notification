@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<script>
+	<binding fileName="modules/generic/persistentdocument/import/generic_binding.xml"/>
+	<binding name="notification" className="notification_NotificationScriptDocumentElement"/>	
+	<binding name="sitenotification" className="notification_SitenotificationScriptDocumentElement"/>
+</script>

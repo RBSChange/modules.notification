@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<localization>
+  <entity id="module-name">
+    <locale lang="fr">notification</locale>
+    <locale lang="en">notification</locale>
+    <locale lang="de">Benachrichtigung</locale>
+  </entity>
+  <entity id="tree-root-name">
+    <locale lang="fr">notification</locale>
+    <locale lang="en">notification</locale>
+    <locale lang="de">Benachrichtigung</locale>
+  </entity>
+  <entity id="system-folder-name">
+    <locale lang="fr">notification</locale>
+    <locale lang="en">notification</locale>
+    <locale lang="de">Benachrichtigung</locale>
+  </entity>
+  <entity id="general">
+    <locale lang="fr">propriétés principales</locale>
+    <locale lang="en">main data</locale>
+    <locale lang="de">Haupteigenschaften</locale>
+  </entity>
+  <entity id="advanced">
+    <locale lang="fr">propriétés avancées</locale>
+    <locale lang="en">advanced data</locale>
+    <locale lang="de">fortgeschrittene Eigenschaften</locale>
+  </entity>
+  <entity id="error-must-be-unique">
+    <locale lang="fr">la notification "{parentLabel}" a déjà été spécialisée pour le site "{siteLabel}".</locale>
+    <locale lang="en">the notification "{parentLabel}" is already specialized for the website "{siteLabel}".</locale>
+    <locale lang="de">die Benachrichtigung "{parentLabel}" wurde bereits für die Webseite "{siteLabel}" spezialisiert.</locale>
+  </entity>
+  <entity id="column.codename">
+    <locale lang="fr">identifiant</locale>
+    <locale lang="en">code name</locale>
+  </entity>
+  <entity id="sitenotification-label-template">
+    <locale lang="fr">{parentLabel} ({siteLabel})</locale>
+    <locale lang="en">{parentLabel} ({siteLabel})</locale>
+    <locale lang="de">{parentLabel} ({siteLabel})</locale>
+  </entity>
+</localization>
