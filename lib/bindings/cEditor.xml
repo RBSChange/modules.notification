@@ -137,12 +137,12 @@
 					var button = cell.appendChild(document.createElement('toolbarbutton'));
 					button.setAttribute('action', 'edit');
 					button.setAttribute('documentId', jsnode.id);
-					button.setAttribute('image', '{HttpHost}/icons/small/edit.png');
+					button.setAttribute('image', '{IconsBase}/small/edit.png');
 					button.setAttribute('tooltiptext', "&amp;modules.uixul.bo.actions.Edit;");
 					var button = cell.appendChild(document.createElement('toolbarbutton'));
 					button.setAttribute('action', 'delete');
 					button.setAttribute('documentId', jsnode.id);
-					button.setAttribute('image', '{HttpHost}/icons/small/delete.png');
+					button.setAttribute('image', '{IconsBase}/small/delete.png');
 					button.setAttribute('tooltiptext', "&amp;modules.uixul.bo.actions.Delete;");
 					 
 					cell = row.appendChild(document.createElement('label'));
