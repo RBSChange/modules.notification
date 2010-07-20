@@ -13,11 +13,8 @@ class notification_NotificationScriptDocumentElement extends import_ScriptDocume
     		
     	if ($notification === null)
     	{
-        	return notification_NotificationService::getInstance()->getNewDocumentInstance();
+        	$notification = notification_NotificationService::getInstance()->getNewDocumentInstance();
     	}
-    	else
-    	{
-    		return $notification;
-    	}
+    	return $notification;
     }
 }
