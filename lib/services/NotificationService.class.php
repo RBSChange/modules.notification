@@ -151,7 +151,7 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 			}
 			catch (TemplateNotFoundException $e)
 			{
-				Framework::warn(__METHOD__.": no plain text template found.");
+				Framework::warn(__METHOD__ . " no plain text template found: " . $e->getMessage());
 				$textBody = '';
 			}
 			
