@@ -133,9 +133,9 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 			
 			$attributes = $replacementArray;
 			$attributes['subject'] = $subject;
-			$attributes['header'] = f_util_StringUtils::parseHtml($header);
-			$attributes['footer'] = f_util_StringUtils::parseHtml($footer);
-			$attributes['body'] = f_util_StringUtils::parseHtml($body);
+			$attributes['header'] = f_util_HtmlUtils::renderHtmlFragment($header);
+			$attributes['footer'] = f_util_HtmlUtils::renderHtmlFragment($footer);
+			$attributes['body'] = f_util_HtmlUtils::renderHtmlFragment($body);
 
 			$htmlTemplate = TemplateLoader::getInstance()->setPackageName('modules_notification')->setMimeContentType(K::HTML)->load($notification->getTemplate());
 			$htmlTemplate->setAttribute('notification', $attributes);
