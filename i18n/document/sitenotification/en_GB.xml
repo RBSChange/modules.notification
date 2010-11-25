@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<i18n baseKey="m.notification.document.sitenotification" lcid="en_GB">
+  <key id="edition-form-title">specialized notification edition</key>
+  <key id="document-name">specialized notification</key>
+  <key id="label">label</key>
+  <key id="availableparameters">available parameters</key>
+  <key id="subject">subject</key>
+  <key id="body">body</key>
+  <key id="website">website</key>
+  <key id="website-help">website</key>
+</i18n>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<i18n baseKey="m.notification.document.notification" lcid="de_DE">
+  <key id="edition-form-title">Bearbeitung einer Benachrichtigung</key>
+  <key id="document-name">Benachrichtigung</key>
+  <key id="label">Name</key>
+  <key id="label-help">Name für die Anzeige in den Baumgliederungen</key>
+  <key id="availableparameters">verfügbare Parameter</key>
+  <key id="availableparameters-help">Liste der möglich zu nutzenden Parameter im Inhalt und im Betreff der Benachrichtigung. Sie müssen in Akkoladen stehen und 
+	werden durch den entsprechenden Wert ersetzt.</key>
+  <key id="subject">Betreff der Nachricht</key>
+  <key id="subject-help">Betreff der BenachrichtigungsE-mail. Er steht in Akkoladen und kann die verschiedenen vorgeschlagenen Parameter enthalten.</key>
+  <key id="body">Inhalt der Nachricht</key>
+  <key id="body-help">Inhalt der BenachrichtigungsE-mail. Er steht in Akkoladen und kann die verschiedenen vorgeschlagenen Parameter enthalten.</key>
+  <key id="codename">Benachrichtigungskode</key>
+  <key id="codename-help">vom System benutzter Kodename, um die Benachrichtigung zu identifizieren.</key>
+  <key id="header">Kopfzeile</key>
+  <key id="header-help">E-mailkopfzeile</key>
+  <key id="footer">Fusszeile</key>
+  <key id="footer-help">E-mailfusszeile</key>
+  <key id="template">Modell</key>
+  <key id="template-help">Seitenlayout Modell</key>
+  <key id="senderemail">E-mailadresse des Absenders</key>
+  <key id="senderemail-help">ermöglicht die komplette E-mailadresse des Absenders der Benachrichtigung zu definieren.</key>
+</i18n>

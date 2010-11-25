@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<i18n baseKey="m.notification.document.notification" lcid="en_GB">
+  <key id="edition-form-title">notification edition</key>
+  <key id="document-name">notification</key>
+  <key id="label">label</key>
+  <key id="availableparameters">available parameters</key>
+  <key id="subject">subject</key>
+  <key id="body">body</key>
+</i18n>

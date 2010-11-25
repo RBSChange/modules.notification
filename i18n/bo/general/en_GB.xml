@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<i18n baseKey="m.notification.bo.general" lcid="en_GB">
+  <key id="module-name">notification</key>
+  <key id="tree-root-name">notification</key>
+  <key id="system-folder-name">notification</key>
+  <key id="general">main data</key>
+  <key id="advanced">advanced data</key>
+  <key id="error-must-be-unique">the notification ″{parentLabel}″ is already specialized for the website ″{siteLabel}″.</key>
+  <key id="sitenotification-label-template">{parentLabel} ({siteLabel})</key>
+</i18n>

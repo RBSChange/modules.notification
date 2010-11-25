@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<i18n baseKey="m.notification.bo.doceditor" lcid="fr_FR">
+  <key id="confirm-delete">Etes vous sur de vouloir supprimer cette notification ?</key>
+  <key id="warning-no-website">Veuillez selectionner un site web.</key>
+  <key id="button-add-notif">Ajouter une notification</key>
+  <key id="column-actions">Actions</key>
+  <key id="column-website">Site Web de la notification</key>
+  <key id="column-status">Etat</key>
+</i18n>
