@@ -6,6 +6,12 @@
 			this.createDocumentEditor('modules_notification_notification', listWidget.getSelectedItems()[0].id);
 		]]></body>
 	</action>
+	<action name="createFolder">
+		<parameter name="listWidget" />
+		<body><![CDATA[
+			this.createDocumentEditor('modules_notification_folder', listWidget.getSelectedItems()[0].id);
+		]]></body>
+	</action>
 	<action name="deleteIsActive">
 		<parameter name="itemData"/>
 		<body><![CDATA[
