@@ -191,23 +191,6 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 		}
 	}
 
-
-	/**
-	 * Send the notification.
-	 * @param notification_persistentdocument_notification $notification
-	 * @param array<string> $receivers an array of email addresses.
-	 * @param array $replacements an associative array with the word to replace as the key and the replacement as the value.
-	 *
-	 * @deprecated Use send() instead.
-	 */
-	public function sendMail($notification, $receivers, $replacements = array())
-	{
-		$recipients = new mail_MessageRecipients();
-		$recipients->setTo($receivers);
-		$this->send($notification, $recipients, $replacements, null);
-	}
-
-
 	/**
 	 * Apply the remplacements to a given string.
 	 * @param string $string
@@ -250,7 +233,7 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 	public function getByCodeName($codeName, $websiteId = null)
 	{
 		// Get the website id.
-		if (is_null($websiteId))
+		if ($websiteId === null)
 		{		
 			$currentWebsite = website_WebsiteModuleService::getInstance()->getCurrentWebsite();
 			if ($currentWebsite !== null)
@@ -277,18 +260,6 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 		return f_util_ArrayUtils::firstElement($notifications);
 	}
 	
-	/**
-	 * Get the active notification matching a codename.
-	 * @param String $codeName
-	 * @param Integer $websiteId
-	 * @return notification_persistentdocument_notification
-	 * @deprecated use getByCodeName
-	 */
-	public function getNotificationByCodeName($codeName, $websiteId = null)
-	{
-		return $this->getByCodeName($codeName, $websiteId);
-	}
-
 	/**
 	 * Complete the replacements.
 	 * @param Array<String, String> $replacements
@@ -344,5 +315,43 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 		{
 			notification_SitenotificationService::getInstance()->refreshRelatedNotificationsByNotification($document);
 		}
+	}
+	
+	/**
+	 * @param unknown_type $notification
+	 * @param string[] $parameterNames eg: array('toto', 'tata', 'titi')
+	 */
+	public function addAvailableParameters($notification, $parameterNames)
+	{
+		$parameters = $notification->getAvailableparameters();
+		$subst = explode(',', str_replace(array(' ', '{', '}'), '', $parameters));
+		foreach ($parameterNames as $name)
+		{
+			if (!in_array($name, $subst))
+			{
+				$parameters .= ', {' . $name . '}';
+			}
+		}
+		$notification->setAvailableparameters($parameters);
+	}
+	
+	// Deprecated.
+	
+	/**
+	 * @deprecated (will be removed in 4.0) Use send() instead.
+	 */
+	public function sendMail($notification, $receivers, $replacements = array())
+	{
+		$recipients = new mail_MessageRecipients();
+		$recipients->setTo($receivers);
+		$this->send($notification, $recipients, $replacements, null);
+	}
+
+	/**
+	 * @deprecated (will be removed in 4.0) use getByCodeName
+	 */
+	public function getNotificationByCodeName($codeName, $websiteId = null)
+	{
+		return $this->getByCodeName($codeName, $websiteId);
 	}
 }
