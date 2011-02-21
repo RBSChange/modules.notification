@@ -15,6 +15,9 @@ class notification_NotificationWebService extends webservices_WebServiceBase
 	 */
 	public function send($notificationCode, $domainName, $lang, $destEmailArray, $replacementArrayKeys, $replacementArrayValues , $senderModuleName, $replyTo, $senderEmail)
 	{
+		$destEmailArray = $this->getWsdlTypes()->getType('ArrayOfstring')->formatPhpValue($destEmailArray);
+		$replacementArrayKeys = $this->getWsdlTypes()->getType('ArrayOfstring')->formatPhpValue($replacementArrayKeys);
+		$replacementArrayValues = $this->getWsdlTypes()->getType('ArrayOfstring')->formatPhpValue($replacementArrayValues);
 		if (!is_array($destEmailArray) || count($destEmailArray) === 0)
 		{
 			throw new Exception("Can not send mail to nobody");
