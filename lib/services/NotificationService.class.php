@@ -341,7 +341,7 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 	 * @param string $treeType
 	 * @param array<string, string> $nodeAttributes
 	 */	
-	protected function addTreeAttributes($document, $moduleName, $treeType, &$nodeAttributes)
+	public function addTreeAttributes($document, $moduleName, $treeType, &$nodeAttributes)
 	{
 		$nodeAttributes['canBeDeleted'] = ($document->canBeDeleted() ? 'true' : 'false');
     	$nodeAttributes['publicationstatus'] = $document->getPublicationstatus();
