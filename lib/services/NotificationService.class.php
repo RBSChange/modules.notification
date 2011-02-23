@@ -318,7 +318,7 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 	}
 	
 	/**
-	 * @param unknown_type $notification
+	 * @param notification_persistentdocument_notification $notification
 	 * @param string[] $parameterNames eg: array('toto', 'tata', 'titi')
 	 */
 	public function addAvailableParameters($notification, $parameterNames)
@@ -333,6 +333,20 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 			}
 		}
 		$notification->setAvailableparameters($parameters);
+	}
+	
+	/**
+	 * @param notification_persistentdocument_notification $document
+	 * @param string $moduleName
+	 * @param string $treeType
+	 * @param array<string, string> $nodeAttributes
+	 */	
+	protected function addTreeAttributes($document, $moduleName, $treeType, &$nodeAttributes)
+	{
+		$nodeAttributes['canBeDeleted'] = ($document->canBeDeleted() ? 'true' : 'false');
+    	$nodeAttributes['publicationstatus'] = $document->getPublicationstatus();
+    	$nodeAttributes['author'] = $document->getAuthor();
+    	$nodeAttributes['codename'] = $document->getCodename();
 	}
 	
 	// Deprecated.

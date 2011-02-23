@@ -14,19 +14,6 @@ class notification_persistentdocument_notification extends notification_persiste
 	}
 	
 	/**
-	 * @param string $moduleName
-	 * @param string $treeType
-	 * @param array<string, string> $nodeAttributes
-	 */	
-	protected function addTreeAttributes($moduleName, $treeType, &$nodeAttributes)
-	{
-		$nodeAttributes['canBeDeleted'] = ($this->canBeDeleted() ? 'true' : 'false');
-    	$nodeAttributes['publicationstatus'] = $this->getPublicationstatus();
-    	$nodeAttributes['author'] = $this->getAuthor();
-    	$nodeAttributes['codename'] = $this->getCodename();
-	}
-	
-	/**
 	 * @return String
 	 */
 	public function getSenderUsername()
