@@ -14,7 +14,7 @@
 							<xul:menupopup anonid="siteslist">
 							</xul:menupopup>
 						</xul:menulist>
-						<xul:button disabled="true" anonid="addnotifbutton" label="&amp;modules.notification.bo.doceditor.Button-add-notif;" oncommand="addSiteNotif()" />
+						<xul:button disabled="true" anonid="addnotifbutton" label="${transui: m.notification.bo.doceditor.button-add-notif,ucf}" oncommand="addSiteNotif()" />
 					</xul:hbox>
 					<xul:grid flex="1">
 						<xul:columns>
@@ -25,9 +25,9 @@
 						</xul:columns>
 						<xul:rows anonid="document-rows">
 							<xul:row class="head">
-								<xul:label value="&amp;modules.notification.bo.doceditor.Column-actions;" />
-								<xul:label value="&amp;modules.notification.bo.doceditor.Column-website;" />
-								<xul:label value="&amp;modules.notification.bo.doceditor.Column-status;" />
+								<xul:label value="${transui: m.notification.bo.doceditor.column-actions,ucf}" />
+								<xul:label value="${transui: m.notification.bo.doceditor.Column-website,ucf}" />
+								<xul:label value="${transui: m.notification.bo.doceditor.Column-status,ucf}" />
 							</xul:row>
 						</xul:rows>
 					</xul:grid>					
@@ -179,9 +179,7 @@
 		<handlers>
 			<handler event="command"><![CDATA[
 				var target = event.originalTarget;
-				if (target.localName == 'toolbarbutton' 
-					&& target.hasAttribute('action') 
-					&& target.hasAttribute('documentId'))
+				if (target.localName == 'toolbarbutton' && target.hasAttribute('action') && target.hasAttribute('documentId'))
 				{
 					var action = target.getAttribute('action');
 					if (action in this)
@@ -191,5 +189,78 @@
 				}
 			]]></handler>
 		</handlers>
+	</binding>
+	
+	<binding id="cPreviewNotificationDialog" extends="core.wDialog#wDialog">
+		<implementation>
+			<constructor><![CDATA[
+				wCore.debug('cPreviewNorificationDialog.constructor');	
+			]]></constructor>
+			
+			<method name="onInitialize">
+				<body><![CDATA[
+					this.autoResize(window.innerWidth-100, window.innerHeight-100);
+					var id = this.parameters.cmpref;
+					this.getElementByAnonId('html-iframe').setAttribute('src', wCore.buildServerUrl('notification', 'Preview', { type: 'html', cmpref: id }));
+					this.getElementByAnonId('text-iframe').setAttribute('src', wCore.buildServerUrl('notification', 'Preview', { type: 'text', cmpref: id }));
+				]]></body>
+			</method>
+
+			<method name="onSend">
+				<body><![CDATA[
+					var id = this.parameters.cmpref;
+					var emails = this.getElementByAnonId('emails').value.split("\n");					
+					var result = wCore.executeJSON('notification', 'SendTestNotification', {cmpref: id, emails: emails, lang: Context.W_LANG}, null, true);
+					if (result.status != 'OK')
+					{
+						alert(result.contents.errorMessage);
+					}
+					this.controller.closeModalDialog();
+				]]></body>
+			</method>
+
+			<method name="onCancel">
+				<body><![CDATA[
+					this.controller.closeModalDialog();
+				]]></body>
+			</method>
+		</implementation>
+		<xbl:content>
+			<xul:vbox flex="1">
+				<xul:hbox class="dialog-header">
+					<xul:label value="${transui: m.notification.bo.general.preview-notification,ucf}" class="dialog-title" />
+					<xul:spacer flex="1" />
+					<xul:vbox pack="center">
+						<xul:toolbarbutton image="{IconsBase}/small/delete.png" oncommand="onCancel();" tooltiptexts="${transui: m.uixul.bo.dialog.cancel,ucf}" />
+					</xul:vbox>
+				</xul:hbox>
+				<xul:vbox flex="1">
+					<xul:tabbox flex="1">
+						<xul:tabs anonid="tabs">
+							<xul:tab label="${transui: m.notification.bo.general.tab-html,ucf}" image="{IconsBase}/small/preview.png" />
+							<xul:tab label="${transui: m.notification.bo.general.tab-text,ucf}" image="{IconsBase}/small/text.png" />
+							<xul:tab label="${transui: m.notification.bo.general.tab-send,ucf}" image="{IconsBase}/small/mail.png" />
+						</xul:tabs>
+						<xul:tabpanels flex="1">
+							<xul:tabpanel flex="1">
+								<xul:iframe flex="1" anonid="html-iframe" />
+							</xul:tabpanel>
+							<xul:tabpanel flex="1">
+								<xul:iframe flex="1" anonid="text-iframe" />
+							</xul:tabpanel>
+							<xul:tabpanel flex="1">
+								<xul:vbox>
+									<xul:label control="your-name">${transui: m.notification.bo.general.email-adresses,ucf,lab}</xul:label>
+									<xul:textbox id="cPreviewNotificationDialog-emails" anonid="emails" multiline="true" rows="15" />
+									<xul:hbox pack="end" align="center">
+										<xul:button image="{IconsBase}/small/sending.png" oncommand="onSend();" label="${transui: m.notification.bo.general.send-test-notification,ucf,attr}" />
+									</xul:hbox>
+								</xul:vbox>
+							</xul:tabpanel>
+						</xul:tabpanels>
+					</xul:tabbox>
+				</xul:vbox>
+			</xul:vbox>
+		</xbl:content>
 	</binding>
 </bindings>

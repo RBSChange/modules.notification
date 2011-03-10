@@ -80,20 +80,21 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 	/**
 	 * @param notification_persistentdocument_notification $notification
 	 * @param mail_MessageRecipients $recipients
-	 * @param Array<String=>String> $replacementArray
-	 * @param String $senderModuleName
-	 * @param String $replyTo
-	 * @param String $overrideSenderEmail
+	 * @param string[] $replacementArray
+	 * @param string $senderModuleName
+	 * @param string $replyTo
+	 * @param string $overrideSenderEmail
+	 * @param boolean $replaceUnkownKeys
 	 * @return boolean
 	 */
-	public function send($notification, $recipients, $replacementArray, $senderModuleName, $replyTo = null, $overrideSenderEmail = null)
+	public function send($notification, $recipients, $replacementArray, $senderModuleName, $replyTo = null, $overrideSenderEmail = null, $replaceUnkownKeys = true)
 	{
-		if ( is_null($this->mailService) )
+		if ($this->mailService === null)
 		{
 			$this->mailService = MailService::getInstance();
 		}
 
-		if ( is_null($notification) )
+		if ($notification === null)
 		{
 			Framework::warn(__METHOD__.": notification does not exist or is not available: no notification sent.");
 			return false;
@@ -103,20 +104,23 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 			// Complete replacements with global data.
 			$replacementArray = $this->completeReplacements($replacementArray);
 
-			if ($notification->isContextLangAvailable())
+			// Render contents.
+			$contents = $this->generateBody($notification, $replacementArray, $replaceUnkownKeys);
+			$subject = $contents['subject'];
+			$htmlBody = $contents['htmlBody'];
+			$textBody = $contents['textBody'];
+
+			// Get the sender...
+			if ($overrideSenderEmail !== null)
 			{
-				$subject = $this->applyReplacements($notification->getSubject(), $replacementArray);
-				$body = $this->applyReplacements($notification->getBody(), $replacementArray);
-				$header = $this->applyReplacements($notification->getHeader(), $replacementArray);
-				$footer = $this->applyReplacements($notification->getFooter(), $replacementArray);
+				$sender = $overrideSenderEmail;
+			}
+			else if ($notification->isContextLangAvailable())
+			{
 				$sender = $notification->getSenderEmail();
 			}
 			else
 			{
-				$subject = $this->applyReplacements($notification->getVoSubject(), $replacementArray);
-				$body = $this->applyReplacements($notification->getVoBody(), $replacementArray);
-				$header = $this->applyReplacements($notification->getVoHeader(), $replacementArray);
-				$footer = $this->applyReplacements($notification->getVoFooter(), $replacementArray);
 				$sender = $notification->getVoSenderEmail();
 			}
 			
@@ -126,48 +130,15 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 				$sender = $this->getDefaultSender();
 			}
 			
-			if ($overrideSenderEmail !== null)
-			{
-				$sender = $overrideSenderEmail;
-			}
-			
-			$attributes = $replacementArray;
-			$attributes['subject'] = $subject;
-			$attributes['header'] = f_util_HtmlUtils::renderHtmlFragment($header);
-			$attributes['footer'] = f_util_HtmlUtils::renderHtmlFragment($footer);
-			$attributes['body'] = f_util_HtmlUtils::renderHtmlFragment($body);
-
-			$htmlTemplate = TemplateLoader::getInstance()->setPackageName('modules_notification')->setMimeContentType(K::HTML)->load($notification->getTemplate());
-			$htmlTemplate->setAttribute('notification', $attributes);
-			$htmlTemplate->setAttribute('replacement', $replacementArray);
-			$htmlBody = $htmlTemplate->execute();
-
-			try
-			{
-				$textTemplate = TemplateLoader::getInstance()->setPackageName('modules_notification')->setMimeContentType('txt')->load($notification->getTemplate());
-				$textTemplate->setAttribute('notification', $attributes);
-				$textTemplate->setAttribute('replacement', $replacementArray);
-				$textBody = f_util_StringUtils::htmlToText($textTemplate->execute());
-			}
-			catch (TemplateNotFoundException $e)
-			{
-				Framework::warn(__METHOD__ . " no plain text template found: " . $e->getMessage());
-				$textBody = '';
-			}
-			
 			$mailMessage = $this->mailService->getNewMailMessage();
-			if ( ! is_null($senderModuleName) )
-			{
-				$mailMessage->setModuleName($senderModuleName);
-			}			
+			$mailMessage->setModuleName($senderModuleName);
 
-			/** intessit 2008-04-28 : add replyTo feature, check if given parameters is valid mail(s) */
-			if(!is_null($replyTo))
+			if ($replyTo !== null)
 			{
 				$errors = new validation_Errors();
 				$validate = new validation_EmailsValidator();
 				$validate->validate(new validation_Property(null, $replyTo), $errors);
-				if($errors->isEmpty())
+				if ($errors->isEmpty())
 				{
 					$mailMessage->setReplyTo($replyTo);
 				}
@@ -175,20 +146,71 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 			
 			$mailMessage->setSubject($subject);			
 			$mailMessage->setSender($sender);
-			$mailMessage->setRecipients($recipients);
-					
+			$mailMessage->setRecipients($recipients);					
 			$mailMessage->setEncoding('utf-8');
 			$mailMessage->setHtmlAndTextBody($htmlBody, $textBody);
 			
-			// Send mail and return the result
+			// Send mail and return the result.
 			$ret = $this->mailService->send($mailMessage);
-			if (true !== $ret)
+			if ($ret !== true)
 			{
 				Framework::error(__METHOD__.": Unable to send mail (" . $subject . ") to " . implode(', ', $recipients->getTo()) . ".");
 			}
 
 			return $ret;
 		}
+	}
+	
+	/**
+	 * @param notification_persistentdocument_notification $notification
+	 * @param string[] $replacementArray
+	 * @param boolean $replaceUnkownKeys
+	 */
+	public function generateBody($notification, $replacementArray, $replaceUnkownKeys = true)
+	{
+		// Complete replacements with global data.
+		$replacementArray = $this->completeReplacements($replacementArray);
+
+		if ($notification->isContextLangAvailable())
+		{
+			$subject = $this->applyReplacements($notification->getSubject(), $replacementArray, $replaceUnkownKeys);
+			$body = $this->applyReplacements($notification->getBody(), $replacementArray, $replaceUnkownKeys);
+			$header = $this->applyReplacements($notification->getHeader(), $replacementArray, $replaceUnkownKeys);
+			$footer = $this->applyReplacements($notification->getFooter(), $replacementArray, $replaceUnkownKeys);
+		}
+		else
+		{
+			$subject = $this->applyReplacements($notification->getVoSubject(), $replacementArray, $replaceUnkownKeys);
+			$body = $this->applyReplacements($notification->getVoBody(), $replacementArray, $replaceUnkownKeys);
+			$header = $this->applyReplacements($notification->getVoHeader(), $replacementArray, $replaceUnkownKeys);
+			$footer = $this->applyReplacements($notification->getVoFooter(), $replacementArray, $replaceUnkownKeys);
+		}
+		
+		$attributes = $replacementArray;
+		$attributes['subject'] = $subject;
+		$attributes['header'] = f_util_HtmlUtils::renderHtmlFragment($header);
+		$attributes['footer'] = f_util_HtmlUtils::renderHtmlFragment($footer);
+		$attributes['body'] = f_util_HtmlUtils::renderHtmlFragment($body);
+
+		$htmlTemplate = TemplateLoader::getInstance()->setPackageName('modules_notification')->setMimeContentType(K::HTML)->load($notification->getTemplate());
+		$htmlTemplate->setAttribute('notification', $attributes);
+		$htmlTemplate->setAttribute('replacement', $replacementArray);
+		$htmlBody = $htmlTemplate->execute();
+
+		try
+		{
+			$textTemplate = TemplateLoader::getInstance()->setPackageName('modules_notification')->setMimeContentType('txt')->load($notification->getTemplate());
+			$textTemplate->setAttribute('notification', $attributes);
+			$textTemplate->setAttribute('replacement', $replacementArray);
+			$textBody = f_util_StringUtils::htmlToText($textTemplate->execute());
+		}
+		catch (TemplateNotFoundException $e)
+		{
+			Framework::warn(__METHOD__ . " no plain text template found: " . $e->getMessage());
+			$textBody = '';
+		}
+		
+		return array('subject' => $subject, 'htmlBody' => $htmlBody, 'textBody' => $textBody);
 	}
 
 	/**
@@ -197,7 +219,7 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 	 * @param array<string> $replacements
 	 * @return string
 	 */
-	private function applyReplacements($string, $replacements)
+	private function applyReplacements($string, $replacements, $replaceUnkownKeys = true)
 	{
 		if (!$string)
 		{
@@ -220,7 +242,10 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 		}
 
 		// Remove the not-replaced elements.
-		$string = preg_replace('#\{(.*)\}#', '-', $string);
+		if ($replaceUnkownKeys)
+		{
+			$string = preg_replace('#\{(.*?)\}#', '-', $string);
+		}
 		return $string;
 	}
 

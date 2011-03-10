@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <i18n baseKey="m.notification.bo.general" lcid="fr_FR">
-  <key id="module-name">notification</key>
-  <key id="tree-root-name">notification</key>
-  <key id="system-folder-name">notification</key>
-  <key id="general">propriétés principales</key>
-  <key id="advanced">propriétés avancées</key>
-  <key id="error-must-be-unique">la notification ″{parentLabel}″ a déjà été spécialisée pour le site ″{siteLabel}″.</key>
-  <key id="sitenotification-label-template">{parentLabel} ({siteLabel})</key>
+	<key id="module-name">notification</key>
+	<key id="tree-root-name">notification</key>
+	<key id="system-folder-name">notification</key>
+	<key id="general">propriétés principales</key>
+	<key id="advanced">propriétés avancées</key>
+	<key id="error-must-be-unique">la notification ″{parentLabel}″ a déjà été spécialisée pour le site ″{siteLabel}″.</key>
+	<key id="sitenotification-label-template">{parentLabel} ({siteLabel})</key>
+	<key id="preview-notification">prévisualisation d'une notification</key>
+	<key id="tab-html">version HTML</key>
+	<key id="tab-text">version texte</key>
+	<key id="tab-send">tester l'envoi</key>
+	<key id="email-adresses">adresses email (une par ligne) auxquelles envoyer la notification de test</key>
+	<key id="send-test-notification">envoi de la notification de test</key>
+	<key id="error-sending-mails">Une erreur s'est produite durant l'envoi des e-mails.</key>
 </i18n>

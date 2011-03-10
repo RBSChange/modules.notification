@@ -3,33 +3,58 @@
 	<section labeli18n="modules.notification.bo.general.General">
 		<field name="label" />
 		<field name="codename" />
-		
 		<field name="subject" />
 		<field name="body" />
 		<field name="template" />
 	</section>
-
 	<section labeli18n="modules.notification.bo.general.Advanced">
 		<field name="header" />
 		<field name="footer" />
 		<field name="senderEmail" />
 	</section>
-	
 	<fieldinput name="availableparameters" type="hidden"/>
-	
 	<xul>
 		<javascript>
-			<constructor><![CDATA[
-				this.extendMethod("fireInitializeComplete", this.initializeCompleteMetaInfo);
-			]]></constructor>	
+			<field name="mPreviewButton">null</field>
 			
-			<method name="initializeCompleteMetaInfo">
+			<constructor><![CDATA[
+				this.extendMethod("fireInitializeComplete", this.initializeCompleteExtend);
+				
+				this.mPreviewButton = this.addActionButton('${transui: m.notification.bo.actions.previewnotificationfromlist,ucf}', wToolkit.getIcon('preview', 'small'));
+				var me = this;
+				this.mPreviewButton.addEventListener('command', function(event) { me.onPreview(); }, true);			
+				this.extendMethod('updateCommandsUI', this.updatePreviewUI);
+				this.extendMethod('fireInitializeComplete', this.fireInitializeCompleteExtend);
+			]]></constructor>
+			
+			<method name="updatePreviewUI">
+				<parameter name="event" />
+				<body><![CDATA[
+					this.mPreviewButton.disabled = this.modified;
+				]]></body>
+			</method>
+
+			<method name="onPreview">
+				<parameter name="event" />
+				<body><![CDATA[
+					this.documentEditor.module.previewNotification(this.mDocumentId, this.mLang);
+				]]></body>
+			</method>
+			
+			<method name="fireInitializeCompleteExtend">
 				<parameter name="result" />
 				<body><![CDATA[
-				var fields = this.fields;
-				this.setTextTemplate(fields.body, result.contents.availableparameters);
-				this.setTextTemplate(fields.header, result.contents.availableparameters);
-				this.setTextTemplate(fields.footer, result.contents.availableparameters);			
+					try
+					{
+						var fields = this.fields;
+						this.setTextTemplate(fields.body, result.contents.availableparameters);
+						this.setTextTemplate(fields.header, result.contents.availableparameters);
+						this.setTextTemplate(fields.footer, result.contents.availableparameters);	
+					}
+					catch (e)
+					{
+						wCore.error("notification.propertiespanel.fireInitializeCompleteExtend", [result], e);
+					}
 				]]></body>
 			</method>
 			

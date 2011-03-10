@@ -26,4 +26,33 @@
 			openActionUri(uri);
 		]]></body>
 	</action>
+	<action name="previewNotificationFromList">
+		<parameter name="listWidget" />
+		<body><![CDATA[
+			try
+			{
+				var cmpref = listWidget.getSelectedItems()[0].id;
+				var lang = this.getContextLang();
+				this.previewNotification(cmpref, lang);
+			}
+			catch (e)
+			{
+				wCore.error('notification.previewNotificationFromDocument', [], e);
+			}
+		]]></body>
+	</action>
+	<action name="previewNotification">
+		<parameter name="cmpref" />
+		<parameter name="lang" />
+		<body><![CDATA[
+			try
+			{
+				getController().openModalDialog(this, 'PreviewNotification', { cmpref: cmpref, lang: lang });
+			}
+			catch (e)
+			{
+				wCore.error('notification.previewNotification', [], e);
+			}
+		]]></body>
+	</action>
 </actions>

@@ -4,3 +4,6 @@ treechildren::-moz-tree-image(modules_notification_notification){
 treechildren::-moz-tree-image(modules_notification_sitenotification){
 	list-style-image: url(/changeicons/small/notification.png) ;
 }
+wdialog[template="PreviewNotification"] .dialog-header{
+	background: url(/changeicons/small/notification.png) transparent center  left no-repeat!important;
+}
