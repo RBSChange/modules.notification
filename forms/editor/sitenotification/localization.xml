@@ -26,14 +26,14 @@
 			<method name="updatePreviewUI">
 				<parameter name="event" />
 				<body><![CDATA[
-					this.mPreviewButton.disabled = this.modified;
+					this.mPreviewButton.disabled = (this.modified || this.error);
 				]]></body>
 			</method>
 
 			<method name="onPreview">
 				<parameter name="event" />
 				<body><![CDATA[
-					this.documentEditor.module.previewNotification(this.documentEditor.documentid, this.mLang);
+					this.documentEditor.module.previewNotification(this.documentEditor.documentid, this.tolang);
 				]]></body>
 			</method>
 			
@@ -43,14 +43,14 @@
 					try
 					{
 						var fields = this.fields;
-						var params = result.contents.availableparameters;
+						var params = result.contents.from.availableparameters;
 						this.setTextTemplate(fields.body, params);
 						this.setTextTemplate(fields.header, params);
 						this.setTextTemplate(fields.footer, params);	
 					}
 					catch (e)
 					{
-						wCore.error("notification.propertiespanel.fireInitializeCompleteExtend", [result], e);
+						wCore.error("sitenotification.localizationpanel.fireInitializeCompleteExtend", [result], e);
 					}
 				]]></body>
 			</method>

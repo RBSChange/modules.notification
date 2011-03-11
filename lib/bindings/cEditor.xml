@@ -10,18 +10,16 @@
 				<xul:cmessageinfo anonid="message" />
 				<xul:vbox flex="1">
 					<xul:hbox>
-						<xul:menulist anonid="sites">
-							<xul:menupopup anonid="siteslist">
-							</xul:menupopup>
+						<xul:menulist anonid="sites" style="min-width: 250px;">
+							<xul:menupopup anonid="siteslist" />
 						</xul:menulist>
 						<xul:button disabled="true" anonid="addnotifbutton" label="${transui: m.notification.bo.doceditor.button-add-notif,ucf}" oncommand="addSiteNotif()" />
 					</xul:hbox>
 					<xul:grid flex="1">
 						<xul:columns>
-							<xul:column flex="1" />
+							<xul:column />
 							<xul:column flex="3" />
 							<xul:column flex="1" />
-							<xul:column />
 						</xul:columns>
 						<xul:rows anonid="document-rows">
 							<xul:row class="head">
@@ -85,7 +83,6 @@
 					while (rows.lastChild) {rows.removeChild(rows.lastChild);}					
 				]]></body>
 			</method>
-			
 			
 			<method name="addSiteNotif">
 				<body><![CDATA[
@@ -194,15 +191,16 @@
 	<binding id="cPreviewNotificationDialog" extends="core.wDialog#wDialog">
 		<implementation>
 			<constructor><![CDATA[
-				wCore.debug('cPreviewNorificationDialog.constructor');	
+				//wCore.debug('cPreviewNorificationDialog.constructor');
 			]]></constructor>
 			
 			<method name="onInitialize">
 				<body><![CDATA[
 					this.autoResize(window.innerWidth-100, window.innerHeight-100);
 					var id = this.parameters.cmpref;
-					this.getElementByAnonId('html-iframe').setAttribute('src', wCore.buildServerUrl('notification', 'Preview', { type: 'html', cmpref: id }));
-					this.getElementByAnonId('text-iframe').setAttribute('src', wCore.buildServerUrl('notification', 'Preview', { type: 'text', cmpref: id }));
+					var lang = this.parameters.lang;
+					this.getElementByAnonId('html-iframe').setAttribute('src', wCore.buildServerUrl('notification', 'Preview', { type: 'html', cmpref: id, lang: lang }));
+					this.getElementByAnonId('text-iframe').setAttribute('src', wCore.buildServerUrl('notification', 'Preview', { type: 'text', cmpref: id, lang: lang }));
 				]]></body>
 			</method>
 
@@ -210,7 +208,7 @@
 				<body><![CDATA[
 					var id = this.parameters.cmpref;
 					var emails = this.getElementByAnonId('emails').value.split("\n");					
-					var result = wCore.executeJSON('notification', 'SendTestNotification', {cmpref: id, emails: emails, lang: Context.W_LANG}, null, true);
+					var result = wCore.executeJSON('notification', 'SendTestNotification', {cmpref: id, emails: emails, lang: this.parameters.lang}, null, true);
 					if (result.status != 'OK')
 					{
 						alert(result.contents.errorMessage);

@@ -17,9 +17,7 @@
 		<javascript>
 			<field name="mPreviewButton">null</field>
 			
-			<constructor><![CDATA[
-				this.extendMethod("fireInitializeComplete", this.initializeCompleteExtend);
-				
+			<constructor><![CDATA[				
 				this.mPreviewButton = this.addActionButton('${transui: m.notification.bo.actions.previewnotificationfromlist,ucf}', wToolkit.getIcon('preview', 'small'));
 				var me = this;
 				this.mPreviewButton.addEventListener('command', function(event) { me.onPreview(); }, true);			
@@ -37,7 +35,7 @@
 			<method name="onPreview">
 				<parameter name="event" />
 				<body><![CDATA[
-					this.documentEditor.module.previewNotification(this.mDocumentId, this.mLang);
+					this.documentEditor.module.previewNotification(this.documentEditor.documentid, this.mLang);
 				]]></body>
 			</method>
 			
@@ -47,13 +45,14 @@
 					try
 					{
 						var fields = this.fields;
-						this.setTextTemplate(fields.body, result.contents.availableparameters);
-						this.setTextTemplate(fields.header, result.contents.availableparameters);
-						this.setTextTemplate(fields.footer, result.contents.availableparameters);	
+						var params = result.contents.availableparameters;
+						this.setTextTemplate(fields.body, params);
+						this.setTextTemplate(fields.header, params);
+						this.setTextTemplate(fields.footer, params);
 					}
 					catch (e)
 					{
-						wCore.error("notification.propertiespanel.fireInitializeCompleteExtend", [result], e);
+						wCore.error("sitenotification.propertiespanel.fireInitializeCompleteExtend", [result], e);
 					}
 				]]></body>
 			</method>
@@ -62,21 +61,21 @@
 				<parameter name="field" />
 				<parameter name="availableparameters" />
 				<body><![CDATA[
-				var toolbar = field.toolBar;				
-				toolbar.clearTextTemplate();
-				if (availableparameters)
-				{
-					var parameters = availableparameters.split(/\s|,/);
-					for (var i = 0; i < parameters.length; i++)
+					var toolbar = field.toolBar;				
+					toolbar.clearTextTemplate();
+					if (availableparameters)
 					{
-						var param = parameters[i];
-						if (param.length > 0)
+						var parameters = availableparameters.split(/\s|,/);
+						for (var i = 0; i < parameters.length; i++)
 						{
-							if (param[0] != '{') {param = '{' + param + '}';}
-							toolbar.addTextTemplate(param, param);
+							var param = parameters[i];
+							if (param.length > 0)
+							{
+								if (param[0] != '{') {param = '{' + param + '}';}
+								toolbar.addTextTemplate(param, param);
+							}
 						}
 					}
-				}				
 				]]></body>
 			</method>					
 		</javascript>
