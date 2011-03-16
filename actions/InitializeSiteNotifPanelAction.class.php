@@ -29,12 +29,12 @@ class notification_InitializeSiteNotifPanelAction extends f_action_BaseJSONActio
 			);
 			$result['notif'][] = $info;
 		}
-				
-		$result['website'] = website_WebsiteService::getInstance()->createQuery()
-			->add(Restrictions::notin('id', $usedWebsite))
-			->setProjection(Projections::property('id', 'id'), Projections::property('label', 'label'))
-			->find();
-				
+
+		foreach (website_WebsiteService::getInstance()->createQuery()->add(Restrictions::notin('id', $usedWebsite))->find() as $website)
+		{
+			/* @var $website website_persistentdocument_website */
+			$result['website'][] = array('id' => $website->getId(), 'label' => ($website->isContextLangAvailable() ? $website->getLabel() : $website->getVoLabel()));
+		}
 		return $this->sendJSON($result);
 	}
 }
