@@ -361,6 +361,19 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 	}
 	
 	/**
+	 * @param notification_persistentdocument_notification $notification
+	 * @param string $parameterName
+	 * @return boolean
+	 */
+	public function hasAvailableParameters($notification, $parameterName)
+	{
+		$parameters = $notification->getAvailableparameters();
+		$subst = explode(',', str_replace(array(' ', '{', '}'), '', $parameters));
+		$name = str_replace(array(' ', '{', '}'), '', $parameterName);
+		return in_array($name, $subst);
+	}
+	
+	/**
 	 * @param notification_persistentdocument_notification $document
 	 * @param string $moduleName
 	 * @param string $treeType
