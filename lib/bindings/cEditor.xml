@@ -1,199 +1,87 @@
 <?xml version="1.0"?>
-<bindings xmlns="http://www.mozilla.org/xbl" xmlns:xbl="http://www.mozilla.org/xbl" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
-	<binding id="cSiteNotifPanel" extends="layout.cDocumentEditor#cDocumentEditorPanel">
-		<resources>
-			<stylesheet src="modules.uixul.cEditorGrid" />
-			<stylesheet src="modules.catalog.cEditorList" />
-		</resources>
-		<content>
-			<xul:vbox flex="1">
-				<xul:cmessageinfo anonid="message" />
-				<xul:vbox flex="1">
-					<xul:hbox>
-						<xul:menulist anonid="sites" style="min-width: 250px;">
-							<xul:menupopup anonid="siteslist" />
-						</xul:menulist>
-						<xul:button disabled="true" anonid="addnotifbutton" label="${transui: m.notification.bo.doceditor.button-add-notif,ucf}" oncommand="addSiteNotif()" />
-					</xul:hbox>
-					<xul:grid flex="1">
-						<xul:columns>
-							<xul:column />
-							<xul:column flex="3" />
-							<xul:column flex="1" />
-						</xul:columns>
-						<xul:rows anonid="document-rows">
-							<xul:row class="head">
-								<xul:label value="${transui: m.notification.bo.doceditor.column-actions,ucf}" />
-								<xul:label value="${transui: m.notification.bo.doceditor.Column-website,ucf}" />
-								<xul:label value="${transui: m.notification.bo.doceditor.Column-status,ucf}" />
-							</xul:row>
-						</xul:rows>
-					</xul:grid>					
-				</xul:vbox>
-			</xul:vbox>
-		</content>
-		<implementation>				
+<bindings xmlns="http://www.mozilla.org/xbl" xmlns:xbl="http://www.mozilla.org/xbl" xmlns:html="http://www.w3.org/1999/xhtml"
+	xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<!-- Site notifications. -->
+
+	<binding id="cSiteNotifGrid" extends="widgets.cGrid#cAbstractSortableGrid">
+		<implementation>
 			<constructor><![CDATA[
-		
+				this.fireEvent('gridInitialised');
 			]]></constructor>
-			
-			<method name="getInitializeParameters">
-				<body><![CDATA[
-					return {
-						action: 'InitializeSiteNotifPanel',
-						cmpref: this.documentEditor.documentid, 
-						lang : this.documentEditor.documentInfos.vo
-					};
-				]]></body>
-			</method>
-												
-			<method name="fireInitializeComplete">
-				<parameter name="result" />
-				<body><![CDATA[
-					this.cleanList();
-					var websites = result.contents.website;
-					this.getElementByAnonId('addnotifbutton').disabled = (websites.length == 0);
-					
-					var list = this.getElementByAnonId('sites')
-					for (var i = 0; i < websites.length; i++)
-					{
-						list.appendItem(websites[i].label, websites[i].id);
-					}	
-					
-					var notifs = result.contents.notif;
-					for (var i = 0; i < notifs.length; i++)
-					{
-						this.addItem(notifs[i]);
-					}
-					
-					this.mInitialized = true;
-					this.fireEvent("panelInitializeComplete");
-					this.gotoTop();
+
+			<method name="getEditor">
+				<body><![CDATA[	
+					var pnode = this.parentNode;
+					while (pnode && pnode.tagName != 'cdocumenteditor') {pnode = pnode.parentNode;}
+					return pnode;				
 				]]></body>
 			</method>
 
-			<method name="cleanList">
+			<method name="execute_edit">
+				<parameter name="rowNode" />
+				<parameter name="rowData" />
 				<body><![CDATA[
-					var rows = this.getElementByAnonId('document-rows');
-					while (rows.lastChild && rows.lastChild.getAttribute('class') != 'head')  
-					{
-						rows.removeChild(rows.lastChild);
-					}
-					rows = this.getElementByAnonId('siteslist');
-					while (rows.lastChild) {rows.removeChild(rows.lastChild);}					
-				]]></body>
-			</method>
-			
-			<method name="addSiteNotif">
-				<body><![CDATA[
-					var websiteId = this.getElementByAnonId('sites').value;
-					if (websiteId != '')
-					{
-						this.documentEditor.executeServerAction('sitenotif', 'AddSiteNotif');
-					}
-					else
-					{
-						alert("&modules.notification.bo.doceditor.Warning-no-website;");
-					}	
-				]]></body>
-			</method>
-			
-			<method name="getAddSiteNotifParameters">
-				<body><![CDATA[
-					var attributes = {
-						action: "InsertJSON",
-						parentref: this.documentEditor.documentid, 
-						lang: Context.W_LANG, 
-						modelname: 'modules_notification/sitenotification',
-						documentproperties : 'website'};
-					attributes.website = this.getElementByAnonId('sites').value;
-					return attributes;
-				]]></body>
-			</method>
-			
-			<method name="fireAddSiteNotifComplete">
-				<parameter name="result" />
-				<body><![CDATA[
-					wCore.debug(wCore.dump(result));
-					this.mInitialized = false;
-					this.documentEditor.executeServerAction('sitenotif', 'Initialize');
-				]]></body>
-			</method>			
-			
-			<method name="addItem">
-				<parameter name="jsnode" />
-				<body><![CDATA[
-					var row = document.createElement('row');
-					row.setAttribute('class', 'document');
-					row.setAttribute('documentId', jsnode.id);
-					row.setAttribute('websiteId', jsnode.websiteid);
-					 
-					var cell = row.appendChild(document.createElement('toolbar'));
-					cell.setAttribute('class', 'actions');
-					
-					var button = cell.appendChild(document.createElement('toolbarbutton'));
-					button.setAttribute('action', 'edit');
-					button.setAttribute('documentId', jsnode.id);
-					button.setAttribute('image', '{IconsBase}/small/edit.png');
-					button.setAttribute('tooltiptext', "&amp;modules.uixul.bo.actions.Edit;");
-					var button = cell.appendChild(document.createElement('toolbarbutton'));
-					button.setAttribute('action', 'delete');
-					button.setAttribute('documentId', jsnode.id);
-					button.setAttribute('image', '{IconsBase}/small/delete.png');
-					button.setAttribute('tooltiptext', "&amp;modules.uixul.bo.actions.Delete;");
-					 
-					cell = row.appendChild(document.createElement('label'));
-					cell.setAttribute('value', jsnode.website);
-					
-					cell = row.appendChild(document.createElement('label'));
-					cell.setAttribute('value', jsnode.status);
-
-					this.getElementByAnonId('document-rows').appendChild(row);
-				]]></body>
-			</method>
-			
-			<method name="edit">
-				<parameter name="id" />
-				<body><![CDATA[
-					var uri = ['notification', 'openDocument', 'modules_notification_sitenotification', id, 'properties'].join(',');
+					if (this.disabled) {return;}
+					var uri = ['notification', 'openDocument', 'modules_notification_sitenotification', rowData.id, 'properties'].join(',');
 					openActionUri(uri);
 				]]></body>
 			</method>
-			
-			<method name="delete">
-				<parameter name="id" />
+
+			<method name="execute_delete">
+				<parameter name="rowNode" />
+				<parameter name="rowData" />
 				<body><![CDATA[
-					if (confirm("&modules.notification.bo.doceditor.Confirm-delete;"))
+					if (this.disabled) {return;}
+					if (confirm("${transui:m.notification.bo.doceditor.confirm-delete,ucf,js}"))
 					{
-						var me = this;
-						var callBack = function(result) {me.documentEditor.executeServerAction('sitenotif', 'Initialize');};
-						wCore.executeJSON('notification', 'DeleteJSON', {cmpref: id, lang: Context.W_LANG}, callBack, true);
+						var editor = this.getEditor();
+						var callBack = function(result) {editor.executeServerAction('sitenotifications', 'Initialize');};
+						wCore.executeJSON('notification', 'DeleteJSON', {cmpref: rowData.id, lang: Context.W_LANG}, callBack, true);
 					}
 				]]></body>
-			</method>	
-
+			</method>
 		</implementation>
-		<handlers>
-			<handler event="command"><![CDATA[
-				var target = event.originalTarget;
-				if (target.localName == 'toolbarbutton' && target.hasAttribute('action') && target.hasAttribute('documentId'))
-				{
-					var action = target.getAttribute('action');
-					if (action in this)
-					{
-						this[action](target.getAttribute('documentId'));
-					}
-				}
-			]]></handler>
-		</handlers>
+
+		<content>
+			<xul:grid flex="1" anonid="grid" xbl:inherits="disabled">
+				<xul:columns>
+					<xul:column />
+					<xul:column flex="1" />
+					<xul:column flex="1" />
+					<xul:column />
+				</xul:columns>
+				<xul:rows anonid="document-rows">
+					<xul:row class="head" anonid="head-row">
+						<xul:label name="status" />
+						<xul:label name="website" value="${transui: m.notification.bo.doceditor.column-website,ucf}" />
+						<xul:label name="langs" value="${transui: m.notification.bo.doceditor.column-langs,ucf}" />
+						<xul:label name="actions" value="${transui: m.notification.bo.doceditor.column-actions,ucf}" />
+					</xul:row>
+				</xul:rows>
+			</xul:grid>
+			<xul:row anonid="template-row" class="document" hidden="true">
+				<xul:cpublicationcell />
+				<xul:label value="" />
+				<xul:label value="" />
+				<xul:toolbar class="actions">
+					<xul:toolbarbutton action="edit" image="{IconsBase}/small/edit.png" 
+						tooltiptext="${transui:m.uixul.bo.actions.edit,ucf,attr}" />
+					<xul:toolbarbutton action="delete" image="{IconsBase}/small/delete.png"
+						tooltiptext="${transui:m.uixul.bo.actions.delete,ucf,attr}" />
+				</xul:toolbar>
+			</xul:row>
+		</content>
 	</binding>
-	
+
+	<!-- Preview. -->
+
 	<binding id="cPreviewNotificationDialog" extends="core.wDialog#wDialog">
 		<implementation>
 			<constructor><![CDATA[
 				//wCore.debug('cPreviewNorificationDialog.constructor');
 			]]></constructor>
-			
+
 			<method name="onInitialize">
 				<body><![CDATA[
 					this.autoResize(window.innerWidth-100, window.innerHeight-100);
@@ -251,7 +139,8 @@
 									<xul:label control="your-name">${transui: m.notification.bo.general.email-adresses,ucf,lab}</xul:label>
 									<xul:textbox id="cPreviewNotificationDialog-emails" anonid="emails" multiline="true" rows="15" />
 									<xul:hbox pack="end" align="center">
-										<xul:button image="{IconsBase}/small/sending.png" oncommand="onSend();" label="${transui: m.notification.bo.general.send-test-notification,ucf,attr}" />
+										<xul:button image="{IconsBase}/small/sending.png" oncommand="onSend();"
+											label="${transui: m.notification.bo.general.send-test-notification,ucf,attr}" />
 									</xul:hbox>
 								</xul:vbox>
 							</xul:tabpanel>

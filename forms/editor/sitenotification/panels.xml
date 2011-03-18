@@ -5,4 +5,5 @@
 	<panel name="publication" />
 	<panel name="localization" />
 	<panel name="history" />
+	<panel name="create" />
 </panels>

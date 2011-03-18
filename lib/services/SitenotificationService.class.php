@@ -80,7 +80,7 @@ class notification_SitenotificationService extends notification_NotificationServ
 		{
 			$parentNodeId = TreeService::getInstance()->getInstanceByDocument($document)->getParent()->getId();
 		}
-		$parent = DocumentHelper::getDocumentInstance($parentNodeId);
+		$parent = notification_persistentdocument_notification::getInstanceById($parentNodeId);
 		$website = $document->getWebsite();
 				
 		// Check sitenotification unicity by parent and website.
@@ -90,7 +90,11 @@ class notification_SitenotificationService extends notification_NotificationServ
 		$query->add(Restrictions::ne('id', $document->getId()));
 		if (count($query->find()) > 0)
 		{
-			throw new BaseException('Only one sitenotification per notification and website!', 'modules.notification.bo.general.Error-must-be-unique', array('parentLabel' => $parent->getLabel(), 'siteLabel' => $website->getLabel()));
+			$subst = array(
+				'parentLabel' => ($parent->isContextLangAvailable() ? $parent->getLabel() : $parent->getVoLabel()),
+				'siteLabel' => ($website->isContextLangAvailable() ? $website->getLabel() : $website->getVoLabel())
+			);
+			throw new BaseException('Only one sitenotification per notification and website!', 'modules.notification.bo.general.Error-must-be-unique', $subst);
 		}
 		
 		// Update label and code.
@@ -104,17 +108,15 @@ class notification_SitenotificationService extends notification_NotificationServ
 	 */
 	private function updateLabelAndCodename($document, $parent, $website)
 	{
-		$document->setLabel(f_Locale::translate('&modules.notification.bo.general.Sitenotification-label-template;', array('parentLabel' => $parent->getLabel(), 'siteLabel' => $website->getLabel())));
+		$subst = array(
+			'parentLabel' => ($parent->isContextLangAvailable() ? $parent->getLabel() : $parent->getVoLabel()),
+			'siteLabel' => ($website->isContextLangAvailable() ? $website->getLabel() : $website->getVoLabel())
+		);
+		$document->setLabel(LocaleService::getInstance()->transBO('m.notification.bo.general.sitenotification-label-template', array('ucf'), $subst));
 		$document->setCodename($parent->getCodename().'/'.$website->getId());
 		if ($document->getAvailableparameters() == null)
 		{
 			$document->setAvailableparameters($parent->getAvailableparameters());
 		}
-		
-		if ($document->getSubject() == null) {$document->setSubject($parent->getSubject());}
-		if ($document->getBody() == null) {$document->setBody($parent->getBody());}
-		if ($document->getHeader() == null) {$document->setHeader($parent->getHeader());}
-		if ($document->getFooter() == null) {$document->setFooter($parent->getFooter());}
-		if ($document->getTemplate() == null) {$document->setTemplate($parent->getTemplate());}
 	}
 }

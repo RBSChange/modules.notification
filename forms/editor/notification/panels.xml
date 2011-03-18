@@ -5,13 +5,6 @@
 	<panel name="publication" />
 	<panel name="localization" />
 	<panel name="history" />
+	<panel name="sitenotifications" labeli18n="m.notification.bo.doceditor.sitenotif-panel.tab-title" icon="document" />
 	<panel name="create" />
-
-	<xul>
-		<javascript>
-			<constructor><![CDATA[
-				this.addTab('sitenotif', '&modules.notification.bo.doceditor.sitenotif-panel.Tab-title;', 'document');
-			]]></constructor>
-		</javascript>
-	</xul>
 </panels>

@@ -1,0 +1,111 @@
+<?xml version="1.0"?>
+<bindings xmlns="http://www.mozilla.org/xbl" xmlns:xbl="http://www.mozilla.org/xbl" xmlns:html="http://www.w3.org/1999/xhtml"
+	xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+	<binding id="notification_sitenotifications" extends="layout.cDocumentEditor#cDocumentEditorPanel">
+		<resources>
+			<stylesheet src="modules.uixul.cEditorGrid" />
+			<stylesheet src="modules.catalog.cEditorList" />
+		</resources>
+		<content>
+			<xul:vbox flex="1">
+				<xul:cmessageinfo anonid="message" />
+				<xul:vbox flex="1">
+					<xul:hbox>
+						<xul:menulist anonid="sites" style="min-width: 250px;">
+							<xul:menupopup anonid="siteslist" />
+						</xul:menulist>
+						<xul:button disabled="true" anonid="addnotifbutton" label="${transui: m.notification.bo.doceditor.button-add-notif,ucf}"
+							oncommand="addSiteNotif()" />
+					</xul:hbox>
+					<xul:scrollbox anonid="scrollctrl" flex="1" class="editordatacontainer" orient="vertical">
+						<xul:csitenotifgrid anonid="siteNotifGrid" flex="1" />
+						<xul:spacer flex="1" />
+					</xul:scrollbox>
+				</xul:vbox>
+			</xul:vbox>
+		</content>
+		<implementation>
+			<property name="gridlist" readonly="true">
+				<getter><![CDATA[
+					return this.getElementByAnonId('siteNotifGrid');
+				]]></getter>
+			</property>
+			
+			<method name="onCloseEditor">
+				<body><![CDATA[	
+					var gridlist = this.gridlist;
+					if ('initJSONDataset' in gridlist)
+					{
+						gridlist.initJSONDataset(null);
+					}
+				]]></body>
+			</method>
+		
+			<method name="getInitializeParameters">
+				<body><![CDATA[
+					return {
+						action: 'InitializeSiteNotifPanel',
+						cmpref: this.documentEditor.documentid, 
+						lang : this.documentEditor.module.getContextLang()
+					};
+				]]></body>
+			</method>
+
+			<method name="fireInitializeComplete">
+				<parameter name="result" />
+				<body><![CDATA[
+					if (result.status == 'OK')
+					{
+						var contents = result.contents;
+						var websites = contents.website;
+						this.getElementByAnonId('addnotifbutton').disabled = (websites.length == 0);
+						
+						var list = this.getElementByAnonId('sites')
+						while (list.hasChildNodes())
+						{
+							list.removeChild(list.lastChild);
+						}
+						for (var i = 0; i < websites.length; i++)
+						{
+							list.appendItem(websites[i].label, websites[i].id);
+						}
+										
+						var dataset = (contents.nodes.length > 0) ? contents.nodes : null;
+						this.gridlist.initJSONDataset(dataset);	
+						this.gridlist.panel = this;
+										
+						this.collapseContentZone(false);
+						this.fireEvent("panelInitializeComplete");
+						this.gotoTop();
+					}
+					else
+					{
+						this.gridlist.initJSONDataset(null);
+						this.showErrorMessage(result.contents.errorMessage);					
+						this.collapseContentZone(true);	
+					}
+					this.modified = false;						
+					this.mInitialized = true;
+				]]></body>
+			</method>
+
+			<method name="addSiteNotif">
+				<body><![CDATA[
+					var websiteId = this.getElementByAnonId('sites').value;
+					if (websiteId != '')
+					{
+						var module = this.documentEditor.module;
+						var editor = module.getDocumentEditor('modules_notification_sitenotification');
+						editor.setAttribute('duplicate', 'true');
+						editor.setAttribute('websiteId', websiteId);
+						module.createDocumentEditor('modules_notification_sitenotification', this.documentEditor.documentid);
+					}
+					else
+					{
+						alert("${transui:m.notification.bo.doceditor.warning-no-website,ucf,js}");
+					}	
+				]]></body>
+			</method>
+		</implementation>
+	</binding>
+</bindings>

@@ -1,5 +1,5 @@
-#edt_notification_notification csitenotifpanel{
-	-moz-binding: url(binding:modules.notification.cEditor#cSiteNotifPanel);
+#edt_notification_notification csitenotifgrid{
+	-moz-binding: url(binding:modules.notification.cEditor#cSiteNotifGrid);
 }
 wdialog[template="PreviewNotification"]{
 	-moz-binding: url(binding:modules.notification.cEditor#cPreviewNotificationDialog);
