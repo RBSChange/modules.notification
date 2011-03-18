@@ -12,6 +12,9 @@
 		<field name="footer" />
 		<field name="senderEmail" />
 	</section>
+	<section labeli18n="modules.notification.document.notification.Description" class="toggle" hidden="true">
+		<field name="description" />
+	</section>
 	<fieldinput name="availableparameters" type="hidden"/>
 	<xul>
 		<javascript>

@@ -1,23 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <i18n baseKey="m.notification.document.notification" lcid="fr_FR">
-  <key id="edition-form-title">Edition d'une notification</key>
-  <key id="document-name">notification</key>
-  <key id="label">libellé</key>
-  <key id="label-help">nom utilisé pour l'affichage dans les arbres</key>
-  <key id="availableparameters">paramètres disponibles</key>
-  <key id="availableparameters-help">Liste des paramètres pouvant être utilisés dans le corps et le sujet du message de notification. Ils doivent être encadrés d'accolades et seront remplacés par la valeur correspondante.</key>
-  <key id="subject">sujet du message</key>
-  <key id="subject-help">Sujet de l'email de notification. Il peut contenir les différents paramètres proposé encadrés d'accolades.</key>
-  <key id="body">corps du message</key>
-  <key id="body-help">Corps de l'email de notification. Il peut contenir les différents paramètres proposé encadrés d'accolades.</key>
-  <key id="codename">code de la notification</key>
-  <key id="codename-help">nom de code utilisé par le système pour identifier la notification.</key>
-  <key id="header">en-tête</key>
-  <key id="header-help">en-tête de l'email</key>
-  <key id="footer">pied de page</key>
-  <key id="footer-help">pied de page de l'email</key>
-  <key id="template">modèle</key>
-  <key id="template-help">modèle de mise en page</key>
-  <key id="senderemail">adresse email de l'expéditeur</key>
-  <key id="senderemail-help">permet de définir l'adresse email complète de l'expéditeur de la notification.</key>
+	<key id="edition-form-title">Edition d'une notification</key>
+	<key id="document-name">notification</key>
+	<key id="label">libellé</key>
+	<key id="label-help">nom utilisé pour l'affichage dans les arbres</key>
+	<key id="availableparameters">paramètres disponibles</key>
+	<key id="availableparameters-help">Liste des paramètres pouvant être utilisés dans le corps et le sujet du message de notification. Ils doivent être encadrés d'accolades et seront remplacés par la valeur correspondante.</key>
+	<key id="subject">sujet du message</key>
+	<key id="subject-help">Sujet de l'email de notification. Il peut contenir les différents paramètres proposé encadrés d'accolades.</key>
+	<key id="body">corps du message</key>
+	<key id="body-help">Corps de l'email de notification. Il peut contenir les différents paramètres proposé encadrés d'accolades.</key>
+	<key id="codename">code de la notification</key>
+	<key id="codename-help">nom de code utilisé par le système pour identifier la notification.</key>
+	<key id="header">en-tête</key>
+	<key id="header-help">en-tête de l'email</key>
+	<key id="footer">pied de page</key>
+	<key id="footer-help">pied de page de l'email</key>
+	<key id="template">modèle</key>
+	<key id="template-help">modèle de mise en page</key>
+	<key id="senderemail">adresse email de l'expéditeur</key>
+	<key id="senderemail-help">permet de définir l'adresse email complète de l'expéditeur de la notification.</key>
+	<key id="description">description</key>
+	<key id="description-help">Description visible dans l'onglet résumé de la notification pour décrire son contexte d'utilisation.</key>
 </i18n>

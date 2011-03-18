@@ -103,6 +103,23 @@ class notification_SitenotificationService extends notification_NotificationServ
 	
 	/**
 	 * @param notification_persistentdocument_sitenotification $document
+	 * @param string $forModuleName
+	 * @param array $allowedSections
+	 * @return array
+	 */
+	public function getResume($document, $forModuleName, $allowedSections = null)
+	{
+		$data = parent::getResume($document, $forModuleName, $allowedSections);
+		
+		$lang = RequestContext::getInstance()->getUILang();
+		$notif = $this->getParentOf($document);
+		$data['description']['description'] = $notif->isLangAvailable($lang) ? $notif->getDescriptionForLang($lang) : $notif->getVoDescription();
+		
+		return $data;
+	}
+	
+	/**
+	 * @param notification_persistentdocument_sitenotification $document
 	 * @param notification_persistentdocument_notification $parent
 	 * @param website_persistentdocument_website $website
 	 */

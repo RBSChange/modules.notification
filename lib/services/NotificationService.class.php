@@ -387,6 +387,22 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
     	$nodeAttributes['codename'] = $document->getCodename();
 	}
 	
+	/**
+	 * @param notification_persistentdocument_notification $document
+	 * @param string $forModuleName
+	 * @param array $allowedSections
+	 * @return array
+	 */
+	public function getResume($document, $forModuleName, $allowedSections = null)
+	{
+		$data = parent::getResume($document, $forModuleName, $allowedSections);
+		
+		$lang = RequestContext::getInstance()->getUILang();
+		$data['description']['description'] = $document->isLangAvailable($lang) ? $document->getDescriptionForLang($lang) : $document->getVoDescription();
+		
+		return $data;
+	}
+	
 	// Deprecated.
 	
 	/**

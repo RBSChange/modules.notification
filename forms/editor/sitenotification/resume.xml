@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
 <panel>
+	<section name="description" labeli18n="modules.notification.document.notification.Description" image="{IconsBase}/small/information.png" />
 	<section name="properties" linkedtab="properties" labeli18n="modules.uixul.bo.doceditor.section.Properties" image="{IconsBase}/small/edit-properties.png">
 		<property name="label" labeli18n="modules.uixul.bo.doceditor.property.Label" />
 		<property name="author" labeli18n="modules.uixul.bo.doceditor.property.Author" />
@@ -15,4 +16,42 @@
 	<section name="history" linkedtab="history" actiontexti18n="modules.uixul.bo.doceditor.section.action.View" labeli18n="modules.uixul.bo.doceditor.section.History" image="{IconsBase}/small/history.png">
 		<property name="modificationdate" labeli18n="modules.uixul.bo.doceditor.property.Modificationdate" />
 	</section>
+	<xul>
+		<javascript>
+			<constructor><![CDATA[
+				this.extendMethod('fireInitializeComplete', this.fireInitializeCompleteExtend);
+			]]></constructor>
+			
+			<method name="fireInitializeCompleteExtend">
+				<parameter name="result" />
+				<body><![CDATA[
+					try
+					{
+						var section = this.mSections.description;
+						while (section.hasChildNodes())
+						{
+							section.removeChild(section.lastChild);
+						}
+					
+						var text = result.contents.description.description;
+						if (text)
+						{
+							var label = document.createElement('label');
+							label.appendChild(document.createTextNode(text));
+							section.appendChild(label);
+							section.removeAttribute('collapsed');
+						}
+						else
+						{
+							section.setAttribute('collapsed', 'true');
+						}
+					}
+					catch (e)
+					{
+						wCore.error("notification.resumepanel.fireInitializeCompleteExtend", [result], e);
+					}
+				]]></body>
+			</method>
+		</javascript>
+	</xul>
 </panel>

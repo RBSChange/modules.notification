@@ -15,6 +15,7 @@
 		<add name="senderEmail" type="String" localized="true">
 			<constraints>email:true</constraints>
 		</add>
+		<add name="description" type="LongString" localized="true" />
 	</properties>
 	<statuses default="ACTIVE" />
 </document>
