@@ -23,7 +23,8 @@
 				<parameter name="rowData" />
 				<body><![CDATA[
 					if (this.disabled) {return;}
-					var uri = ['notification', 'openDocument', 'modules_notification_sitenotification', rowData.id, 'properties'].join(',');
+					// TODO: for now, document editor is correctly loaded only if it is opened on resume panel. When it will be fixed, replace it by the properties one.
+					var uri = ['notification', 'openDocument', 'modules_notification_sitenotification', rowData.id, 'resume'].join(',');
 					openActionUri(uri);
 				]]></body>
 			</method>
