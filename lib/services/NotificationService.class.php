@@ -232,7 +232,7 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 			{
 				if (!is_array($value))
 				{
-					$string = str_replace('{' . $key . '}',	$value, $string);
+					$string = str_replace(array('{' . $key . '}', '%7B' . $key . '%7D'), $value, $string);
 				}
 				else if (Framework::isDebugEnabled())
 				{
@@ -267,21 +267,50 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 			}
 		}
 		
+		return $this->doGetByCodeName($codeName, $websiteId);
+	}
+
+	/**
+	 * Get the active notification matching a codename.
+	 * @param String $codeName
+	 * @param Integer $websiteId
+	 * @return notification_persistentdocument_notification
+	 */
+	public function getByCodeNameAndSuffix($codeName, $suffix, $websiteId = null)
+	{
+		// Get the website id.
+		if ($websiteId === null)
+		{		
+			$currentWebsite = website_WebsiteModuleService::getInstance()->getCurrentWebsite();
+			if ($currentWebsite !== null)
+			{
+				$websiteId = $currentWebsite->getId();
+			}
+		}
+		
+		$notif = $this->doGetByCodeName($codeName.'_'.$suffix, $websiteId);
+		if ($notif === null)
+		{
+			$notif = $this->doGetByCodeName($codeName, $websiteId);
+		}
+		return $notif;
+	}
+
+	/**
+	 * @param String $codeName
+	 * @param Integer $websiteId
+	 * @return notification_persistentdocument_notification or null
+	 */
+	protected function doGetByCodeName($codeName, $websiteId)
+	{
 		$query = $this->createQuery();
 		$query->add(Restrictions::published());
-				
-		// Get the specialized notification if exists, else get the base one.
-		if ($websiteId !== null)
-		{
-			$query->add(Restrictions::orExp(Restrictions::eq('codename', $codeName.'/'.$websiteId), Restrictions::eq('codename', $codeName)));
-		}
-		else 
-		{
-			$query->add(Restrictions::eq('codename', $codeName));
-		}
+		$query->add(Restrictions::orExp(
+			Restrictions::eq('codename', $codeName.'/'.$websiteId),
+			Restrictions::eq('codename', $codeName)
+		));
 		$query->addOrder(Order::desc('codename'));
 		$notifications = $query->find();
-			
 		return f_util_ArrayUtils::firstElement($notifications);
 	}
 	
