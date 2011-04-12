@@ -36,4 +36,111 @@ class notification_persistentdocument_notification extends notification_persiste
 	 * @var Boolean
 	 */
 	public $refreshChildren;
+	
+	// Volatile properties to configure sending.
+	
+	/**
+	 * @var integer
+	 */
+	private $sendingWebsiteId;
+	
+	/**
+	 * @param integer $websiteId
+	 */
+	public function setSendingWebsiteId($websiteId)
+	{
+		$this->sendingWebsiteId = $websiteId;
+	}
+	
+	/**
+	 * @return integer
+	 */
+	public function getSendingWebsiteId()
+	{
+		return $this->sendingWebsiteId;
+	}
+	
+	/**
+	 * @var string
+	 */
+	private $sendingLang;
+	
+	/**
+	 * @param string $lang
+	 */
+	public function setSendingLang($lang)
+	{
+		$this->sendingLang = $lang;
+	}
+	
+	/**
+	 * @return string
+	 */
+	public function getSendingLang()
+	{
+		return $this->sendingLang;
+	}
+	
+	/**
+	 * @var string
+	 */
+	private $sendingModuleName;
+	
+	/**
+	 * @param string $moduleName
+	 */
+	public function setSendingModuleName($moduleName)
+	{
+		$this->sendingModuleName = $moduleName;
+	}
+	
+	/**
+	 * @return string
+	 */
+	public function getSendingModuleName()
+	{
+		return $this->sendingModuleName;
+	}
+	
+	/**
+	 * @var string
+	 */
+	private $sendingReplyTo;
+	
+	/**
+	 * @param string $replyTo
+	 */
+	public function setSendingReplyTo($replyTo)
+	{
+		$this->sendingReplyTo = $replyTo;
+	}
+	
+	/**
+	 * @return string
+	 */
+	public function getSendingReplyTo()
+	{
+		return $this->sendingReplyTo;
+	}
+	
+	/**
+	 * @var string
+	 */
+	private $sendingSenderEmail;
+	
+	/**
+	 * @param string $senderEmail
+	 */
+	public function setSendingSenderEmail($senderEmail)
+	{
+		$this->sendingSenderEmail = $senderEmail;
+	}
+	
+	/**
+	 * @return string
+	 */
+	public function getSendingSenderEmail()
+	{
+		return $this->sendingSenderEmail;
+	}
 }

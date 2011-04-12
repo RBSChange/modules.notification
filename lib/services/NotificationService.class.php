@@ -76,8 +76,67 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 		}
 		return Framework::getDefaultNoReplySender();
 	}
+	
+	/**
+	 * The notification to send is suposed to be 'configured'. 
+	 * @see getConfiguredByCodeName and getConfiguredByCodeNameAndSuffix to get a notification in the good state.
+	 * 
+	 * @param notification_persistentdocument_notification $notification
+	 * @param mail_MessageRecipients $recipients
+	 * @param string $callback
+	 * @param mixed $callbackParameter 
+	 * @return boolean
+	 */
+	public function sendNotificationCallback($notification, $recipients, $callback = null, $callbackParameter = null)
+	{
+		if ($notification === null)
+		{
+			if (Framework::isInfoEnabled())
+			{
+				Framework::info(__METHOD__ . ' No notification to send.');
+			}
+			return false;
+		}
+		
+		$websiteId = $notification->getSendingWebsiteId();
+		$lang = $notification->getSendingLang();
+		
+		$result = false;
+		$rc = RequestContext::getInstance();
+		$ws = website_WebsiteModuleService::getInstance();
+		$oldWebsiteId = $ws->getCurrentWebsite()->getId();
+		$ws->setCurrentWebsiteId($websiteId);
+		try
+		{
+			$rc->beginI18nWork($lang);
+		
+			$replacements = ($callback !== null) ? call_user_func($callback, $callbackParameter) : array();
+			$ns = $notification->getDocumentService();
+			$senderModuleName = $notification->getSendingModuleName();
+			$replyTo = $notification->getSendingReplyTo();
+			$senderEmail = $notification->getSendingSenderEmail();
+			if (!$ns->send($notification, $recipients, $replacements, $senderModuleName, $replyTo, $senderEmail))
+			{
+				Framework::warn(__METHOD__ . ' Can\'t send notification to ' . $receiverEmail);
+				$result = false;
+			}
+			$result = true;
+			
+			$ws->setCurrentWebsiteId($oldWebsiteId);
+			$rc->endI18nWork();
+		}
+		catch (Exception $e)
+		{
+			$ws->setCurrentWebsiteId($oldWebsiteId);
+			$rc->endI18nWork($e);
+		}
+		return $result;
+	}
 
 	/**
+	 * /!\ Do not call this method directly to send a notification, prefer sendNotificationCallback
+	 *     with correct handling of current lang and website.
+	 *     
 	 * @param notification_persistentdocument_notification $notification
 	 * @param mail_MessageRecipients $recipients
 	 * @param string[] $replacementArray
@@ -248,70 +307,101 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 		}
 		return $string;
 	}
-
+		
 	/**
-	 * Get the active notification matching a codename.
-	 * @param String $codeName
-	 * @param Integer $websiteId
-	 * @return notification_persistentdocument_notification
+	 * @param string $codeName
+	 * @param integer $websiteId
+	 * @param string $lang
+	 * @return notification_persistentdocument_notification or null
 	 */
-	public function getByCodeName($codeName, $websiteId = null)
+	public function getConfiguredByCodeName($codeName, $websiteId = null, $lang = null)
 	{
 		// Get the website id.
 		if ($websiteId === null)
 		{		
-			$currentWebsite = website_WebsiteModuleService::getInstance()->getCurrentWebsite();
-			if ($currentWebsite !== null)
-			{
-				$websiteId = $currentWebsite->getId();
-			}
+			$websiteId = website_WebsiteModuleService::getInstance()->getCurrentWebsite()->getId();
 		}
 		
-		return $this->doGetByCodeName($codeName, $websiteId);
+		// Get the lang.
+		if ($lang === null)
+		{
+			$lang = RequestContext::getInstance()->getLang();
+		}
+		
+		return $this->doGetConfiguredByCodeName($codeName, $websiteId, $lang);
 	}
 
 	/**
-	 * Get the active notification matching a codename.
-	 * @param String $codeName
-	 * @param Integer $websiteId
-	 * @return notification_persistentdocument_notification
+	 * @param string $codeName
+	 * @param integer $websiteId
+	 * @param string $lang
+	 * @return notification_persistentdocument_notification or null
 	 */
-	public function getByCodeNameAndSuffix($codeName, $suffix, $websiteId = null)
+	public function getConfiguredByCodeNameAndSuffix($codeName, $suffix, $websiteId = null, $lang = null)
 	{
 		// Get the website id.
 		if ($websiteId === null)
 		{		
-			$currentWebsite = website_WebsiteModuleService::getInstance()->getCurrentWebsite();
-			if ($currentWebsite !== null)
-			{
-				$websiteId = $currentWebsite->getId();
-			}
+			$websiteId = website_WebsiteModuleService::getInstance()->getCurrentWebsite()->getId();
 		}
 		
-		$notif = $this->doGetByCodeName($codeName.'_'.$suffix, $websiteId);
+		// Get the lang.
+		if ($lang === null)
+		{
+			$lang = RequestContext::getInstance()->getLang();
+		}
+		
+		// Get the notification.
+		$notif = $this->doGetConfiguredByCodeName($codeName.'_'.$suffix, $websiteId, $lang);
 		if ($notif === null)
 		{
-			$notif = $this->doGetByCodeName($codeName, $websiteId);
+			$notif = $this->doGetConfiguredByCodeName($codeName, $websiteId, $lang);
 		}
 		return $notif;
 	}
 
 	/**
-	 * @param String $codeName
-	 * @param Integer $websiteId
+	 * @param string $codeName
+	 * @param integer $websiteId
+	 * @param string $lang
 	 * @return notification_persistentdocument_notification or null
 	 */
-	protected function doGetByCodeName($codeName, $websiteId)
+	protected function doGetConfiguredByCodeName($codeName, $websiteId, $lang)
 	{
-		$query = $this->createQuery();
-		$query->add(Restrictions::published());
-		$query->add(Restrictions::orExp(
-			Restrictions::eq('codename', $codeName.'/'.$websiteId),
-			Restrictions::eq('codename', $codeName)
-		));
-		$query->addOrder(Order::desc('codename'));
-		$notifications = $query->find();
-		return f_util_ArrayUtils::firstElement($notifications);
+		$notifications = array();
+		$rc = RequestContext::getInstance();
+		try 
+		{
+			$rc->beginI18nWork($lang);
+		
+			$query = $this->createQuery();
+			$query->add(Restrictions::published());
+			$query->add(Restrictions::orExp(
+				Restrictions::eq('codename', $codeName.'/'.$websiteId),
+				Restrictions::eq('codename', $codeName)
+			));
+			$query->addOrder(Order::desc('codename'));
+			$notifications = $query->find();
+			
+			$rc->endI18nWork();
+		}
+		catch (Exception $e)
+		{
+			Framework::exception($e);
+			$rc->endI18nWork($e);
+		}
+		
+		$notif = f_util_ArrayUtils::firstElement($notifications);
+		if ($notif !== null)
+		{
+			$notif->setSendingWebsiteId($websiteId);
+			$notif->setSendingLang($lang);
+		}
+		else if (Framework::isInfoEnabled())
+		{
+			Framework::info(__METHOD__ . '("' . $codeName . '", ' . $websiteId . ', ' . $lang . ') no notification found');
+		}
+		return $notif;
 	}
 	
 	/**
@@ -327,16 +417,7 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 		}
 		if (!isset($replacements['company-name']))
 		{
-			// Temporary test to manage framework with and without this method.
-			// In the future, only the first case should be conserved.
-			if (f_util_ClassUtils::methodExists('Framework', 'getCompanyName'))
-			{
-				$replacements['company-name'] = Framework::getCompanyName();
-			}
-			else
-			{
-				$replacements['company-name'] = AG_WEBAPP_NAME;
-			}
+			$replacements['company-name'] = Framework::getCompanyName();
 		}
 		return $replacements;
 	}
@@ -435,7 +516,40 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 	// Deprecated.
 	
 	/**
-	 * @deprecated (will be removed in 4.0) Use send() instead.
+	 * @deprecated (will be removed in 4.0) use getConfiguredByCodeName
+	 */
+	public function getByCodeName($codeName, $websiteId = null)
+	{
+		// Get the website id.
+		if ($websiteId === null)
+		{		
+			$currentWebsite = website_WebsiteModuleService::getInstance()->getCurrentWebsite();
+			if ($currentWebsite !== null)
+			{
+				$websiteId = $currentWebsite->getId();
+			}
+		}
+		
+		$query = $this->createQuery();
+		$query->add(Restrictions::published());
+				
+		// Get the specialized notification if exists, else get the base one.
+		if ($websiteId !== null)
+		{
+			$query->add(Restrictions::orExp(Restrictions::eq('codename', $codeName.'/'.$websiteId), Restrictions::eq('codename', $codeName)));
+		}
+		else 
+		{
+			$query->add(Restrictions::eq('codename', $codeName));
+		}
+		$query->addOrder(Order::desc('codename'));
+		$notifications = $query->find();
+			
+		return f_util_ArrayUtils::firstElement($notifications);
+	}
+	
+	/**
+	 * @deprecated (will be removed in 4.0) use send() instead.
 	 */
 	public function sendMail($notification, $receivers, $replacements = array())
 	{
