@@ -117,7 +117,7 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 			$senderEmail = $notification->getSendingSenderEmail();
 			if (!$ns->send($notification, $recipients, $replacements, $senderModuleName, $replyTo, $senderEmail))
 			{
-				Framework::warn(__METHOD__ . ' Can\'t send notification to ' . $receiverEmail);
+				Framework::error(__METHOD__ . ' Can\'t send notification: ' . $notification->getCodename() . ' TO' . print_r($recipients->getTo(), true));
 				$result = false;
 			}
 			$result = true;
@@ -146,12 +146,14 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 	 * @param boolean $replaceUnkownKeys
 	 * @return boolean
 	 */
-	public function send($notification, $recipients, $replacementArray, $senderModuleName, $replyTo = null, $overrideSenderEmail = null, $replaceUnkownKeys = true)
+	public function send($notification, $recipients, $replacementArray, $senderModuleName, $replyTo = null, $overrideSenderEmail = null, $replaceUnkownKeys = null)
 	{
 		if ($this->mailService === null)
 		{
 			$this->mailService = MailService::getInstance();
 		}
+		
+		if ($replaceUnkownKeys === null) {$replaceUnkownKeys = !Framework::inDevelopmentMode();}
 
 		if ($notification === null)
 		{
@@ -285,7 +287,7 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 			return '';
 		}
 
-		if(is_array($replacements))
+		if (is_array($replacements))
 		{
 			foreach ($replacements as $key => $value)
 			{
@@ -303,7 +305,7 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 		// Remove the not-replaced elements.
 		if ($replaceUnkownKeys)
 		{
-			$string = preg_replace('#\{(.*?)\}#', '-', $string);
+			$string = preg_replace('#\{(.*?)\}#', '', $string);
 		}
 		return $string;
 	}
