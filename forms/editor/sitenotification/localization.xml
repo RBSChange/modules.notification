@@ -9,6 +9,7 @@
 		<field name="header" />
 		<field name="footer" />
 		<field name="senderEmail" />
+		<field name="senderName" />
 	</section>
 	<fieldinput name="availableparameters" type="hidden"/>
 	<xul>

@@ -143,4 +143,25 @@ class notification_persistentdocument_notification extends notification_persiste
 	{
 		return $this->sendingSenderEmail;
 	}
+	
+	/**
+	 * @var string
+	 */
+	private $sendingSenderName;
+	
+	/**
+	 * @param string $senderName
+	 */
+	public function setSendingSenderName($senderName)
+	{
+		$this->sendingSenderName = $senderName;
+	}
+	
+	/**
+	 * @return string
+	 */
+	public function getSendingSenderName()
+	{
+		return $this->sendingSenderName;
+	}
 }

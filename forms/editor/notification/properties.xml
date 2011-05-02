@@ -11,6 +11,7 @@
 		<field name="header" />
 		<field name="footer" />
 		<field name="senderEmail" />
+		<field name="senderName" />
 	</section>
 	<section labeli18n="modules.notification.document.notification.Description" class="toggle" hidden="true">
 		<field name="description" />

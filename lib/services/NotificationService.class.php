@@ -64,18 +64,6 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 	{
 		$this->mailService = $mailService;
 	}
-
-	/**
-	 * @return String
-	 */
-	private function getDefaultSender()
-	{
-		if (defined('MOD_NOTIFICATION_SENDER'))
-		{
-			return MOD_NOTIFICATION_SENDER;
-		}
-		return Framework::getDefaultNoReplySender();
-	}
 	
 	/**
 	 * The notification to send is suposed to be 'configured'. 
@@ -114,8 +102,7 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 			$ns = $notification->getDocumentService();
 			$senderModuleName = $notification->getSendingModuleName();
 			$replyTo = $notification->getSendingReplyTo();
-			$senderEmail = $notification->getSendingSenderEmail();
-			if (!$ns->send($notification, $recipients, $replacements, $senderModuleName, $replyTo, $senderEmail))
+			if (!$ns->send($notification, $recipients, $replacements, $senderModuleName, $replyTo))
 			{
 				Framework::error(__METHOD__ . ' Can\'t send notification: ' . $notification->getCodename() . ' TO' . print_r($recipients->getTo(), true));
 				$result = false;
@@ -174,23 +161,10 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 			// Get the sender...
 			if ($overrideSenderEmail !== null)
 			{
-				$sender = $overrideSenderEmail;
+				$notification->setSendingSenderEmail($overrideSenderEmail);
 			}
-			else if ($notification->isContextLangAvailable())
-			{
-				$sender = $notification->getSenderEmail();
-			}
-			else
-			{
-				$sender = $notification->getVoSenderEmail();
-			}
-			
-			// If there is no sender set, get the default one.
-			if (empty($sender))
-			{
-				$sender = $this->getDefaultSender();
-			}
-			
+			$sender = $this->getSender($notification);
+						
 			$mailMessage = $this->mailService->getNewMailMessage();
 			$mailMessage->setModuleName($senderModuleName);
 
@@ -220,6 +194,42 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 
 			return $ret;
 		}
+	}
+	
+	/**
+	 * @param notification_persistentdocument_notification $notification
+	 * @return string
+	 */
+	protected function getSender($notification)
+	{
+		// Get the sender email...
+		$senderEmail = $notification->getSendingSenderEmail();
+		if (empty($senderEmail))
+		{
+			$senderEmail = $notification->getSenderEmail();
+		}			
+		if (empty($senderEmail))
+		{
+			$senderEmail = defined('MOD_NOTIFICATION_SENDER') ? MOD_NOTIFICATION_SENDER : Framework::getDefaultNoReplySender();
+		}
+		
+		// Get the sender name...
+		$senderName = $notification->getSendingSenderName();
+		if (empty($senderName))
+		{
+			$senderName = $notification->getSenderName();
+		}			
+		if (empty($senderName))
+		{
+			$senderName = Framework::getConfigurationValue('modules/notification/defaultSenderName');
+		}
+		
+		// Construct the sender.
+		if (!empty($senderName))
+		{
+			return $senderName . ' < ' . $senderEmail . ' >';
+		}
+		return $senderEmail;
 	}
 	
 	/**

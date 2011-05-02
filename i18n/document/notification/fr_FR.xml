@@ -19,7 +19,9 @@
 	<key id="template">modèle</key>
 	<key id="template-help">modèle de mise en page</key>
 	<key id="senderemail">adresse email de l'expéditeur</key>
-	<key id="senderemail-help">permet de définir l'adresse email complète de l'expéditeur de la notification.</key>
+	<key id="senderemail-help">Permet de définir l'adresse email complète de l'expéditeur de la notification. Laisser vide pour utiliser la valeur par défaut.</key>
+	<key id="sendername">nom de l'expéditeur</key>
+	<key id="sendername-help">Permet de définir le nom de l'expéditeur de la notification. Laisser vide pour utiliser la valeur par défaut.</key>
 	<key id="description">description</key>
 	<key id="description-help">Description visible dans l'onglet résumé de la notification pour décrire son contexte d'utilisation.</key>
 </i18n>
