@@ -10,11 +10,6 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 	private static $instance;
 
 	/**
-	 * @var MailService
-	 */
-	private $mailService = null;
-
-	/**
 	 * @return notification_NotificationService
 	 */
 	public static function getInstance()
@@ -52,17 +47,6 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 	public function createStrictQuery()
 	{
 		return $this->pp->createQuery('modules_notification/notification', false);
-	}
-
-	/**
-	 * Sets the MailService to use. May be a MailService instance or a
-	 * mailbox_MessageService instance.
-	 *
-	 * @param MailService | mailbox_MessageService $mailService
-	 */
-	public function setMessageService($mailService)
-	{
-		$this->mailService = $mailService;
 	}
 	
 	/**
@@ -135,11 +119,6 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 	 */
 	public function send($notification, $recipients, $replacementArray, $senderModuleName, $replyTo = null, $overrideSenderEmail = null, $replaceUnkownKeys = null)
 	{
-		if ($this->mailService === null)
-		{
-			$this->mailService = MailService::getInstance();
-		}
-		
 		if ($replaceUnkownKeys === null) {$replaceUnkownKeys = !Framework::inDevelopmentMode();}
 
 		if ($notification === null)
@@ -164,8 +143,13 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 				$notification->setSendingSenderEmail($overrideSenderEmail);
 			}
 			$sender = $this->getSender($notification);
-						
-			$mailMessage = $this->mailService->getNewMailMessage();
+			
+			$mailService = $notification->getSendingMailService();
+			if ($mailService === null)
+			{
+				$mailService = ($this->mailService === null) ? MailService::getInstance() : $this->mailService;
+			}			
+			$mailMessage = $mailService->getNewMailMessage();
 			$mailMessage->setModuleName($senderModuleName);
 
 			if ($replyTo !== null)
@@ -186,7 +170,7 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 			$mailMessage->setHtmlAndTextBody($htmlBody, $textBody);
 			
 			// Send mail and return the result.
-			$ret = $this->mailService->send($mailMessage);
+			$ret = $mailService->send($mailMessage);
 			if ($ret !== true)
 			{
 				Framework::error(__METHOD__.": Unable to send mail (" . $subject . ") to " . implode(', ', $recipients->getTo()) . ".");
@@ -576,5 +560,18 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 	public function getNotificationByCodeName($codeName, $websiteId = null)
 	{
 		return $this->getByCodeName($codeName, $websiteId);
+	}
+	
+	/**
+	 * @deprecated (will be removed in 4.0)
+	 */
+	private $mailService = null;
+	
+	/**
+	 * @deprecated (will be removed in 4.0) use setSendingMailService on notification.
+	 */
+	public function setMessageService($mailService)
+	{
+		$this->mailService = $mailService;
 	}
 }
