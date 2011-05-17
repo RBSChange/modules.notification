@@ -77,7 +77,10 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 		$rc = RequestContext::getInstance();
 		$ws = website_WebsiteModuleService::getInstance();
 		$oldWebsiteId = $ws->getCurrentWebsite()->getId();
-		$ws->setCurrentWebsiteId($websiteId);
+		if ($websiteId > 0)
+		{
+			$ws->setCurrentWebsiteId($websiteId);
+		}
 		try
 		{
 			$rc->beginI18nWork($lang);
@@ -93,12 +96,18 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 			}
 			$result = true;
 			
-			$ws->setCurrentWebsiteId($oldWebsiteId);
+			if ($oldWebsiteId > 0)
+			{
+				$ws->setCurrentWebsiteId($oldWebsiteId);
+			}
 			$rc->endI18nWork();
 		}
 		catch (Exception $e)
 		{
-			$ws->setCurrentWebsiteId($oldWebsiteId);
+			if ($oldWebsiteId > 0)
+			{
+				$ws->setCurrentWebsiteId($oldWebsiteId);
+			}
 			$rc->endI18nWork($e);
 		}
 		return $result;
