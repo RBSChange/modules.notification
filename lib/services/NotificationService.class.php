@@ -71,7 +71,7 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 	 * 
 	 * @param notification_persistentdocument_notification $notification
 	 * @param mail_MessageRecipients $recipients
-	 * @param string $callback
+	 * @param mixed $callback a method that returns notification parameters as an associate array
 	 * @param mixed $callbackParameter 
 	 * @return boolean
 	 */
