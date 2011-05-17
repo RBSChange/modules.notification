@@ -164,4 +164,25 @@ class notification_persistentdocument_notification extends notification_persiste
 	{
 		return $this->sendingSenderName;
 	}
+	
+	/**
+	 * @var MailService
+	 */
+	private $sendingMailService;
+	
+	/**
+	 * @param MailService $mailService
+	 */
+	public function setSendingMailService($mailService)
+	{
+		$this->sendingMailService = $mailService;
+	}
+	
+	/**
+	 * @return MailService
+	 */
+	public function getSendingMailService()
+	{
+		return $this->sendingMailService;
+	}
 }
