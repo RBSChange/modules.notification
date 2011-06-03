@@ -3,7 +3,6 @@
 	<section labeli18n="modules.notification.bo.general.General">
 		<field name="label" />
 		<field name="codename" />
-		
 		<field name="subject" />
 		<field name="body" />
 		<field name="template" />
@@ -14,46 +13,54 @@
 		<field name="footer" />
 		<field name="senderEmail" />
 	</section>
-	
-	<fieldinput name="availableparameters" type="hidden"/>
-	
+
+	<fieldinput name="availableparameters" type="hidden" />
+
 	<xul>
 		<javascript>
 			<constructor><![CDATA[
 				this.extendMethod("fireInitializeComplete", this.initializeCompleteMetaInfo);
-			]]></constructor>	
-			
+			]]></constructor>
+
 			<method name="initializeCompleteMetaInfo">
 				<parameter name="result" />
 				<body><![CDATA[
-				var fields = this.fields;
-				this.setTextTemplate(fields.body, result.contents.availableparameters);
-				this.setTextTemplate(fields.header, result.contents.availableparameters);
-				this.setTextTemplate(fields.footer, result.contents.availableparameters);			
+					try
+					{
+						var fields = this.fields;
+						var params = result.contents.availableparameters;
+						this.setTextTemplate(fields.body, params);
+						this.setTextTemplate(fields.header, params);
+						this.setTextTemplate(fields.footer, params);
+					}
+					catch (e)
+					{
+						wCore.error("notification.propertiespanel.initializeCompleteMetaInfo", [result], e);
+					}
 				]]></body>
 			</method>
-			
+
 			<method name="setTextTemplate">
 				<parameter name="field" />
 				<parameter name="availableparameters" />
 				<body><![CDATA[
-				var toolbar = field.toolBar;				
-				toolbar.clearTextTemplate();
-				if (availableparameters)
-				{
-					var parameters = availableparameters.split(/\s|,/);
-					for (var i = 0; i < parameters.length; i++)
+					var toolbar = field.toolBar;				
+					toolbar.clearTextTemplate();
+					if (availableparameters)
 					{
-						var param = parameters[i];
-						if (param.length > 0)
+						var parameters = availableparameters.split(/\s|,/);
+						for (var i = 0; i < parameters.length; i++)
 						{
-							if (param[0] != '{') {param = '{' + param + '}';}
-							toolbar.addTextTemplate(param, param);
+							var param = parameters[i];
+							if (param.length > 0)
+							{
+								if (param[0] != '{') {param = '{' + param + '}';}
+								toolbar.addTextTemplate(param, param);
+							}
 						}
-					}
-				}				
+					}				
 				]]></body>
-			</method>					
+			</method>
 		</javascript>
 	</xul>
 </panel>

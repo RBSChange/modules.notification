@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <panel>
 	<section labeli18n="modules.notification.bo.general.General">
+		<field name="label" />
 		<field name="subject" />
 		<field name="body" />
 		<field name="template" />
@@ -13,7 +14,7 @@
 	</section>
 
 	<fieldinput name="availableparameters" type="hidden" />
-	
+
 	<xul>
 		<javascript>
 			<constructor><![CDATA[
@@ -26,15 +27,15 @@
 					try
 					{
 						var fields = this.fields;
-						var params = result.contents.availableparameters;
+						var params = result.contents.from.availableparameters;
 						this.setTextTemplate(fields.body, params);
 						this.setTextTemplate(fields.header, params);
-						this.setTextTemplate(fields.footer, params);
+						this.setTextTemplate(fields.footer, params);	
 					}
 					catch (e)
 					{
-						wCore.error("sitenotification.propertiespanel.initializeCompleteMetaInfo", [result], e);
-					}
+						wCore.error("notification.localizationpanel.initializeCompleteMetaInfo", [result], e);
+					}	
 				]]></body>
 			</method>
 
@@ -56,7 +57,7 @@
 								toolbar.addTextTemplate(param, param);
 							}
 						}
-					}				
+					}
 				]]></body>
 			</method>
 		</javascript>

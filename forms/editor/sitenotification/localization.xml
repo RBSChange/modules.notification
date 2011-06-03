@@ -26,15 +26,15 @@
 					try
 					{
 						var fields = this.fields;
-						var params = result.contents.availableparameters;
+						var params = result.contents.from.availableparameters;
 						this.setTextTemplate(fields.body, params);
 						this.setTextTemplate(fields.header, params);
-						this.setTextTemplate(fields.footer, params);
+						this.setTextTemplate(fields.footer, params);	
 					}
 					catch (e)
 					{
-						wCore.error("sitenotification.propertiespanel.initializeCompleteMetaInfo", [result], e);
-					}
+						wCore.error("sitenotification.localizationpanel.initializeCompleteMetaInfo", [result], e);
+					}	
 				]]></body>
 			</method>
 
@@ -56,7 +56,7 @@
 								toolbar.addTextTemplate(param, param);
 							}
 						}
-					}				
+					}
 				]]></body>
 			</method>
 		</javascript>
