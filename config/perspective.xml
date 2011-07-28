@@ -74,16 +74,16 @@
 		<toolbarbutton name="reactivate"/>
 	</toolbar>
 	<actions>
-		<action name="refresh" single="true" icon="refresh" label="&amp;modules.uixul.bo.actions.Refresh;" />
-		<action name="edit" single="true" permission="Load" icon="edit" label="&amp;modules.uixul.bo.actions.Edit;" />
-		<action name="delete" permission="Delete" icon="delete" label="&amp;modules.uixul.bo.actions.Delete;" />
-		<action name="deactivated" permission="Deactivated" icon="deactivated" label="&amp;modules.uixul.bo.actions.Deactivate;"/>
-		<action name="reactivate" permission="ReActivate" icon="reactivate" label="&amp;modules.uixul.bo.actions.ReActivate;"/>
-		<action name="openFolder" single="true" icon="open-folder" label="&amp;modules.uixul.bo.actions.OpenFolder;" />
-		<action name="openTreeNodeOrder" single="true" permission="Order" icon="sort" label="&amp;modules.uixul.bo.actions.Set-children-order;" />
-		<action name="createNotification" single="true" permission="Insert_notification" icon="add" label="&amp;modules.notification.bo.actions.Create-Notification;" />
-		<action name="createSitenotification" single="true" permission="Insert_sitenotification" icon="add" label="&amp;modules.notification.bo.actions.Create-sitenotification;" />
-		<action name="createFolder" single="true" permission="Insert_folder" icon="create-folder" label="&amp;modules.uixul.bo.actions.Create-folder;" />
+		<action name="refresh" single="true" icon="refresh" labeli18n="m.uixul.bo.actions.refresh" />
+		<action name="edit" single="true" permission="Load" icon="edit" labeli18n="m.uixul.bo.actions.edit" />
+		<action name="delete" permission="Delete" icon="delete" labeli18n="m.uixul.bo.actions.delete" />
+		<action name="deactivated" permission="Deactivated" icon="deactivated" labeli18n="m.uixul.bo.actions.deactivate"/>
+		<action name="reactivate" permission="ReActivate" icon="reactivate" labeli18n="m.uixul.bo.actions.reactivate"/>
+		<action name="openFolder" single="true" icon="open-folder" labeli18n="m.uixul.bo.actions.openfolder" />
+		<action name="openTreeNodeOrder" single="true" permission="Order" icon="sort" labeli18n="m.uixul.bo.actions.set-children-order" />
+		<action name="createNotification" single="true" permission="Insert_notification" icon="add" labeli18n="m.notification.bo.actions.create-notification" />
+		<action name="createSitenotification" single="true" permission="Insert_sitenotification" icon="add" labeli18n="m.notification.bo.actions.create-sitenotification" />
+		<action name="createFolder" single="true" permission="Insert_folder" icon="create-folder" labeli18n="m.uixul.bo.actions.create-folder" />
 		<action name="previewNotificationFromList" single="true" icon="preview" />
 	</actions>
 </perspective>
