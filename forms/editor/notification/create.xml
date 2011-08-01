@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <panel>
-	<section labeli18n="modules.notification.bo.general.General">
+	<section labeli18n="m.notification.bo.general.general">
 		<field name="label" />
 		<field name="codename" />
 		<field name="availableparameters"/>

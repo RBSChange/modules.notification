@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <panel>
-	<section labeli18n="modules.notification.bo.general.General">
+	<section labeli18n="m.notification.bo.general.general">
 		<field name="subject" />
 		<field name="body" />
 		<field name="template" />
 	</section>
-	<section labeli18n="modules.notification.bo.general.Advanced">
+	<section labeli18n="m.notification.bo.general.advanced">
 		<field name="header" />
 		<field name="footer" />
 		<field name="senderEmail" />
