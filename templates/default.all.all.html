@@ -3,11 +3,11 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 	<title>${notification/subject}</title>
-	<link rel="stylesheet" tal:replace="notification/stylesheetUrl" />
+	<tal:block tal:condition="exists: notification/stylesheetUrl" tal:content="structure notification/stylesheetUrl" />
 </head>
 <body>
-	<em tal:condition="notification/header">${notification/header}</em>
-	<p>${notification/body}</p>
-	<em tal:condition="notification/footer">${notification/footer}</em>
+	<em tal:condition="notification/header">${structure notification/header}</em>
+	<div>${structure notification/body}</div>
+	<em tal:condition="notification/footer">${structure notification/footer}</em>
 </body>
 </html>
