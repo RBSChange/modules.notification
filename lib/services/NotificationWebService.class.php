@@ -45,8 +45,7 @@ class notification_NotificationWebService extends webservices_WebServiceBase
 		{
 			$replacementArray = array();
 		}
-		$recipients = new mail_MessageRecipients();
-		$recipients->setTo($destEmailArray);
+		$recipients = change_MailService::getInstance()->getRecipientsArray($destEmailArray);
 		return $ns->send($notification, $recipients, $replacementArray, $senderModuleName, $replyTo, $senderEmail);
 	}
 }

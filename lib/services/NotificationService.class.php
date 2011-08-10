@@ -54,12 +54,12 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 	 * @see getConfiguredByCodeName and getConfiguredByCodeNameAndSuffix to get a notification in the good state.
 	 * 
 	 * @param notification_persistentdocument_notification $notification
-	 * @param mail_MessageRecipients $recipients
+	 * @param array $recipients
 	 * @param mixed $callback a method that returns notification parameters as an associate array
 	 * @param mixed $callbackParameter 
 	 * @return boolean
 	 */
-	public function sendNotificationCallback($notification, $recipients, $callback = null, $callbackParameter = null)
+	public function sendNotificationCallback($notification, $recipients, $callback = null, $callbackParameter = array())
 	{
 		if ($notification === null)
 		{
@@ -85,13 +85,13 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 		{
 			$rc->beginI18nWork($lang);
 		
-			$replacements = ($callback !== null) ? call_user_func($callback, $callbackParameter) : array();
+			$replacements = ($callback !== null) ? call_user_func($callback, $callbackParameter) : $callbackParameter;
 			$ns = $notification->getDocumentService();
 			$senderModuleName = $notification->getSendingModuleName();
 			$replyTo = $notification->getSendingReplyTo();
 			if (!$ns->send($notification, $recipients, $replacements, $senderModuleName, $replyTo))
 			{
-				Framework::error(__METHOD__ . ' Can\'t send notification: ' . $notification->getCodename() . ' TO' . print_r($recipients->getTo(), true));
+				Framework::error(__METHOD__ . ' Can\'t send notification: ' . $notification->getCodename() . ' TO' . print_r($recipients[change_MailService::TO], true));
 				$result = false;
 			}
 			$result = true;
@@ -118,7 +118,7 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 	 *     with correct handling of current lang and website.
 	 *     
 	 * @param notification_persistentdocument_notification $notification
-	 * @param mail_MessageRecipients $recipients
+	 * @param array $recipients
 	 * @param string[] $replacementArray
 	 * @param string $senderModuleName
 	 * @param string $replyTo
@@ -156,11 +156,13 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 			$mailService = $notification->getSendingMailService();
 			if ($mailService === null)
 			{
-				$mailService = ($this->mailService === null) ? MailService::getInstance() : $this->mailService;
-			}			
-			$mailMessage = $mailService->getNewMailMessage();
-			$mailMessage->setModuleName($senderModuleName);
-
+				$mailService = change_MailService::getInstance();
+			}
+			if ($recipients instanceof mail_MessageRecipients)
+			{
+				$recipients = $recipients->getAsRecipientsArray();
+			}
+			$mailMessage = $mailService->getNewMessage();
 			if ($replyTo !== null)
 			{
 				$errors = new validation_Errors();
@@ -171,20 +173,22 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 					$mailMessage->setReplyTo($replyTo);
 				}
 			}
-			
+			/* @var $mailMessage Zend_Mail */
 			$mailMessage->setSubject($subject);			
-			$mailMessage->setSender($sender);
-			$mailMessage->setRecipients($recipients);					
-			$mailMessage->setEncoding('utf-8');
-			$mailMessage->setHtmlAndTextBody($htmlBody, $textBody);
+			$mailMessage->setFrom($sender);
+			
+			$mailMessage->addTo($recipients[change_MailService::TO]); 
+			$mailMessage->addCc($recipients[change_MailService::CC]);
+			$mailMessage->addBcc($recipients[change_MailService::BCC]);
+			$mailMessage->setBodyHtml($htmlBody);
+			$mailMessage->setBodyText($textBody);
 			
 			// Send mail and return the result.
-			$ret = $mailService->send($mailMessage);
+			$ret = $mailService->send($mailMessage, $senderModuleName);
 			if ($ret !== true)
 			{
-				Framework::error(__METHOD__.": Unable to send mail (" . $subject . ") to " . implode(', ', $recipients->getTo()) . ".");
+				Framework::error(__METHOD__.": Unable to send mail (" . $subject . ") to " . implode(', ', $recipients[change_MailService::TO]) . ".");
 			}
-
 			return $ret;
 		}
 	}
@@ -554,16 +558,6 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 	}
 	
 	/**
-	 * @deprecated (will be removed in 4.0) use send() instead.
-	 */
-	public function sendMail($notification, $receivers, $replacements = array())
-	{
-		$recipients = new mail_MessageRecipients();
-		$recipients->setTo($receivers);
-		$this->send($notification, $recipients, $replacements, null);
-	}
-
-	/**
 	 * @deprecated (will be removed in 4.0) use getByCodeName
 	 */
 	public function getNotificationByCodeName($codeName, $websiteId = null)
@@ -571,16 +565,4 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 		return $this->getByCodeName($codeName, $websiteId);
 	}
 	
-	/**
-	 * @deprecated (will be removed in 4.0)
-	 */
-	private $mailService = null;
-	
-	/**
-	 * @deprecated (will be removed in 4.0) use setSendingMailService on notification.
-	 */
-	public function setMessageService($mailService)
-	{
-		$this->mailService = $mailService;
-	}
 }

@@ -14,9 +14,7 @@ class notification_SendTestNotificationAction extends change_JSONAction
 		$result = array();
 
 		$notification = $this->getDocumentInstanceFromRequest($request);
-		$recipients = new mail_MessageRecipients();
-		$recipients->setTo($request->getParameter('emails'));
-		
+		$recipients = change_MailService::getInstance()->getRecipientsArray(explode(',', $request->getParameter('emails')));		
 		if (!$notification->getDocumentService()->send($notification, $recipients, array(), 'notification', null, null, false))
 		{
 			return $this->sendJSONError(LocaleService::getInstance()->transBO('m.notification.bo.general.error-sending-mails'));
