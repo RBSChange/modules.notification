@@ -260,7 +260,7 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 		$attributes['footer'] = f_util_HtmlUtils::renderHtmlFragment($footer);
 		$attributes['body'] = f_util_HtmlUtils::renderHtmlFragment($body);
 
-		$htmlTemplate = TemplateLoader::getInstance()->setPackageName('modules_notification')->setMimeContentType(K::HTML)->load($notification->getTemplate());
+		$htmlTemplate = TemplateLoader::getInstance()->setPackageName('modules_notification')->setMimeContentType('html')->load($notification->getTemplate());
 		$htmlTemplate->setAttribute('notification', $attributes);
 		$htmlTemplate->setAttribute('replacement', $replacementArray);
 		$htmlBody = $htmlTemplate->execute();
