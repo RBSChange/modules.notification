@@ -75,7 +75,7 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 		
 		$result = false;
 		$rc = RequestContext::getInstance();
-		$ws = website_WebsiteModuleService::getInstance();
+		$ws = website_WebsiteService::getInstance();
 		$oldWebsiteId = $ws->getCurrentWebsite()->getId();
 		if ($websiteId > 0)
 		{
@@ -328,7 +328,7 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 		// Get the website id.
 		if ($websiteId === null)
 		{		
-			$websiteId = website_WebsiteModuleService::getInstance()->getCurrentWebsite()->getId();
+			$websiteId = website_WebsiteService::getInstance()->getCurrentWebsite()->getId();
 		}
 		
 		// Get the lang.
@@ -351,7 +351,7 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 		// Get the website id.
 		if ($websiteId === null)
 		{		
-			$websiteId = website_WebsiteModuleService::getInstance()->getCurrentWebsite()->getId();
+			$websiteId = website_WebsiteService::getInstance()->getCurrentWebsite()->getId();
 		}
 		
 		// Get the lang.
@@ -422,7 +422,7 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 	{
 		if (!isset($replacements['website-url']))
 		{
-			$replacements['website-url'] = website_WebsiteModuleService::getInstance()->getCurrentWebsite()->getUrl();
+			$replacements['website-url'] = website_WebsiteService::getInstance()->getCurrentWebsite()->getUrl();
 		}
 		if (!isset($replacements['company-name']))
 		{
@@ -532,7 +532,7 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 		// Get the website id.
 		if ($websiteId === null)
 		{		
-			$currentWebsite = website_WebsiteModuleService::getInstance()->getCurrentWebsite();
+			$currentWebsite = website_WebsiteService::getInstance()->getCurrentWebsite();
 			if ($currentWebsite !== null)
 			{
 				$websiteId = $currentWebsite->getId();

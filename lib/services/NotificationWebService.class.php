@@ -24,8 +24,8 @@ class notification_NotificationWebService extends webservices_WebServiceBase
 		}
 		$this->setLang($lang);
 		$websiteId = null;
-		$wsm = website_WebsiteModuleService::getInstance();
-		$website = $wsm->getWebsiteByUrl($domainName);
+		$wsm = website_WebsiteService::getInstance();
+		$website = $wsm->getByUrl($domainName);
 		if ($website !== null)
 		{
 			$wsm->setCurrentWebsite($website);
