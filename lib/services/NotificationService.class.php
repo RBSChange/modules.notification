@@ -321,17 +321,25 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 	 * @param string $codeName
 	 * @param integer $websiteId
 	 * @param string $lang
+	 * @param integer $accessorId
 	 * @return notification_persistentdocument_notification or null
 	 */
-	public function getConfiguredByCodeName($codeName, $websiteId = null, $lang = null)
+	public function getConfiguredByCodeName($codeName, $websiteId = null, $lang = null, $accessorId = null)
 	{
-		// Get the website id.
 		if ($websiteId === null)
 		{		
 			$websiteId = website_WebsiteService::getInstance()->getCurrentWebsite()->getId();
 		}
 		
-		// Get the lang.
+		if ($lang === null && $accessorId !== null)
+		{
+			$p = users_UsersprofileService::getInstance()->getByAccessorId($accessorId);
+			if ($p && $p->getLcid())
+			{
+				$lang = LocaleService::getInstance()->getCode($p->getLcid());
+			}
+		}
+		
 		if ($lang === null)
 		{
 			$lang = RequestContext::getInstance()->getLang();
@@ -344,17 +352,25 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 	 * @param string $codeName
 	 * @param integer $websiteId
 	 * @param string $lang
+	 * @param integer $accessorId
 	 * @return notification_persistentdocument_notification or null
 	 */
-	public function getConfiguredByCodeNameAndSuffix($codeName, $suffix, $websiteId = null, $lang = null)
+	public function getConfiguredByCodeNameAndSuffix($codeName, $suffix, $websiteId = null, $lang = null, $accessorId = null)
 	{
-		// Get the website id.
 		if ($websiteId === null)
 		{		
 			$websiteId = website_WebsiteService::getInstance()->getCurrentWebsite()->getId();
 		}
 		
-		// Get the lang.
+		if ($lang === null && $accessorId !== null)
+		{
+			$p = users_UsersprofileService::getInstance()->getByAccessorId($accessorId);
+			if ($p && $p->getLcid())
+			{
+				$lang = LocaleService::getInstance()->getCode($p->getLcid());
+			}
+		}
+		
 		if ($lang === null)
 		{
 			$lang = RequestContext::getInstance()->getLang();
