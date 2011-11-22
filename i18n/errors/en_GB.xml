@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <i18n baseKey="m.notification.errors" lcid="en_GB">
-  <key id="modules-notification-enabled">you don't have the appropriate permission to perform this operation : ″Access to the module″</key>
+  <key id="modules-notification-enabled">you do not have the appropriate permissions to perform the following operation: "Access the module"</key>
 </i18n>

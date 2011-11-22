@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <i18n baseKey="m.notification.document.sitenotification" lcid="en_GB">
-	<include id="m.notification.document.notification" />
-	<key id="edition-form-title">specialized notification edition</key>
-	<key id="document-name">specialized notification</key>
-	<key id="website">website</key>
-	<key id="website-help">website</key>
+  <include id="m.notification.document.notification"/>
+  <key id="edition-form-title">editing of a specialised notification</key>
+  <key id="document-name">specialised notification</key>
+  <key id="website">website</key>
+  <key id="website-help">The website that is associated with the notification. You can only specialise a notification once for a given website. If no specialised notification is defined for a website, the original notification is used.</key>
 </i18n>

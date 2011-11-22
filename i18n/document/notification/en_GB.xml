@@ -1,9 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <i18n baseKey="m.notification.document.notification" lcid="en_GB">
-	<key id="edition-form-title">notification edition</key>
-	<key id="document-name">notification</key>
-	<key id="label">label</key>
-	<key id="availableparameters">available parameters</key>
-	<key id="subject">subject</key>
-	<key id="body">body</key>
+  <key id="edition-form-title">editing a notification</key>
+  <key id="document-name">notification</key>
+  <key id="label">label</key>
+  <key id="availableparameters">available parameters</key>
+  <key id="subject">message subject</key>
+  <key id="body">message body</key>
+  <key id="availableparameters-help">List of parameters that can be used in the body and subject of the notification message. They must be between curly brackets and will be replaced by the corresponding value.</key>
+  <key id="body-help">Notification email body. It may contain various proposed parameters between curly brackets.</key>
+  <key id="codename">notification code</key>
+  <key id="codename-help">Code name used by the system to identify the notification.</key>
+  <key id="description">description</key>
+  <key id="description-help">Description visible in the notification summary tab to describe its usage context.</key>
+  <key id="footer">footer</key>
+  <key id="footer-help">This is the email's footer</key>
+  <key id="header">header</key>
+  <key id="header-help">This is the email's header.</key>
+  <key id="label-help">This is the name used for display in the tree views.</key>
+  <key id="senderemail">sender's email address</key>
+  <key id="senderemail-help">Defines the full email address of the notification sender. Leave empty to use the default value.</key>
+  <key id="sendername">sender's name</key>
+  <key id="sendername-help">Defines the name of the notification sender. Leave empty to use the default value.</key>
+  <key id="subject-help">Subject of the notification email. It can contain the various proposed parameters between curly brackets.</key>
+  <key id="template">template</key>
+  <key id="template-help">layout template</key>
 </i18n>
