@@ -3,8 +3,15 @@
   <key id="module-name">notification</key>
   <key id="tree-root-name">notification</key>
   <key id="system-folder-name">notification</key>
-  <key id="general">main data</key>
-  <key id="advanced">advanced data</key>
-  <key id="error-must-be-unique">the notification ″{parentLabel}″ is already specialized for the website ″{siteLabel}″.</key>
+  <key id="general">main properties</key>
+  <key id="advanced">advanced properties</key>
+  <key id="error-must-be-unique">the {parentLabel} notification is already specialised for the {siteLabel} website.</key>
   <key id="sitenotification-label-template">{parentLabel} ({siteLabel})</key>
+  <key id="email-adresses">email addresses (one per line) which you want to send the test notification to</key>
+  <key id="error-sending-mails">An error occurred while sending the emails.</key>
+  <key id="preview-notification">preview a notification</key>
+  <key id="send-test-notification">sending the test notification</key>
+  <key id="tab-html">HTML version</key>
+  <key id="tab-send">test sending</key>
+  <key id="tab-text">text version</key>
 </i18n>
