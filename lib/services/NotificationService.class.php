@@ -510,16 +510,18 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 	
 	/**
 	 * @param notification_persistentdocument_notification $document
+	 * @param array<string, string> $attributes
+	 * @param integer $mode
 	 * @param string $moduleName
-	 * @param string $treeType
-	 * @param array<string, string> $nodeAttributes
-	 */	
-	public function addTreeAttributes($document, $moduleName, $treeType, &$nodeAttributes)
+	 */
+	public function completeBOAttributes($document, &$attributes, $mode, $moduleName)
 	{
-		$nodeAttributes['canBeDeleted'] = ($document->canBeDeleted() ? 'true' : 'false');
-    	$nodeAttributes['publicationstatus'] = $document->getPublicationstatus();
-    	$nodeAttributes['author'] = $document->getAuthor();
-    	$nodeAttributes['codename'] = $document->getCodename();
+		$attributes['canBeDeleted'] = $document->canBeDeleted() ? 'true' : 'false';
+		if ($mode & DocumentHelper::MODE_CUSTOM)
+		{
+			$attributes['publicationstatus'] = $document->getPublicationstatus();
+	    	$attributes['codename'] = $document->getCodename();
+		}
 	}
 	
 	/**
@@ -580,5 +582,4 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 	{
 		return $this->getByCodeName($codeName, $websiteId);
 	}
-	
 }
