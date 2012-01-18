@@ -152,41 +152,96 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 				$notification->setSendingSenderEmail($overrideSenderEmail);
 			}
 			$sender = $this->getSender($notification);
-			
 			$mailService = $notification->getSendingMailService();
 			if ($mailService === null)
 			{
 				$mailService = ($this->mailService === null) ? MailService::getInstance() : $this->mailService;
-			}			
-			$mailMessage = $mailService->getNewMailMessage();
-			$mailMessage->setModuleName($senderModuleName);
-
-			if ($replyTo !== null)
+			}
+			
+			$mailMessage = $this->composeMailMessage($mailService, $sender, $replyTo, 
+				$recipients->getTo(), $recipients->getCC(), $recipients->getBCC(), 
+				$subject, $htmlBody, $textBody, $senderModuleName);
+			
+			if ($mailMessage instanceof MailMessage)
 			{
-				$errors = new validation_Errors();
-				$validate = new validation_EmailsValidator();
-				$validate->validate(new validation_Property(null, $replyTo), $errors);
-				if ($errors->isEmpty())
+				return $this->sendMailMessage($mailService, $mailMessage);
+			}
+			elseif (is_bool($mailMessage))
+			{
+				return $mailMessage;
+			}
+			return false;
+		}
+	}
+	
+	/**
+	 * 
+	 * @param MailService $mailService
+	 * @param string $sender
+	 * @param string $replyTo
+	 * @param string[] $toArray
+	 * @param string[] $ccArray
+	 * @param string[] $bccArray
+	 * @param string $subject
+	 * @param string $htmlBody
+	 * @param string $textBody
+	 * @param string $senderModuleName
+	 * @return MailMessage|boolean
+	 */
+	protected function composeMailMessage($mailService, $sender, $replyTo, $toArray, $ccArray, $bccArray, $subject, $htmlBody, $textBody, $senderModuleName)
+	{
+		$mailMessage = $mailService->getNewMailMessage();
+		$mailMessage->setModuleName($senderModuleName);	
+		if (!empty($replyTo))
+		{
+			$replyToOk = true;
+			foreach (explode(',', $replyTo) as $address)
+			{
+				if (!validation_EmailValidator::isEmail(trim($address)))
 				{
-					$mailMessage->setReplyTo($replyTo);
+					$replyToOk = false;
+					break;
 				}
 			}
-			
-			$mailMessage->setSubject($subject);			
-			$mailMessage->setSender($sender);
-			$mailMessage->setRecipients($recipients);					
-			$mailMessage->setEncoding('utf-8');
-			$mailMessage->setHtmlAndTextBody($htmlBody, $textBody);
-			
-			// Send mail and return the result.
-			$ret = $mailService->send($mailMessage);
-			if ($ret !== true)
+			if ($replyToOk)
 			{
-				Framework::error(__METHOD__.": Unable to send mail (" . $subject . ") to " . implode(', ', $recipients->getTo()) . ".");
+				$mailMessage->setReplyTo($replyTo);
 			}
-
-			return $ret;
 		}
+			
+		$mailMessage->setSubject($subject);
+		$mailMessage->setSender($sender);
+		if (is_array($toArray) && count($toArray))
+		{
+			$mailMessage->setReceiver(implode(',', $toArray));
+		}
+		if (is_array($ccArray) && count($ccArray))
+		{
+			$mailMessage->setCc(implode(',', $ccArray));
+		}
+		if (is_array($bccArray) && count($bccArray))
+		{
+			$this->setBcc(implode(',', $bccArray));
+		}
+		$mailMessage->setEncoding('utf-8');
+		$mailMessage->setHtmlAndTextBody($htmlBody, $textBody);
+		return $mailMessage;
+	}
+
+	/**
+	 * @param MailService $mailService
+	 * @param MailMessage $mailMessage
+	 * @return boolean
+	 */
+	protected function sendMailMessage($mailService, $mailMessage)
+	{
+		$ret = $mailService->send($mailMessage);
+		if ($ret !== true)
+		{
+			Framework::error(__METHOD__.": Unable to send mail (" . $mailMessage->getSubject() . ") to " .$mailMessage->getReceiver() . ".");
+			return false;
+		}
+		return true;		
 	}
 	
 	/**
