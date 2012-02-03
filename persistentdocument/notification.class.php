@@ -185,4 +185,111 @@ class notification_persistentdocument_notification extends notification_persiste
 	{
 		return $this->sendingMailService;
 	}
+	
+	private $callbackFunctions = array();
+	private $callbackParams = array();
+	
+	private $globalParams = array();
+	
+	/**
+	 * @param object|string $object
+	 * @param string $methodName
+	 * @param array<string, mixed> $params
+	 * @return notification_persistentdocument_notification
+	 */
+	public function registerCallback($object, $methodName, $params)
+	{
+		$key = (is_string($object) ? $object : get_class($object)) . '::'.$methodName;
+		$this->callbackFunctions[$key] = array($object, $methodName);
+		$this->callbackParams[$key] = $params;
+		return $this;
+	}
+	
+	/**
+	 * @param object|string $object
+	 * @param string $methodName
+	 */
+	public function unregisterCallback($object, $methodName)
+	{
+		$key = (is_string($object) ? $object : get_class($object)) . '::'.$methodName;
+		unset($this->callbackFunctions[$key]);
+		unset($this->callbackParams[$key]);
+	}
+	
+	public function unregisterAllCallback()
+	{
+		$this->callbackFunctions = array();
+		$this->callbackParams = array();
+	}
+	
+	/**
+	 * @param string $name
+	 * @param string $value
+	 * @return notification_persistentdocument_notification
+	 */
+	public function addGlobalParam($name, $value)
+	{
+		$this->globalParams[$name] = $value;
+		return $this;
+	}
+	
+	/**
+	 */
+	public function removeAllGlobalParam()
+	{
+		$this->globalParams = array();
+	}
+	
+	/**
+	 * @param string $to
+	 * @return boolean
+	 */
+	public function send($to)
+	{
+		if (!empty($to))
+		{
+			$cf = $this->callbackFunctions;
+			$cp = $this->callbackParams;
+			$this->unregisterAllCallback();
+			return $this->getDocumentService()->buildParamsAndSend($this, $to, $this->globalParams, $cf, $cp);
+		}
+		return false;
+	}
+	
+	/**
+	 * @param users_persistentdocument_user $user
+	 * @return boolean
+	 */
+	public function sendToUser($user)
+	{
+		if ($user instanceof users_persistentdocument_user && $user->isPublicated())
+		{
+			$user->getDocumentService()->registerNotificationCallback($this, $user);
+			return $this->send($user->getEmail());
+		}
+		return false;
+	}
+	
+	/**
+	 * @param contactcard_persistentdocument_contact $contact
+	 * @return boolean
+	 */
+	public function sendToContact($contact)
+	{
+		$result = false;
+		if ($contact instanceof  contactcard_persistentdocument_contact && $contact->isPublicated())
+		{
+			$emails = $contact->getEmailAddresses();
+			if (count($emails))
+			{
+				$contact->getDocumentService()->registerNotificationCallback($this, $contact);
+				$result = true;
+				foreach ($emails as $email)
+				{
+					$result = $result && $this->send($email);
+				}
+			}
+		}
+		return $result;
+	}
 }

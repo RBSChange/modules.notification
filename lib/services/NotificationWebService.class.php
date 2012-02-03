@@ -29,24 +29,31 @@ class notification_NotificationWebService extends webservices_WebServiceBase
 		if ($website !== null)
 		{
 			$wsm->setCurrentWebsite($website);
-			$websiteId = $website->getId();
 		}
+		
 		$ns = notification_NotificationService::getInstance();
-		$notification = $ns->getByCodeName($notificationCode, $websiteId);
+		$notification = $ns->getConfiguredByCodeName($notificationCode);
 		if ($notification === null)
 		{
-			return false;
+			throw new Exception("Notification $notificationCode not found");
 		}
+		
+		$notification->setSendingSenderEmail($senderEmail);
+		$notification->setSendingModuleName($senderModuleName);
+		$notification->setSendingReplyTo($replyTo);
 		if (is_array($replacementArrayKeys) && is_array($replacementArrayValues) && count($replacementArrayKeys) === count($replacementArrayValues))
 		{
 			$replacementArray = array_combine($replacementArrayKeys, $replacementArrayValues);
+			foreach ($replacementArray as $key => $value)
+			{
+				$notification->addGlobalParam($key, $value);
+			}
 		}
-		else 
+		$result = true;
+		foreach ($destEmailArray as $to)
 		{
-			$replacementArray = array();
-		}
-		$recipients = new mail_MessageRecipients();
-		$recipients->setTo($destEmailArray);
-		return $ns->send($notification, $recipients, $replacementArray, $senderModuleName, $replyTo, $senderEmail);
+			$result = $result && $notification->send($to);
+		}		
+		return $result;
 	}
 }

@@ -9,6 +9,11 @@ class notification_ModuleService extends ModuleBaseService
 	 * @var notification_ModuleService
 	 */
 	private static $instance = null;
+	
+	/**
+	 * @var string
+	 */
+	private $logFilePath;
 
 	/**
 	 * @return notification_ModuleService
@@ -20,5 +25,26 @@ class notification_ModuleService extends ModuleBaseService
 			self::$instance = self::getServiceClassInstance(get_class());
 		}
 		return self::$instance;
+	}
+	
+	protected function __construct()
+	{
+		parent::__construct();
+		if (Framework::inDevelopmentMode() || Framework::isInfoEnabled())
+		{
+			$this->logFilePath = f_util_FileUtils::buildWebeditPath('log', 'notification', 'notification.log');
+			if (!file_exists($this->logFilePath))
+			{
+				f_util_FileUtils::writeAndCreateContainer($this->logFilePath, gmdate('Y-m-d H:i:s')."\t Created");
+			}
+		}
+	}
+	
+	public function log($stringLine)
+	{
+		if ($this->logFilePath !== null)
+		{
+			error_log("\n". gmdate('Y-m-d H:i:s')."\t".$stringLine, 3, $this->logFilePath);
+		}
 	}
 }
