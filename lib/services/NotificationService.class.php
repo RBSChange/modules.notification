@@ -220,7 +220,7 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 		// Construct the sender.
 		if (!empty($senderName))
 		{
-			return $senderName . ' < ' . $senderEmail . ' >';
+			return '"' . $senderName . '" < ' . $senderEmail . ' >';
 		}
 		return $senderEmail;
 	}
