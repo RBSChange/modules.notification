@@ -35,7 +35,7 @@ class notification_ModuleService extends ModuleBaseService
 			$this->logFilePath = f_util_FileUtils::buildWebeditPath('log', 'notification', 'notification.log');
 			if (!file_exists($this->logFilePath))
 			{
-				f_util_FileUtils::writeAndCreateContainer($this->logFilePath, gmdate('Y-m-d H:i:s')."\t Created");
+				f_util_FileUtils::writeAndCreateContainer($this->logFilePath, gmdate('Y-m-d H:i:s')."\t Created" . PHP_EOL);
 			}
 		}
 	}
@@ -44,7 +44,7 @@ class notification_ModuleService extends ModuleBaseService
 	{
 		if ($this->logFilePath !== null)
 		{
-			error_log("\n". gmdate('Y-m-d H:i:s')."\t".$stringLine, 3, $this->logFilePath);
+			error_log(gmdate('Y-m-d H:i:s')."\t".$stringLine . PHP_EOL, 3, $this->logFilePath);
 		}
 	}
 }
