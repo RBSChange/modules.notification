@@ -491,10 +491,6 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 		{
 			$replacements['website-url'] = website_WebsiteModuleService::getInstance()->getCurrentWebsite()->getUrl();
 		}
-		if (!isset($replacements['company-name']))
-		{
-			$replacements['company-name'] = Framework::getCompanyName();
-		}
 		return $replacements;
 	}
 	
