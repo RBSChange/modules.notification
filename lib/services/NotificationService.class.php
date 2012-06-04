@@ -270,7 +270,7 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 			$textTemplate = TemplateLoader::getInstance()->setPackageName('modules_notification')->setMimeContentType('txt')->load($notification->getTemplate());
 			$textTemplate->setAttribute('notification', $attributes);
 			$textTemplate->setAttribute('replacement', $replacementArray);
-			$textBody = f_util_StringUtils::htmlToText($textTemplate->execute());
+			$textBody = f_util_HtmlUtils::htmlToText($textTemplate->execute());
 		}
 		catch (TemplateNotFoundException $e)
 		{
