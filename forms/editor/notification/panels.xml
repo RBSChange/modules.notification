@@ -2,8 +2,8 @@
 <panels>
 	<panel name="resume" />
 	<panel name="properties" />
-	<panel name="publication" />
 	<panel name="localization" />
+	<panel name="publication" />
 	<panel name="history" />
 	<panel name="sitenotifications" labeli18n="m.notification.bo.doceditor.sitenotif-panel.tab-title" icon="document" />
 	<panel name="create" />

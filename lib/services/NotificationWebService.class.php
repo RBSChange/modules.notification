@@ -2,15 +2,15 @@
 class notification_NotificationWebService extends webservices_WebServiceBase
 {
 	/**
-	 * @param string $notificationCode
-	 * @param string $domainName
-	 * @param string $lang
-	 * @param string[] $destEmailArray
-	 * @param string[] $replacementArrayKeys
-	 * @param string[] $replacementArrayValues
-	 * @param string $senderModuleName
-	 * @param string $replyTo
-	 * @param string $senderEmail
+	 * @param string wstificationCode
+	 * @param string wsmainName
+	 * @param string wsng
+	 * @param string[] wsstEmailArray
+	 * @param string[] wsplacementArrayKeys
+	 * @param string[] wsplacementArrayValues
+	 * @param string wsnderModuleName
+	 * @param string wsplyTo
+	 * @param string wsnderEmail
 	 * @return boolean
 	 */
 	public function send($notificationCode, $domainName, $lang, $destEmailArray, $replacementArrayKeys, $replacementArrayValues , $senderModuleName, $replyTo, $senderEmail)
@@ -24,28 +24,36 @@ class notification_NotificationWebService extends webservices_WebServiceBase
 		}
 		$this->setLang($lang);
 		$websiteId = null;
-		$wsm = website_WebsiteService::getInstance();
-		$website = $wsm->getByUrl($domainName);
+		$ws = website_WebsiteService::getInstance();
+		$website = $ws->getByUrl($domainName);
 		if ($website !== null)
 		{
-			$wsm->setCurrentWebsite($website);
-			$websiteId = $website->getId();
+			$ws->setCurrentWebsite($website);
 		}
+		
 		$ns = notification_NotificationService::getInstance();
-		$notification = $ns->getByCodeName($notificationCode, $websiteId);
+		$notification = $ns->getConfiguredByCodeName($notificationCode);
 		if ($notification === null)
 		{
-			return false;
+			throw new Exception("Notification $notificationCode not found");
 		}
+		
+		$notification->setSendingSenderEmail($senderEmail);
+		$notification->setSendingModuleName($senderModuleName);
+		$notification->setSendingReplyTo($replyTo);
 		if (is_array($replacementArrayKeys) && is_array($replacementArrayValues) && count($replacementArrayKeys) === count($replacementArrayValues))
 		{
 			$replacementArray = array_combine($replacementArrayKeys, $replacementArrayValues);
+			foreach ($replacementArray as $key => $value)
+			{
+				$notification->addGlobalParam($key, $value);
+			}
 		}
-		else 
+		$result = true;
+		foreach ($destEmailArray as $to)
 		{
-			$replacementArray = array();
-		}
-		$recipients = change_MailService::getInstance()->getRecipientsArray($destEmailArray);
-		return $ns->send($notification, $recipients, $replacementArray, $senderModuleName, $replyTo, $senderEmail);
+			$result = $result && $notification->send($to);
+		}		
+		return $result;
 	}
 }

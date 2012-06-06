@@ -69,14 +69,35 @@
 					toolbar.clearTextTemplate();
 					if (availableparameters)
 					{
-						var parameters = availableparameters.split(/\s|,/);
+						var parameters = null;
+						if (availableparameters.search(/\n/) != -1)
+						{
+							parameters = availableparameters.split(/\n/);
+						}
+						else
+						{
+							parameters = availableparameters.split(/\s|,/);
+						}
+						
 						for (var i = 0; i < parameters.length; i++)
 						{
-							var param = parameters[i];
-							if (param.length > 0)
+							var tpl = parameters[i];
+							if (tpl.length > 0)
 							{
-								if (param[0] != '{') {param = '{' + param + '}';}
-								toolbar.addTextTemplate(param, param);
+								var lab = tpl;
+								if (tpl[0] != '{') 
+								{
+									tpl = '{' + tpl + '}';	
+								}
+								else
+								{
+									var parts = tpl.match(/^(\{[^}]+\})/);
+									if (parts.length == 2)
+									{
+										tpl = parts[1];
+									}
+								}
+								toolbar.addTextTemplate(lab, tpl);
 							}
 						}
 					}
