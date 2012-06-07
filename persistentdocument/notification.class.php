@@ -27,8 +27,7 @@ class notification_persistentdocument_notification extends notification_persiste
 	 */
 	public function setSenderUsername($userName)
 	{
-		$senderHost = (defined('MOD_NOTIFICATION_SENDER_HOST') ? MOD_NOTIFICATION_SENDER_HOST : Framework::getDefaultSenderHost());
-		$this->setSenderEmail($userName . '@' . $senderHost);
+		$this->setSenderEmail($userName . '@' . Framework::getDefaultSenderHost());
 	}
 	
 	/**

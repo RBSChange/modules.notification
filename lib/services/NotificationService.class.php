@@ -367,10 +367,11 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 		if (empty($senderEmail))
 		{
 			$senderEmail = $notification->getSenderEmail();
-		}			
+		}	
+				
 		if (empty($senderEmail))
 		{
-			$senderEmail = defined('MOD_NOTIFICATION_SENDER') ? MOD_NOTIFICATION_SENDER : Framework::getDefaultNoReplySender();
+			$senderEmail = Framework::getDefaultNoReplySender();
 		}
 		
 		// Get the sender name...
@@ -378,7 +379,8 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 		if (empty($senderName))
 		{
 			$senderName = $notification->getSenderName();
-		}			
+		}	
+				
 		if (empty($senderName))
 		{
 			$senderName = Framework::getConfigurationValue('modules/notification/defaultSenderName');
