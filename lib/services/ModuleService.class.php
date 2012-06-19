@@ -1,31 +1,14 @@
 <?php
 /**
- * @package modules.notification.lib.services
+ * @package modules.notification
+ * @method notification_ModuleService getInstance()
  */
 class notification_ModuleService extends ModuleBaseService
-{
-	/**
-	 * Singleton
-	 * @var notification_ModuleService
-	 */
-	private static $instance = null;
-	
+{	
 	/**
 	 * @var string
 	 */
 	private $logFilePath;
-	
-	/**
-	 * @return notification_ModuleService
-	 */
-	public static function getInstance()
-	{
-		if (is_null(self::$instance))
-		{
-			self::$instance = self::getServiceClassInstance(get_class());
-		}
-		return self::$instance;
-	}
 	
 	protected function __construct()
 	{

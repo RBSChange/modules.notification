@@ -3,7 +3,7 @@
  * @author intbonjf
  * @date Wed Jul 18 10:10:07 CEST 2007
  */
-class notification_ListTemplatesService extends BaseService implements list_ListItemsService
+class notification_ListTemplatesService extends change_BaseService implements list_ListItemsService
 {
 	/**
 	 * @var notification_ListTemplatesService
