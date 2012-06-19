@@ -6,11 +6,11 @@ class notification_Setup extends object_InitDataSetup
 		try
 		{
 			$scriptReader = import_ScriptReader::getInstance();
-       	 	$scriptReader->executeModuleScript('notification', 'init.xml');
-       	 	if (ModuleService::getInstance()->moduleExists('webservices'))
-       	 	{
-       	 		$scriptReader->executeModuleScript('notification', 'webservices.xml');
-       	 	}
+	   	 	$scriptReader->executeModuleScript('notification', 'init.xml');
+	   	 	if (ModuleService::getInstance()->moduleExists('webservices'))
+	   	 	{
+	   	 		$scriptReader->executeModuleScript('notification', 'webservices.xml');
+	   	 	}
 		}
 		catch (Exception $e)
 		{

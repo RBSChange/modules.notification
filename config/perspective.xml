@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <perspective>
 	<models>
 		<model name="modules_generic/rootfolder">
@@ -9,10 +9,10 @@
 			</children>
 			<columns>
 				<column name="codename" flex="1" />
-			</columns>			
+			</columns>
 			<drops>
-				<drop model="modules_notification/notification" action="move"/>
-				<drop model="modules_generic/folder" action="move"/>
+				<drop model="modules_notification/notification" action="move" />
+				<drop model="modules_generic/folder" action="move" />
 			</drops>
 			<contextactions>
 				<contextaction name="edit" />
@@ -29,10 +29,10 @@
 			</children>
 			<columns>
 				<column name="codename" flex="1" />
-			</columns>	
+			</columns>
 			<drops>
-				<drop model="modules_notification/notification" action="move"/>
-				<drop model="modules_generic/folder" action="move"/>
+				<drop model="modules_notification/notification" action="move" />
+				<drop model="modules_generic/folder" action="move" />
 			</drops>
 			<contextactions>
 				<contextaction name="edit" />
@@ -49,7 +49,7 @@
 			</children>
 			<columns>
 				<column name="codename" flex="1" />
-			</columns>	
+			</columns>
 			<contextactions>
 				<contextaction name="edit" />
 				<contextaction name="delete" />
@@ -69,17 +69,17 @@
 		</model>
 	</models>
 	<toolbar>
-		<toolbarbutton name="edit"/>
-		<toolbarbutton name="delete"/>
-		<toolbarbutton name="deactivated"/>
-		<toolbarbutton name="reactivate"/>
+		<toolbarbutton name="edit" />
+		<toolbarbutton name="delete" />
+		<toolbarbutton name="deactivated" />
+		<toolbarbutton name="reactivate" />
 	</toolbar>
 	<actions>
 		<action name="refresh" single="true" icon="refresh" labeli18n="m.uixul.bo.actions.refresh" />
 		<action name="edit" single="true" permission="Load" icon="edit" labeli18n="m.uixul.bo.actions.edit" />
 		<action name="delete" permission="Delete" icon="delete" labeli18n="m.uixul.bo.actions.delete" />
-		<action name="deactivated" permission="Deactivated" icon="deactivated" labeli18n="m.uixul.bo.actions.deactivate"/>
-		<action name="reactivate" permission="ReActivate" icon="reactivate" labeli18n="m.uixul.bo.actions.reactivate"/>
+		<action name="deactivated" permission="Deactivated" icon="deactivated" labeli18n="m.uixul.bo.actions.deactivate" />
+		<action name="reactivate" permission="ReActivate" icon="reactivate" labeli18n="m.uixul.bo.actions.reactivate" />
 		<action name="openFolder" single="true" icon="open-folder" labeli18n="m.uixul.bo.actions.openfolder" />
 		<action name="openTreeNodeOrder" single="true" permission="Order" icon="sort" labeli18n="m.uixul.bo.actions.set-children-order" />
 		<action name="createNotification" single="true" permission="Insert_notification" icon="add" labeli18n="m.notification.bo.actions.create-notification" />

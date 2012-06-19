@@ -16,33 +16,29 @@
 	<section labeli18n="m.notification.document.notification.description" class="toggle" hidden="true">
 		<field name="description" />
 	</section>
-	<fieldinput name="availableparameters" type="hidden"/>
+	<fieldinput name="availableparameters" type="hidden" />
 	<xul>
 		<javascript>
 			<field name="mPreviewButton">null</field>
-			
 			<constructor><![CDATA[				
-				this.mPreviewButton = this.addActionButton('${transui: m.notification.bo.actions.previewnotificationfromlist,ucf}', wToolkit.getIcon('preview', 'small'));
+				this.mPreviewButton = this.addActionButton('${trans: m.notification.bo.actions.previewnotificationfromlist,ucf}', wToolkit.getIcon('preview', 'small'));
 				var me = this;
 				this.mPreviewButton.addEventListener('command', function(event) { me.onPreview(); }, true);			
 				this.extendMethod('updateCommandsUI', this.updatePreviewUI);
 				this.extendMethod('fireInitializeComplete', this.fireInitializeCompleteExtend);
 			]]></constructor>
-			
 			<method name="updatePreviewUI">
 				<parameter name="event" />
 				<body><![CDATA[
 					this.mPreviewButton.disabled = this.modified;
 				]]></body>
 			</method>
-
 			<method name="onPreview">
 				<parameter name="event" />
 				<body><![CDATA[
 					this.documentEditor.module.previewNotification(this.documentEditor.documentid, this.mLang);
 				]]></body>
 			</method>
-			
 			<method name="fireInitializeCompleteExtend">
 				<parameter name="result" />
 				<body><![CDATA[
@@ -60,7 +56,6 @@
 					}
 				]]></body>
 			</method>
-			
 			<method name="setTextTemplate">
 				<parameter name="field" />
 				<parameter name="availableparameters" />
@@ -102,7 +97,7 @@
 						}
 					}
 				]]></body>
-			</method>					
+			</method>
 		</javascript>
 	</xul>
 </panel>

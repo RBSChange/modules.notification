@@ -6,7 +6,7 @@
 class notification_persistentdocument_notification extends notification_persistentdocument_notificationbase
 {
 	/**
-	 * @return Boolean
+	 * @return boolean
 	 */
 	public function canBeDeleted()
 	{
@@ -14,7 +14,7 @@ class notification_persistentdocument_notification extends notification_persiste
 	}
 	
 	/**
-	 * @return String
+	 * @return string
 	 */
 	public function getSenderUsername()
 	{
@@ -23,7 +23,7 @@ class notification_persistentdocument_notification extends notification_persiste
 	}
 	
 	/**
-	 * @param String $userName
+	 * @param string $userName
 	 */
 	public function setSenderUsername($userName)
 	{

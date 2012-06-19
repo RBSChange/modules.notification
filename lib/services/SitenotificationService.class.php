@@ -1,27 +1,10 @@
 <?php
 /**
- * notification_SitenotificationService
- * @package notification
+ * @package modules.notification
+ * @method notification_SitenotificationService getInstance()
  */
 class notification_SitenotificationService extends notification_NotificationService
 {
-	/**
-	 * @var notification_SitenotificationService
-	 */
-	private static $instance;
-
-	/**
-	 * @return notification_SitenotificationService
-	 */
-	public static function getInstance()
-	{
-		if (self::$instance === null)
-		{
-			self::$instance = new self();
-		}
-		return self::$instance;
-	}
-
 	/**
 	 * @return notification_persistentdocument_sitenotification
 	 */
@@ -36,7 +19,7 @@ class notification_SitenotificationService extends notification_NotificationServ
 	 */
 	public function createQuery()
 	{
-		return $this->pp->createQuery('modules_notification/sitenotification');
+		return $this->getPersistentProvider()->createQuery('modules_notification/sitenotification');
 	}
 	
 	/**
@@ -69,7 +52,7 @@ class notification_SitenotificationService extends notification_NotificationServ
 	
 	/**
 	 * @param notification_persistentdocument_sitenotification $document
-	 * @param Integer $parentNodeId Parent node ID where to save the document (optionnal => can be null !).
+	 * @param integer $parentNodeId Parent node ID where to save the document (optionnal => can be null !).
 	 * @return void
 	 */
 	protected function preSave($document, $parentNodeId = null)
@@ -129,7 +112,7 @@ class notification_SitenotificationService extends notification_NotificationServ
 			'parentLabel' => ($parent->isContextLangAvailable() ? $parent->getLabel() : $parent->getVoLabel()),
 			'siteLabel' => ($website->isContextLangAvailable() ? $website->getLabel() : $website->getVoLabel())
 		);
-		$document->setLabel(LocaleService::getInstance()->transBO('m.notification.bo.general.sitenotification-label-template', array('ucf'), $subst));
+		$document->setLabel(LocaleService::getInstance()->trans('m.notification.bo.general.sitenotification-label-template', array('ucf'), $subst));
 		$document->setCodename($parent->getCodename().'/'.$website->getId());
 		if ($document->getAvailableparameters() == null)
 		{

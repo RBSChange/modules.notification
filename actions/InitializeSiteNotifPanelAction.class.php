@@ -31,7 +31,7 @@ class notification_InitializeSiteNotifPanelAction extends change_JSONAction
 				'status' => $notif->getPublicationstatus(),
 				'langs' => implode(', ', $notif->getI18nInfo()->getLangs()),
 				'websiteid' => $website->getId(), 
-				'website' => ($website->isLangAvailable($lang) ? $website->getLabel() : ($website->getVoLabel() . ' [' . $ls->transBO('m.uixul.bo.languages.' . $website->getLang(), array('ucf')) . ']')),
+				'website' => ($website->isLangAvailable($lang) ? $website->getLabel() : ($website->getVoLabel() . ' [' . $ls->trans('m.uixul.bo.languages.' . $website->getLang(), array('ucf')) . ']')),
 			);
 			$nodes[] = $info;
 		}

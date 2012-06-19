@@ -11,5 +11,5 @@ class notification_SiteNotificationListener
 		{
 			notification_SitenotificationService::getInstance()->refreshRelatedNotificationsByWebsite($params['document']);
 		}
-	}	
+	}
 }

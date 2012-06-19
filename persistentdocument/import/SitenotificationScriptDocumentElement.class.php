@@ -5,11 +5,11 @@
  */
 class notification_SitenotificationScriptDocumentElement extends import_ScriptDocumentElement
 {
-    /**
-     * @return notification_persistentdocument_sitenotification
-     */
-    protected function initPersistentDocument()
-    {
-    	return notification_SitenotificationService::getInstance()->getNewDocumentInstance();
-    }
+	/**
+	 * @return notification_persistentdocument_sitenotification
+	 */
+	protected function initPersistentDocument()
+	{
+		return notification_SitenotificationService::getInstance()->getNewDocumentInstance();
+	}
 }

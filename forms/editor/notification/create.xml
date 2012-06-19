@@ -3,7 +3,7 @@
 	<section labeli18n="m.notification.bo.general.general">
 		<field name="label" />
 		<field name="codename" />
-		<field name="availableparameters"/>
+		<field name="availableparameters" />
 		<field name="subject" />
 		<field name="body" />
 		<field name="template" />

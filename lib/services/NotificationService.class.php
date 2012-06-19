@@ -1,26 +1,10 @@
 <?php
 /**
  * @package modules.notification
+ * @method notification_NotificationService getInstance()
  */
 class notification_NotificationService extends f_persistentdocument_DocumentService
 {
-	/**
-	 * @var notification_NotificationService
-	 */
-	private static $instance;
-
-	/**
-	 * @return notification_NotificationService
-	 */
-	public static function getInstance()
-	{
-		if (self::$instance === null)
-		{
-			self::$instance = new self();
-		}
-		return self::$instance;
-	}
-
 	/**
 	 * @return notification_persistentdocument_notification
 	 */
@@ -35,7 +19,7 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 	 */
 	public function createQuery()
 	{
-		return $this->pp->createQuery('modules_notification/notification');
+		return $this->getPersistentProvider()->createQuery('modules_notification/notification');
 	}
 	
 	/**
@@ -46,7 +30,7 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 	 */
 	public function createStrictQuery()
 	{
-		return $this->pp->createQuery('modules_notification/notification', false);
+		return $this->getPersistentProvider()->createQuery('modules_notification/notification', false);
 	}
 		
 	/**
@@ -367,8 +351,8 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 		if (empty($senderEmail))
 		{
 			$senderEmail = $notification->getSenderEmail();
-		}	
-				
+		}
+		
 		if (empty($senderEmail))
 		{
 			$senderEmail = Framework::getDefaultNoReplySender();
@@ -380,7 +364,7 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 		{
 			$senderName = $notification->getSenderName();
 		}	
-				
+		
 		if (empty($senderName))
 		{
 			$senderName = Framework::getConfigurationValue('modules/notification/defaultSenderName');
@@ -498,7 +482,7 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 	
 	/**
 	 * @param notification_persistentdocument_notification $document
-	 * @param Integer $parentNodeId Parent node ID where to save the document (optionnal => can be null !).
+	 * @param integer $parentNodeId Parent node ID where to save the document (optionnal => can be null !).
 	 * @return void
 	 */
 	protected function preSave($document, $parentNodeId = null)
@@ -513,7 +497,7 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 	
 	/**
 	 * @param notification_persistentdocument_notification $document
-	 * @param Integer $parentNodeId Parent node ID where to save the document (optionnal => can be null !).
+	 * @param integer $parentNodeId Parent node ID where to save the document (optionnal => can be null !).
 	 * @return void
 	 */
 	protected function postSave($document, $parentNodeId = null)
@@ -569,7 +553,7 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 		if ($mode & DocumentHelper::MODE_CUSTOM)
 		{
 			$attributes['publicationstatus'] = $document->getPublicationstatus();
-	    	$attributes['codename'] = $document->getCodename();
+			$attributes['codename'] = $document->getCodename();
 		}
 	}
 	
@@ -725,7 +709,7 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 		
 		$query = $this->createQuery();
 		$query->add(Restrictions::published());
-				
+		
 		// Get the specialized notification if exists, else get the base one.
 		if ($websiteId !== null)
 		{

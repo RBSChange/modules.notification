@@ -10,22 +10,20 @@
 		<field name="footer" />
 		<field name="senderEmail" />
 	</section>
-	<fieldinput name="availableparameters" type="hidden"/>
-	<fieldinput name="website" type="hidden"/>
+	<fieldinput name="availableparameters" type="hidden" />
+	<fieldinput name="website" type="hidden" />
 	<xul>
 		<javascript>
 			<constructor><![CDATA[
 				this.extendMethod('updateCommandsUI', this.updateCommandsUIExtend);
 				this.extendMethod('fireInitializeComplete', this.fireInitializeCompleteExtend);
 			]]></constructor>
-			
 			<method name="updateCommandsUIExtend">
 				<parameter name="event" />
 				<body><![CDATA[
 					this.getElementByAnonId('save_properties').disabled = this.error;
 				]]></body>
 			</method>
-			
 			<method name="fireInitializeCompleteExtend">
 				<parameter name="result" />
 				<body><![CDATA[
@@ -48,7 +46,6 @@
 					}
 				]]></body>
 			</method>
-			
 			<method name="setTextTemplate">
 				<parameter name="field" />
 				<parameter name="availableparameters" />
@@ -70,7 +67,6 @@
 					}
 				]]></body>
 			</method>
-								
 			<method name="prepareInitializeValues">
 				<parameter name="values" />
 				<body><![CDATA[
@@ -80,7 +76,6 @@
 					}
 				]]></body>
 			</method>
-
 			<method name="preparePropertiesValues">
 				<parameter name="values" />
 				<body><![CDATA[

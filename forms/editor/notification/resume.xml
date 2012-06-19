@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <panel>
 	<section name="description" labeli18n="m.notification.document.notification.description" image="{IconsBase}/small/information.png" />
 	<section name="properties" linkedtab="properties" labeli18n="m.uixul.bo.doceditor.section.properties" image="{IconsBase}/small/edit-properties.png">
@@ -21,7 +21,6 @@
 			<constructor><![CDATA[
 				this.extendMethod('fireInitializeComplete', this.fireInitializeCompleteExtend);
 			]]></constructor>
-			
 			<method name="fireInitializeCompleteExtend">
 				<parameter name="result" />
 				<body><![CDATA[
