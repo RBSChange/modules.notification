@@ -272,8 +272,16 @@ class notification_persistentdocument_notification extends notification_persiste
 	 */
 	public function sendToUser($user)
 	{
-		if ($user instanceof users_persistentdocument_user && $user->isPublished())
+		if ($user instanceof users_persistentdocument_user)
 		{
+			if (!$user->isPublished())
+			{
+				if (Framework::isInfoEnabled())
+				{
+					Framework::info(__METHOD__ . ' Skip sending to unpublished user ' . $user->getId());
+				}
+				return true;
+			}
 			$user->getDocumentService()->registerNotificationCallback($this, $user);
 			return $this->send($user->getEmail());
 		}
@@ -287,8 +295,16 @@ class notification_persistentdocument_notification extends notification_persiste
 	public function sendToContact($contact)
 	{
 		$result = false;
-		if ($contact instanceof contactcard_persistentdocument_contact && $contact->isPublished())
+		if ($contact instanceof contactcard_persistentdocument_contact)
 		{
+			if (!$contact->isPublished())
+			{
+				if (Framework::isInfoEnabled())
+				{
+					Framework::info(__METHOD__ . ' Skip sending to unpublished contact ' . $contact->getId());
+				}
+				return true;
+			}
 			$emails = $contact->getEmailAddresses();
 			if (count($emails))
 			{
