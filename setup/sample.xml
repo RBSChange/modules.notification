@@ -1,17 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <script>
 	<binding fileName="modules/notification/persistentdocument/import/notification_binding.xml" />
-	<rootfolder module="notification" >
+	<rootfolder module="notification">
 		<folder label="Exemple de notification">
-			<notification 
-				label="Notification de test"
-				codename="modules_notification/test"
-				availableparameters="{HOST}"
-				subject="Sujet de la notification de test"
-				header="Entete de la notification de test"
-				body="Corps de la notification de test"
-				footer="Pied de la notification de test"
-				template="default" />
+			<notification label="Notification de test" codename="modules_notification/test" availableparameters="{HOST}" subject="Sujet de la notification de test" header="Entete de la notification de test" body="Corps de la notification de test" footer="Pied de la notification de test" template="default" />
 		</folder>
 	</rootfolder>
 </script>

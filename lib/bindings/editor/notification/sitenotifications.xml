@@ -14,7 +14,7 @@
 						<xul:menulist anonid="sites" style="min-width: 250px;">
 							<xul:menupopup anonid="siteslist" />
 						</xul:menulist>
-						<xul:button disabled="true" anonid="addnotifbutton" label="${transui: m.notification.bo.doceditor.button-add-notif,ucf}"
+						<xul:button disabled="true" anonid="addnotifbutton" label="${trans: m.notification.bo.doceditor.button-add-notif,ucf}"
 							oncommand="addSiteNotif()" />
 					</xul:hbox>
 					<xul:scrollbox anonid="scrollctrl" flex="1" class="editordatacontainer" orient="vertical">
@@ -102,7 +102,7 @@
 					}
 					else
 					{
-						alert("${transui:m.notification.bo.doceditor.warning-no-website,ucf,js}");
+						alert("${trans:m.notification.bo.doceditor.warning-no-website,ucf,js}");
 					}	
 				]]></body>
 			</method>

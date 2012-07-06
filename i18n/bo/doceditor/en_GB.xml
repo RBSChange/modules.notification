@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <i18n baseKey="m.notification.bo.doceditor" lcid="en_GB">
-  <key id="button-add-notif">Add a notification</key>
-  <key id="column-actions">Actions</key>
-  <key id="column-langs">languages</key>
-  <key id="column-status">Status</key>
-  <key id="column-website">Notification website</key>
-  <key id="confirm-delete">Are you sure that you want to delete this notification?</key>
-  <key id="warning-no-website">Please select a website</key>
+	<key id="button-add-notif">Add a notification</key>
+	<key id="column-actions">Actions</key>
+	<key id="column-langs">languages</key>
+	<key id="column-status">Status</key>
+	<key id="column-website">Notification website</key>
+	<key id="confirm-delete">Are you sure that you want to delete this notification?</key>
+	<key id="warning-no-website">Please select a website</key>
 </i18n>

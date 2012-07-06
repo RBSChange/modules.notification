@@ -34,7 +34,7 @@
 				<parameter name="rowData" />
 				<body><![CDATA[
 					if (this.disabled) {return;}
-					if (confirm("${transui:m.notification.bo.doceditor.confirm-delete,ucf,js}"))
+					if (confirm("${trans:m.notification.bo.doceditor.confirm-delete,ucf,js}"))
 					{
 						var editor = this.getEditor();
 						var callBack = function(result) {editor.executeServerAction('sitenotifications', 'Initialize');};
@@ -55,9 +55,9 @@
 				<xul:rows anonid="document-rows">
 					<xul:row class="head" anonid="head-row">
 						<xul:label name="status" />
-						<xul:label name="website" value="${transui: m.notification.bo.doceditor.column-website,ucf}" />
-						<xul:label name="langs" value="${transui: m.notification.bo.doceditor.column-langs,ucf}" />
-						<xul:label name="actions" value="${transui: m.notification.bo.doceditor.column-actions,ucf}" />
+						<xul:label name="website" value="${trans: m.notification.bo.doceditor.column-website,ucf}" />
+						<xul:label name="langs" value="${trans: m.notification.bo.doceditor.column-langs,ucf}" />
+						<xul:label name="actions" value="${trans: m.notification.bo.doceditor.column-actions,ucf}" />
 					</xul:row>
 				</xul:rows>
 			</xul:grid>
@@ -67,9 +67,9 @@
 				<xul:label value="" />
 				<xul:toolbar class="actions">
 					<xul:toolbarbutton action="edit" image="{IconsBase}/small/edit.png" 
-						tooltiptext="${transui:m.uixul.bo.actions.edit,ucf,attr}" />
+						tooltiptext="${trans:m.uixul.bo.actions.edit,ucf,attr}" />
 					<xul:toolbarbutton action="delete" image="{IconsBase}/small/delete.png"
-						tooltiptext="${transui:m.uixul.bo.actions.delete,ucf,attr}" />
+						tooltiptext="${trans:m.uixul.bo.actions.delete,ucf,attr}" />
 				</xul:toolbar>
 			</xul:row>
 		</content>
@@ -115,18 +115,18 @@
 		<xbl:content>
 			<xul:vbox flex="1">
 				<xul:hbox class="dialog-header">
-					<xul:label value="${transui: m.notification.bo.general.preview-notification,ucf}" class="dialog-title" />
+					<xul:label value="${trans: m.notification.bo.general.preview-notification,ucf}" class="dialog-title" />
 					<xul:spacer flex="1" />
 					<xul:vbox pack="center">
-						<xul:toolbarbutton image="{IconsBase}/small/delete.png" oncommand="onCancel();" tooltiptexts="${transui: m.uixul.bo.dialog.cancel,ucf}" />
+						<xul:toolbarbutton image="{IconsBase}/small/delete.png" oncommand="onCancel();" tooltiptexts="${trans: m.uixul.bo.dialog.cancel,ucf}" />
 					</xul:vbox>
 				</xul:hbox>
 				<xul:vbox flex="1">
 					<xul:tabbox flex="1">
 						<xul:tabs anonid="tabs">
-							<xul:tab label="${transui: m.notification.bo.general.tab-html,ucf}" image="{IconsBase}/small/preview.png" />
-							<xul:tab label="${transui: m.notification.bo.general.tab-text,ucf}" image="{IconsBase}/small/text.png" />
-							<xul:tab label="${transui: m.notification.bo.general.tab-send,ucf}" image="{IconsBase}/small/mail.png" />
+							<xul:tab label="${trans: m.notification.bo.general.tab-html,ucf}" image="{IconsBase}/small/preview.png" />
+							<xul:tab label="${trans: m.notification.bo.general.tab-text,ucf}" image="{IconsBase}/small/text.png" />
+							<xul:tab label="${trans: m.notification.bo.general.tab-send,ucf}" image="{IconsBase}/small/mail.png" />
 						</xul:tabs>
 						<xul:tabpanels flex="1">
 							<xul:tabpanel flex="1">
@@ -137,11 +137,11 @@
 							</xul:tabpanel>
 							<xul:tabpanel flex="1">
 								<xul:vbox>
-									<xul:label control="your-name">${transui: m.notification.bo.general.email-adresses,ucf,lab}</xul:label>
+									<xul:label control="your-name">${trans: m.notification.bo.general.email-adresses,ucf,lab}</xul:label>
 									<xul:textbox id="cPreviewNotificationDialog-emails" anonid="emails" multiline="true" rows="15" />
 									<xul:hbox pack="end" align="center">
 										<xul:button image="{IconsBase}/small/sending.png" oncommand="onSend();"
-											label="${transui: m.notification.bo.general.send-test-notification,ucf,attr}" />
+											label="${trans: m.notification.bo.general.send-test-notification,ucf,attr}" />
 									</xul:hbox>
 								</xul:vbox>
 							</xul:tabpanel>

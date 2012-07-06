@@ -2,10 +2,8 @@
 <script>
 	<binding fileName="modules/list/persistentdocument/import/list_binding.xml" />
 	<binding fileName="modules/generic/persistentdocument/import/generic_binding.xml" />
-
 	<systemfolder module="list" relatedmodule="notification">
-		<dynamiclist listid="modules_notification/templates"
-			label="Liste des templates" description="Liste des templates">
+		<dynamiclist listid="modules_notification/templates" label="Liste des templates" description="Liste des templates">
 		</dynamiclist>
 	</systemfolder>
 </script>

@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document xmlns="http://www.rbs.fr/schema/change-document/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.rbs.fr/schema/change-document/1.0 http://www.rbschange.fr/static/schema/change-document/4.0.xsd" model-version="1.0" icon="notification" has-url="false" indexable="false" use-publication-dates="false">
+<document xmlns="http://www.rbs.fr/schema/change-document/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.rbs.fr/schema/change-document/1.0 http://www.rbschange.fr/schema/persistentdocument-4.0.xsd" model-version="1.0" icon="notification" has-url="false" indexable="false" use-publication-dates="false">
 	<properties>
-		<property name="codename" type="String" min-occurs="1">
+		<property name="codename" type="String" required="true">
 			<constraint name="unique" propertyName="codename" modelName="modules_notification/notification" />
 		</property>
 		<property name="availableparameters" type="LongString" />
-		<property name="subject" type="String" min-occurs="1" localized="true" />
-		<property name="body" type="XHTMLFragment" min-occurs="1" localized="true" />
+		<property name="subject" type="String" localized="true" required="true" />
+		<property name="body" type="XHTMLFragment" localized="true" required="true" />
 		<property name="header" type="XHTMLFragment" localized="true" indexed="none" />
 		<property name="footer" type="XHTMLFragment" localized="true" indexed="none" />
-		<property name="template" type="String" min-occurs="1" localized="true" from-list="modules_notification/templates" default-value="default" indexed="none" />
+		<property name="template" type="String" localized="true" from-list="modules_notification/templates" default-value="default" indexed="none" required="true" />
 		<property name="senderEmail" type="String" localized="true" indexed="none">
 			<constraint name="email" />
 		</property>

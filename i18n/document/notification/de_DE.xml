@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <i18n baseKey="m.notification.document.notification" lcid="de_DE">
 	<key id="edition-form-title">Bearbeitung einer Benachrichtigung</key>
 	<key id="document-name">Benachrichtigung</key>

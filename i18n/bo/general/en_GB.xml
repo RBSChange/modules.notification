@@ -1,17 +1,17 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <i18n baseKey="m.notification.bo.general" lcid="en_GB">
-  <key id="module-name">notification</key>
-  <key id="tree-root-name">notification</key>
-  <key id="system-folder-name">notification</key>
-  <key id="general">main properties</key>
-  <key id="advanced">advanced properties</key>
-  <key id="error-must-be-unique">the {parentLabel} notification is already specialised for the {siteLabel} website.</key>
-  <key id="sitenotification-label-template">{parentLabel} ({siteLabel})</key>
-  <key id="email-adresses">email addresses (one per line) which you want to send the test notification to</key>
-  <key id="error-sending-mails">An error occurred while sending the emails.</key>
-  <key id="preview-notification">preview a notification</key>
-  <key id="send-test-notification">sending the test notification</key>
-  <key id="tab-html">HTML version</key>
-  <key id="tab-send">test sending</key>
-  <key id="tab-text">text version</key>
+	<key id="module-name">notification</key>
+	<key id="tree-root-name">notification</key>
+	<key id="system-folder-name">notification</key>
+	<key id="general">main properties</key>
+	<key id="advanced">advanced properties</key>
+	<key id="error-must-be-unique">the {parentLabel} notification is already specialised for the {siteLabel} website.</key>
+	<key id="sitenotification-label-template">{parentLabel} ({siteLabel})</key>
+	<key id="email-adresses">email addresses (one per line) which you want to send the test notification to</key>
+	<key id="error-sending-mails">An error occurred while sending the emails.</key>
+	<key id="preview-notification">preview a notification</key>
+	<key id="send-test-notification">sending the test notification</key>
+	<key id="tab-html">HTML version</key>
+	<key id="tab-send">test sending</key>
+	<key id="tab-text">text version</key>
 </i18n>

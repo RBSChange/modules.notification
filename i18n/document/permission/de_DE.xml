@@ -1,8 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <i18n baseKey="m.notification.document.permission" lcid="de_DE">
-  <key id="edition-form-title">Verwaltung der Rechte</key>
-  <key id="permission-panel-1">Teil 1</key>
-  <key id="permission-panel-2">Teil 2</key>
-  <key id="admin">Administrator</key>
-  <key id="admin-help">Administrator</key>
+	<key id="edition-form-title">Verwaltung der Rechte</key>
+	<key id="permission-panel-1">Teil 1</key>
+	<key id="permission-panel-2">Teil 2</key>
+	<key id="admin">Administrator</key>
+	<key id="admin-help">Administrator</key>
 </i18n>

@@ -21,7 +21,7 @@
 	<action name="createSitenotification">
 		<parameter name="listWidget" />
 		<body><![CDATA[
-	    	var id = listWidget.getSelectedIds()[0];
+			var id = listWidget.getSelectedIds()[0];
 			var uri = ['notification', 'openDocument', 'modules_notification_notification', id, 'sitenotif'].join(',');
 			openActionUri(uri);
 		]]></body>

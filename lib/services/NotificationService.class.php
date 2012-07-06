@@ -409,24 +409,33 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 		$attributes['footer'] = f_util_HtmlUtils::renderHtmlFragment($footer);
 		$attributes['body'] = f_util_HtmlUtils::renderHtmlFragment($body);
 
-		$htmlTemplate = TemplateLoader::getInstance()->setPackageName('modules_notification')->setMimeContentType('html')->load($notification->getTemplate());
-		$htmlTemplate->setAttribute('notification', $attributes);
-		$htmlTemplate->setAttribute('replacement', $replacementArray);
-		$htmlBody = $htmlTemplate->execute();
-
-		try
+		$htmlTemplate = change_TemplateLoader::getNewInstance()->setExtension('html')
+			->load('modules', 'notification', 'templates', $notification->getTemplate());
+		if ($htmlTemplate !== null)
 		{
-			$textTemplate = TemplateLoader::getInstance()->setPackageName('modules_notification')->setMimeContentType('txt')->load($notification->getTemplate());
+			$htmlTemplate->setAttribute('notification', $attributes);
+			$htmlTemplate->setAttribute('replacement', $replacementArray);
+			$htmlBody = $htmlTemplate->execute();
+		}
+		else
+		{
+			Framework::error(__METHOD__ . ' Template not found: ' . $notification->getTemplate());
+			$htmlBody = '';
+		}
+		
+		$textTemplate = change_TemplateLoader::getNewInstance()->setExtension('txt')
+			->load('modules', 'notification', 'templates', $notification->getTemplate());
+		if ($textTemplate !== null)
+		{
 			$textTemplate->setAttribute('notification', $attributes);
 			$textTemplate->setAttribute('replacement', $replacementArray);
 			$textBody = f_util_HtmlUtils::htmlToText($textTemplate->execute());
 		}
-		catch (TemplateNotFoundException $e)
+		else
 		{
-			Framework::warn(__METHOD__ . " no plain text template found: " . $e->getMessage());
 			$textBody = '';
 		}
-		
+
 		return array('subject' => $subject, 'htmlBody' => $htmlBody, 'textBody' => $textBody);
 	}
 

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <i18n baseKey="m.notification.errors" lcid="de_DE">
-  <key id="modules-notification-enabled">Sie besitzen nicht die Rechte folgende Aktion durchzuführen: ″Zugang zum Modul″</key>
+	<key id="modules-notification-enabled">Sie besitzen nicht die Rechte folgende Aktion durchzuführen: ″Zugang zum Modul″</key>
 </i18n>

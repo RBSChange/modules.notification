@@ -1,8 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <i18n baseKey="m.notification.bo.actions" lcid="de_DE">
-  <key id="enable">selektierte Benachrichtigungen aktivieren</key>
-  <key id="disable">selektierte Benachrichtigungen deaktivieren</key>
-  <key id="create_">neu erstellen</key>
-  <key id="create-notification">neue Benachrichtigung erstellen</key>
-  <key id="create-sitenotification">diese Benachrichtigung spezialisieren</key>
+	<key id="enable">selektierte Benachrichtigungen aktivieren</key>
+	<key id="disable">selektierte Benachrichtigungen deaktivieren</key>
+	<key id="create_">neu erstellen</key>
+	<key id="create-notification">neue Benachrichtigung erstellen</key>
+	<key id="create-sitenotification">diese Benachrichtigung spezialisieren</key>
 </i18n>

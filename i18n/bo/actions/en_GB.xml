@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <i18n baseKey="m.notification.bo.actions" lcid="en_GB">
-  <key id="enable">enable the selected notifications</key>
-  <key id="disable">disable the selected notifications</key>
-  <key id="create_">create</key>
-  <key id="create-notification">create a notification</key>
-  <key id="create-sitenotification">specialise this notification</key>
-  <key id="previewnotificationfromlist">preview this notification</key>
+	<key id="enable">enable the selected notifications</key>
+	<key id="disable">disable the selected notifications</key>
+	<key id="create_">create</key>
+	<key id="create-notification">create a notification</key>
+	<key id="create-sitenotification">specialise this notification</key>
+	<key id="previewnotificationfromlist">preview this notification</key>
 </i18n>

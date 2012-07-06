@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <i18n baseKey="m.notification.document.sitenotification" lcid="de_DE">
 	<include id="m.notification.document.notification" />
 	<key id="edition-form-title">Bearbeitung einer spezialisierten Benachrichtigung</key>

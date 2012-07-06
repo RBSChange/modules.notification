@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <i18n baseKey="m.notification.bo.doceditor.sitenotif-panel" lcid="fr_FR">
-  <key id="tab-title">notifications par site</key>
+	<key id="tab-title">notifications par site</key>
 </i18n>

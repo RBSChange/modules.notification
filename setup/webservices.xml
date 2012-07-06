@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <script>
 	<binding fileName="modules/webservices/persistentdocument/import/webservices_binding.xml" />
-
 	<rootfolder module="webservices">
 		<folder byLabel="Notification">
 			<ws label="Envoi de notification" byPhpclass="notification_NotificationWebService" secured="true" />

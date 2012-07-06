@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <i18n baseKey="m.notification.bo.actions" lcid="fr_FR">
 	<key id="enable">activer les notifications selectionnées</key>
 	<key id="disable">désactiver les notifications selectionnées</key>

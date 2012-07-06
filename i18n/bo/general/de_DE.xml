@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <i18n baseKey="m.notification.bo.general" lcid="de_DE">
-  <key id="module-name">Benachrichtigung</key>
-  <key id="tree-root-name">Benachrichtigung</key>
-  <key id="system-folder-name">Benachrichtigung</key>
-  <key id="general">Haupteigenschaften</key>
-  <key id="advanced">fortgeschrittene Eigenschaften</key>
-  <key id="error-must-be-unique">die Benachrichtigung ″{parentLabel}″ wurde bereits für die Webseite ″{siteLabel}″ spezialisiert.</key>
-  <key id="sitenotification-label-template">{parentLabel} ({siteLabel})</key>
+	<key id="module-name">Benachrichtigung</key>
+	<key id="tree-root-name">Benachrichtigung</key>
+	<key id="system-folder-name">Benachrichtigung</key>
+	<key id="general">Haupteigenschaften</key>
+	<key id="advanced">fortgeschrittene Eigenschaften</key>
+	<key id="error-must-be-unique">die Benachrichtigung ″{parentLabel}″ wurde bereits für die Webseite ″{siteLabel}″ spezialisiert.</key>
+	<key id="sitenotification-label-template">{parentLabel} ({siteLabel})</key>
 </i18n>
