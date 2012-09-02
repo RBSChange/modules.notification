@@ -265,7 +265,7 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 		$mailService = $notification->getSendingMailService();
 	
 		$mailMessage = $this->composeMailMessage($mailService, $sender, $replyTo, array($to), null, null,
-			$subject, $htmlBody, $textBody, $senderModuleName);
+			$subject, $htmlBody, $textBody, $senderModuleName, $notification->getAttachments());
 			
 		if ($mailMessage instanceof Zend_Mail)
 		{
@@ -291,7 +291,7 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 	 * @param string $senderModuleName
 	 * @return Zend_Mail
 	 */
-	protected function composeMailMessage($mailService, $sender, $replyTo, $toArray, $ccArray, $bccArray, $subject, $htmlBody, $textBody, $senderModuleName)
+	protected function composeMailMessage($mailService, $sender, $replyTo, $toArray, $ccArray, $bccArray, $subject, $htmlBody, $textBody, $senderModuleName, $attachments = array())
 	{
 		/* @var $mailMessage Zend_Mail */
 		$mailMessage = $mailService->getNewMessage();
@@ -321,6 +321,15 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 		}
 		$mailMessage->setBodyHtml($htmlBody);
 		$mailMessage->setBodyText($textBody);
+		foreach ($attachments as $attachment)
+		{
+			list($filePath, $mimeType, $name) = $attachment;
+			$stream = fopen($filePath, 'r');
+			if ($stream)
+			{
+				$mailMessage->createAttachment($stream, $mimeType, Zend_Mime::DISPOSITION_ATTACHMENT, Zend_Mime::ENCODING_BASE64, $name);
+			}			
+		}
 		return $mailMessage;
 	}
 	
@@ -334,7 +343,7 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 		$ret = $mailService->send($mailMessage);
 		if ($ret !== true)
 		{
-			Framework::error(__METHOD__.": Unable to send mail (" . $mailMessage->getSubject() . ") to " . $mailMessage->getReceiver() . ".");
+			Framework::error(__METHOD__.": Unable to send mail (" . $mailMessage->getSubject() . ") to " . implode(PHP_EOL, $mailMessage->getRecipients()) . ".");
 			return false;
 		}
 		return true;

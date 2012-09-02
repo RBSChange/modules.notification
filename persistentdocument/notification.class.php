@@ -318,4 +318,32 @@ class notification_persistentdocument_notification extends notification_persiste
 		}
 		return $result;
 	}
+	
+	/**
+	 * @var array
+	 */
+	private $attachments = array();
+	
+	/**
+	 * @param string $filePath
+	 * @param string $mimeType
+	 * @param string $name
+	*/
+	public function addAttachment($filePath, $mimeType = 'application/octet-stream', $name = '')
+	{
+		$this->attachments[] = array($filePath, $mimeType, $name);
+	}
+	
+	/**
+	 * @return array
+	 */
+	public function getAttachments()
+	{
+		return $this->attachments;
+	}
+	
+	public function clearAttachments()
+	{
+		$this->attachments = array();
+	}
 }
