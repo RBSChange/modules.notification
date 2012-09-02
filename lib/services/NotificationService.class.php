@@ -272,7 +272,7 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 		$mailService = $notification->getSendingMailService();
 				
 		$mailMessage = $this->composeMailMessage($mailService, $sender, $replyTo, array($to), null, null, 
-			$subject, $htmlBody, $textBody, $senderModuleName);
+			$subject, $htmlBody, $textBody, $senderModuleName, $notification->getAttachments());
 			
 		if ($mailMessage instanceof MailMessage)
 		{
@@ -300,7 +300,7 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 	 * @param string $senderModuleName
 	 * @return MailMessage|boolean
 	 */
-	protected function composeMailMessage($mailService, $sender, $replyTo, $toArray, $ccArray, $bccArray, $subject, $htmlBody, $textBody, $senderModuleName)
+	protected function composeMailMessage($mailService, $sender, $replyTo, $toArray, $ccArray, $bccArray, $subject, $htmlBody, $textBody, $senderModuleName, $attachments = null)
 	{
 		$mailMessage = $mailService->getNewMailMessage();
 		$mailMessage->setModuleName($senderModuleName);	
@@ -337,6 +337,11 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 		}
 		$mailMessage->setEncoding('utf-8');
 		$mailMessage->setHtmlAndTextBody($htmlBody, $textBody);
+		foreach ($attachments as $attachment)
+		{
+			list($filePath, $mimeType, $name) = $attachment;
+			$mailMessage->addAttachment($filePath, $mimeType, $name);
+		}
 		return $mailMessage;
 	}
 
