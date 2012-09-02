@@ -300,7 +300,7 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 	 * @param string $senderModuleName
 	 * @return MailMessage|boolean
 	 */
-	protected function composeMailMessage($mailService, $sender, $replyTo, $toArray, $ccArray, $bccArray, $subject, $htmlBody, $textBody, $senderModuleName, $attachments = null)
+	protected function composeMailMessage($mailService, $sender, $replyTo, $toArray, $ccArray, $bccArray, $subject, $htmlBody, $textBody, $senderModuleName, $attachments = array())
 	{
 		$mailMessage = $mailService->getNewMailMessage();
 		$mailMessage->setModuleName($senderModuleName);	
