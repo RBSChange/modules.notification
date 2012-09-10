@@ -265,9 +265,9 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 		$mailService = $notification->getSendingMailService();
 	
 		$mailMessage = $this->composeMailMessage($mailService, $sender, $replyTo, array($to), null, null,
-			$subject, $htmlBody, $textBody, $senderModuleName, $notification->getAttachments());
+			$subject, $htmlBody, $senderModuleName, $notification->getAttachments());
 			
-		if ($mailMessage instanceof Zend_Mail)
+		if ($mailMessage instanceof \Zend\Mail\Message)
 		{
 			return $this->sendMailMessage($mailService, $mailMessage);
 		}
@@ -280,7 +280,7 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 	
 	/**
 	 * @param change_MailService $mailService
-	 * @param string $sender
+	 * @param \Zend\Mail\Adress $sender
 	 * @param string $replyTo
 	 * @param string[] $toArray
 	 * @param string[] $ccArray
@@ -289,11 +289,11 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 	 * @param string $htmlBody
 	 * @param string $textBody
 	 * @param string $senderModuleName
-	 * @return Zend_Mail
+	 * @return \Zend\Mail\Message
 	 */
-	protected function composeMailMessage($mailService, $sender, $replyTo, $toArray, $ccArray, $bccArray, $subject, $htmlBody, $textBody, $senderModuleName, $attachments = array())
+	protected function composeMailMessage($mailService, $sender, $replyTo, $toArray, $ccArray, $bccArray, $subject, $htmlBody, $senderModuleName, $attachments = array())
 	{
-		/* @var $mailMessage Zend_Mail */
+		/* @var $mailMessage \Zend\Mail\Message */
 		$mailMessage = $mailService->getNewMessage();
 		if ($replyTo !== null)
 		{
@@ -307,35 +307,49 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 		}
 		$mailMessage->setSubject($subject);
 		$mailMessage->setFrom($sender);
+		
 		if (is_array($toArray) && count($toArray))
 		{
-			$mailMessage->addTo(implode(',', $toArray));
+			$mailMessage->setTo($toArray);
 		}
 		if (is_array($ccArray) && count($ccArray))
 		{
-			$mailMessage->addCc(implode(',', $ccArray));
+			$mailMessage->setCc($ccArray);
 		}
 		if (is_array($bccArray) && count($bccArray))
 		{
-			$mailMessage->addBcc(implode(',', $bccArray));
+			$mailMessage->setBcc($bccArray);
 		}
-		$mailMessage->setBodyHtml($htmlBody);
-		$mailMessage->setBodyText($textBody);
+		$mimeMessage = new \Zend\Mime\Message();
+		
+
+		
+		$htmlBody = new \Zend\Mime\Part($htmlBody);
+		$htmlBody->type = "text/html";
+		$mimeMessage->addPart($htmlBody);
+		
 		foreach ($attachments as $attachment)
 		{
 			list($filePath, $mimeType, $name) = $attachment;
+			
 			$stream = fopen($filePath, 'r');
 			if ($stream)
 			{
-				$mailMessage->createAttachment($stream, $mimeType, Zend_Mime::DISPOSITION_ATTACHMENT, Zend_Mime::ENCODING_BASE64, $name);
-			}			
+				$attachement = new \Zend\Mime\Part($stream);
+				$attachement->type = $mimeType;
+				$attachement->filename = $name;
+				$attachement->encoding = \Zend\Mime\Mime::ENCODING_BASE64;
+				$attachement->disposition = \Zend\Mime\Mime::DISPOSITION_ATTACHMENT;
+				$mimeMessage->addPart($attachement);
+			}
 		}
+		$mailMessage->setBody($mimeMessage);
 		return $mailMessage;
 	}
 	
 	/**
 	 * @param change_MailService $mailService
-	 * @param Zend_Mail $mailMessage
+	 * @param \Zend\Mail\Message $mailMessage
 	 * @return boolean
 	 */
 	protected function sendMailMessage($mailService, $mailMessage)
@@ -343,7 +357,7 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 		$ret = $mailService->send($mailMessage);
 		if ($ret !== true)
 		{
-			Framework::error(__METHOD__.": Unable to send mail (" . $mailMessage->getSubject() . ") to " . implode(PHP_EOL, $mailMessage->getRecipients()) . ".");
+			Framework::error(__METHOD__.": Unable to send mail (" . $mailMessage->getSubject() . ") to " . implode(PHP_EOL, $mailMessage->getTo()) . ".");
 			return false;
 		}
 		return true;
@@ -351,7 +365,7 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 	
 	/**
 	 * @param notification_persistentdocument_notification $notification
-	 * @return string
+	 * @return \Zend\Mail\Address
 	 */
 	protected function getSender($notification)
 	{
@@ -378,13 +392,11 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 		{
 			$senderName = Framework::getConfigurationValue('modules/notification/defaultSenderName');
 		}
-		
-		// Construct the sender.
-		if (!empty($senderName))
+		if (!f_util_StringUtils::isEmpty($senderName))
 		{
-			return '"' . $senderName . '" < ' . $senderEmail . ' >';
+			$senderName = null;
 		}
-		return $senderEmail;
+		return new \Zend\Mail\Address($senderEmail, $senderName);
 	}
 	
 	/**
@@ -431,21 +443,7 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 			Framework::error(__METHOD__ . ' Template not found: ' . $notification->getTemplate());
 			$htmlBody = '';
 		}
-		
-		$textTemplate = change_TemplateLoader::getNewInstance()->setExtension('txt')
-			->load('modules', 'notification', 'templates', $notification->getTemplate());
-		if ($textTemplate !== null)
-		{
-			$textTemplate->setAttribute('notification', $attributes);
-			$textTemplate->setAttribute('replacement', $replacementArray);
-			$textBody = f_util_HtmlUtils::htmlToText($textTemplate->execute());
-		}
-		else
-		{
-			$textBody = '';
-		}
-
-		return array('subject' => $subject, 'htmlBody' => $htmlBody, 'textBody' => $textBody);
+		return array('subject' => $subject, 'htmlBody' => $htmlBody);
 	}
 
 	/**
@@ -589,173 +587,5 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 		$data['description']['description'] = $document->isLangAvailable($lang) ? $document->getDescriptionForLang($lang) : $document->getVoDescription();
 		
 		return $data;
-	}
-	
-	// Deprecated.
-	
-	/**
-	 * @deprecated (will be removed in 4.0) use $notification->registerCallback() and $notification->send()
-	 */
-	public function sendNotificationCallback($notification, $recipients, $callback = null, $callbackParameter = array())
-	{
-		if ($notification === null)
-		{
-			if (Framework::isInfoEnabled())
-			{
-				Framework::info(__METHOD__ . ' No notification to send.');
-			}
-			return false;
-		}
-	
-		$websiteId = $notification->getSendingWebsiteId();
-		$lang = $notification->getSendingLang();
-	
-		$result = false;
-		$rc = RequestContext::getInstance();
-		$ws = website_WebsiteService::getInstance();
-		$oldWebsiteId = $ws->getCurrentWebsite()->getId();
-		if ($websiteId > 0)
-		{
-			$ws->setCurrentWebsiteId($websiteId);
-		}
-		try
-		{
-			$rc->beginI18nWork($lang);
-	
-			$replacements = ($callback !== null) ? call_user_func($callback, $callbackParameter) : $callbackParameter;
-			$ns = $notification->getDocumentService();
-			$senderModuleName = $notification->getSendingModuleName();
-			$replyTo = $notification->getSendingReplyTo();
-			if (!$ns->send($notification, $recipients, $replacements, $senderModuleName, $replyTo))
-			{
-				Framework::error(__METHOD__ . ' Can\'t send notification: ' . $notification->getCodename() . ' TO' . print_r($recipients[change_MailService::TO], true));
-				$result = false;
-			}
-			$result = true;
-				
-			if ($oldWebsiteId > 0)
-			{
-				$ws->setCurrentWebsiteId($oldWebsiteId);
-			}
-			$rc->endI18nWork();
-		}
-		catch (Exception $e)
-		{
-			if ($oldWebsiteId > 0)
-			{
-				$ws->setCurrentWebsiteId($oldWebsiteId);
-			}
-			$rc->endI18nWork($e);
-		}
-		return $result;
-	}
-	
-	/**
-	 * @deprecated (will be removed in 4.0) use $notification->send()
-	 */
-	public function send($notification, $recipients, $replacementArray, $senderModuleName, $replyTo = null, $overrideSenderEmail = null, $replaceUnkownKeys = null)
-	{
-		if ($replaceUnkownKeys === null) {
-			$replaceUnkownKeys = !Framework::inDevelopmentMode();
-		}
-	
-		if ($notification === null)
-		{
-			Framework::warn(__METHOD__.": notification does not exist or is not available: no notification sent.");
-			return false;
-		}
-		else
-		{
-			// Complete replacements with global data.
-			$replacementArray = $this->completeReplacements($replacementArray);
-	
-			// Render contents.
-			$contents = $this->generateBody($notification, $replacementArray, $replaceUnkownKeys);
-			$subject = $contents['subject'];
-			$htmlBody = $contents['htmlBody'];
-			$textBody = $contents['textBody'];
-	
-			// Get the sender...
-			if ($overrideSenderEmail !== null)
-			{
-				$notification->setSendingSenderEmail($overrideSenderEmail);
-			}
-			$sender = $this->getSender($notification);
-				
-			$mailService = $notification->getSendingMailService();
-			if ($mailService === null)
-			{
-				$mailService = change_MailService::getInstance();
-			}
-	
-			$mailMessage = $this->composeMailMessage($mailService, $sender, $replyTo,
-				$recipients[change_MailService::TO], $recipients[change_MailService::CC],
-				$recipients[change_MailService::BCC], $subject, $htmlBody, $textBody, $senderModuleName);
-	
-			if ($mailMessage instanceof MailMessage)
-			{
-				return $this->sendMailMessage($mailService, $mailMessage);
-			}
-			elseif (is_bool($mailMessage))
-			{
-				return $mailMessage;
-			}
-			return false;
-		}
-	}
-	
-	/**
-	 * @deprecated (will be removed in 4.0) use getConfiguredByCodeName
-	 */
-	public function getByCodeName($codeName, $websiteId = null)
-	{
-		if (Framework::isInfoEnabled() && Framework::inDevelopmentMode())
-		{
-			Framework::info(__METHOD__ . ' Deprecated call');
-			Framework::info(f_util_ProcessUtils::getBackTrace());
-		}
-		
-		// Get the website id.
-		if ($websiteId === null)
-		{		
-			$currentWebsite = website_WebsiteService::getInstance()->getCurrentWebsite();
-			if ($currentWebsite !== null)
-			{
-				$websiteId = $currentWebsite->getId();
-			}
-		}
-		
-		$query = $this->createQuery();
-		$query->add(Restrictions::published());
-		
-		// Get the specialized notification if exists, else get the base one.
-		if ($websiteId !== null)
-		{
-			$query->add(Restrictions::orExp(Restrictions::eq('codename', $codeName.'/'.$websiteId), Restrictions::eq('codename', $codeName)));
-		}
-		else 
-		{
-			$query->add(Restrictions::eq('codename', $codeName));
-		}
-		$query->addOrder(Order::desc('codename'));
-		$notifications = $query->find();
-			
-		return f_util_ArrayUtils::firstElement($notifications);
-	}
-	
-	/**
-	 * @deprecated (will be removed in 4.0) use getByCodeName
-	 */
-	public function getNotificationByCodeName($codeName, $websiteId = null)
-	{
-		return $this->getByCodeName($codeName, $websiteId);
-	}
-	
-	/**
-	 * @deprecated (will be removed in 4.0) use setSendingMailService on notification.
-	 */
-	public function setMessageService($mailService)
-	{
-	
 	}
 }
