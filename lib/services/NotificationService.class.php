@@ -257,8 +257,7 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 		$contents = $this->generateBody($notification, $replacements, $replaceUnkownKeys);
 		$subject = $contents['subject'];
 		$htmlBody = $contents['htmlBody'];
-		$textBody = $contents['textBody'];
-	
+			
 		$sender = $this->getSender($notification);
 		$replyTo = $notification->getSendingReplyTo();
 		$senderModuleName = $notification->getSendingModuleName();
@@ -287,8 +286,8 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 	 * @param string[] $bccArray
 	 * @param string $subject
 	 * @param string $htmlBody
-	 * @param string $textBody
 	 * @param string $senderModuleName
+	 * @param mixed[] $attachments
 	 * @return \Zend\Mail\Message
 	 */
 	protected function composeMailMessage($mailService, $sender, $replyTo, $toArray, $ccArray, $bccArray, $subject, $htmlBody, $senderModuleName, $attachments = array())

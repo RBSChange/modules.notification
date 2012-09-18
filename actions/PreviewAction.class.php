@@ -13,15 +13,6 @@ class notification_PreviewAction extends change_Action
 	{
 		$notif = $this->getDocumentInstanceFromRequest($request);
 		$elements = $notif->getDocumentService()->generateBody($notif, array(), false);
-		switch ($request->getParameter('type'))
-		{
-			case 'html':
-				echo $elements['htmlBody'];
-				break;
-				
-			case 'text':
-				echo '<html><body><pre style="white-space: pre-wrap;">' . $elements['textBody'] . '</pre></body></html>';
-				break;
-		}
+		echo $elements['htmlBody'];
 	}
 }
