@@ -279,7 +279,7 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 	
 	/**
 	 * @param change_MailService $mailService
-	 * @param \Zend\Mail\Adress $sender
+	 * @param \Zend\Mail\Address $sender
 	 * @param string $replyTo
 	 * @param string[] $toArray
 	 * @param string[] $ccArray
