@@ -6,7 +6,9 @@
 		<category>admin</category>
 	</module>
 	<project>
+		<!-- To set the default sender email: -->
+		<!-- <entry name="noreplySender">noreply@monsite.fr</entry> -->
 		<!-- To set the default sender name: -->
-		<!-- <entry name="defaultSenderName">Sender name</entry> -->
+		<!-- <entry name="defaultSenderName">noreply</entry> -->
 	</project>
 </config>

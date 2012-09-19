@@ -70,7 +70,7 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 	 * @param integer $websiteId
 	 * @param string $lang
 	 * @param integer $accessorId
-	 * @return notification_persistentdocument_notification or null
+	 * @return notification_persistentdocument_notification | null
 	 */
 	public function getConfiguredByCodeNameAndSuffix($codeName, $suffix, $websiteId = null, $lang = null, $accessorId = null)
 	{
