@@ -2,15 +2,15 @@
 class notification_NotificationWebService extends webservices_WebServiceBase
 {
 	/**
-	 * @param string wstificationCode
-	 * @param string wsmainName
-	 * @param string wsng
-	 * @param string[] wsstEmailArray
-	 * @param string[] wsplacementArrayKeys
-	 * @param string[] wsplacementArrayValues
-	 * @param string wsnderModuleName
-	 * @param string wsplyTo
-	 * @param string wsnderEmail
+	 * @param string $notificationCode
+	 * @param string $domainName
+	 * @param string $lang
+	 * @param string[] $destEmailArray
+	 * @param string[] $replacementArrayKeys
+	 * @param string[] $replacementArrayValues
+	 * @param string $senderModuleName
+	 * @param string $replyTo
+	 * @param string $senderEmail
 	 * @return boolean
 	 */
 	public function send($notificationCode, $domainName, $lang, $destEmailArray, $replacementArrayKeys, $replacementArrayValues , $senderModuleName, $replyTo, $senderEmail)
