@@ -1,0 +1,6 @@
+{
+	"name": "rbschange/notification",
+	"description": "RBS Change Notification module",
+	"type": "rbschange-compatibility-module",
+	"license":"AGPL-3.0"
+}
