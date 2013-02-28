@@ -12,15 +12,21 @@ class notification_SendTestNotificationAction extends f_action_BaseJSONAction
 	public function _execute($context, $request)
 	{
 		$result = array();
-
-		$notification = $this->getDocumentInstanceFromRequest($request);
-		$recipients = new mail_MessageRecipients();
-		$recipients->setTo($request->getParameter('emails'));
 		
-		if (!$notification->getDocumentService()->send($notification, $recipients, array(), 'notification', null, null, false))
+		/* @param $notification notification_persistentdocument_notification */
+		$notification = $this->getDocumentInstanceFromRequest($request);
+		$notification->setSendingModuleName('notification');
+		
+		$error = false;
+		foreach ($request->getParameter('emails') as $email)
+		{
+			$error = $error || !$notification->send($email);
+		}
+		
+		if ($error)
 		{
 			return $this->sendJSONError(LocaleService::getInstance()->transBO('m.notification.bo.general.error-sending-mails'));
-		}		
+		}
 		return $this->sendJSON($result);
 	}
 }

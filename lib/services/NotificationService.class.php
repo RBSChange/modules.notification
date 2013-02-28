@@ -333,7 +333,7 @@ class notification_NotificationService extends f_persistentdocument_DocumentServ
 		}
 		if (is_array($bccArray) && count($bccArray))
 		{
-			$this->setBcc(implode(',', $bccArray));
+			$mailMessage->setBcc(implode(',', $bccArray));
 		}
 		$mailMessage->setEncoding('utf-8');
 		$mailMessage->setHtmlAndTextBody($htmlBody, $textBody);
